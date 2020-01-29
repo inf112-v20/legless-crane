@@ -1,7 +1,8 @@
 # Generell Planlegging
 
-TODO:
-- Implementere første versjon av spillebrett
+- Gruppemøter
+
+- Scrum
 
 Tanker om arkitektur:
 - I utgangspunktet et gitt brett, trenger ikke generere eller lage flere variasjoner med det første.
