@@ -3,11 +3,13 @@ import java.util.ArrayList;
 
 public class Board {
     private int boardSize;
-    private ArrayList<Tile> grid = new ArrayList<Tile>();
-    //private ArrayList<Cell> playerGrid = new ArrayList<Cell>();
+    private ArrayList<Tile> grid = new ArrayList<>();
+    // stores all elements on the board
+    private ArrayList<Boolean> players = new ArrayList<>();
+    // stores all locations of the players. Might be better with a different type than Boolean.
 
     /**
-     * the Board is created and filled with Cell.WATER, essentially
+     * the Board is created and filled with Tile.OPEN, essentially
      * ensuring all tiles are present and "empty".
      *
      * @param	size	the size of the board being created.
