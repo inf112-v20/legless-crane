@@ -1,7 +1,17 @@
 #Overordnede mål
-
-#Krav
-
+- Man programmerer en robot som beveger seg på et kart ved hjelp av kort (moves) som tilsvarer enkle bevegelser
+- Man vinner ved å besøke alle flaggende i stigende rekkefølge
+- Man har tre liv, mister man alle er man ute av spillet
+- Den som først kommer seg innom alle flaggene (på gyldig måte) vinner
+   - Vil man spille til alle kommer i mål eller dør? (tvilsomt?)
+   - Eller avsluttes spillet når første spiller kommer i mål?
+- Gameloop er rundebasert, hver runde består av 5 faser.
+    - 0: Roboter som skal i powerdown settes i powerdown
+    - 1: Kort deles ut
+    - 2: Alle programmerer robotens fem faser (1 programkort pr fase). Spillere godkjenner sine kort og kan deretter ikke endre dem (de er da overført til roboten). Når nest siste spiller har godkjent sine kort, får sistemann 30 sekunder til å legge ned sine kort. Gjenværende registre fylles med random kort fra hånden til spilleren.
+    - 3: Spillrunden gjennomføres med fem faser
+        - I hver fase utføres robotens program for den fasen, elementer på brettet beveger seg, og lasere skyter, skade deles ut
+    - 4: Opprydning: eventuelle optionskort deles ut, skade fjernes og roboter i powerdown vekkes til live igjen, roboter som gjenoppstår fra de døde settes ut på brettet igjen
 
 #MVP
 
@@ -30,6 +40,7 @@
 - får du skade får du mindre kort i henhold til skaden du har
 - kan ikke gå gjennom vegger
 - for mye skade brenner fast programkort fra runde til runde
+
 
 
 #Nice to have
