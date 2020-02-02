@@ -1,4 +1,4 @@
-package Game;
+package RoboRally.Game;
 
 /**
  * Gamelogic related to the player:

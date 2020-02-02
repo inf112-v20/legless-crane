@@ -1,4 +1,4 @@
-package Game;
+package RoboRally.Game;
 
 public class Main {
 

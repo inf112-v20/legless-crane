@@ -1,4 +1,4 @@
-package Game;
+package RoboRally.Game;
 
 /**
  * Main game loop and methods related to running the game.

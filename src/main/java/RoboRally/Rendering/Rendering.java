@@ -1,4 +1,4 @@
-package Rendering;
+package RoboRally.Rendering;
 
 
 /**
