@@ -16,7 +16,7 @@ public class PlayScreen implements Screen {
     @Override
     public void show() {
         TmxMapLoader loader = new TmxMapLoader();
-        board = loader.load("boards/board0.tmx");
+        board = loader.load("boards/board1.tmx");
 
         renderer = new OrthogonalTiledMapRenderer(board);
 
