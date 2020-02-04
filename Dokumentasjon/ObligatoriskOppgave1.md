@@ -1,5 +1,5 @@
 # Obligatorisk innlevering 1
-Utkast, 29.01. 
+
 ### Deloppgave 1
 Som navn på gruppe/repositorium har vi valgt å foreløpig beholde “legless-crane”. 
 Av tidligere kompetanse stiller gruppemedlemmene forholdsvis likt, da hovedsakelig med erfaring fra tidligere inf-emner i studieprogrammene. 
@@ -56,38 +56,44 @@ Viser til github-repositoriumet som tilhører gruppen (legless-crane) i forbinde
 delen av denne leveransen som skal være kode. Vi har kommet frem til følgende brukerhistorier og medfølgende arbeidsoppgaver:
 #####Brukerhistorie 1: grafisk representering av brett
 “Som spiller trenger jeg en visuell representasjon av brettet slik at jeg kan spille RoboRally uten å måtte huske hvordan brettet ser ut.”
-######Akseptansekriterier:
+
+Akseptansekriterier:
 - Forventet størrelse og antall ruter
 - Vise brettet uten elementer
 - Vise brettet med elementer (spiller)
 - Grafisk fremstilling stemmer overens med forretningslogikk
 - Brettet har ruter tilsvarende posisjoner som en spiller kan plasseres på
-######Arbeidsoppgaver:
+
+Arbeidsoppgaver:
 - Koble forretningslogikk opp mot render/spillmotor
 - Opprette et robotobjekt (inkludert posisjon)
 - Opprette rutenett som kan bestå av flere posisjoner
 
 #####Brukerhistorie 2: robot på brettet
 “Som spiller trenger jeg å se roboten min på brettet, slik at jeg kan strategere.”
-######Akseptansekriterier:
+
+Akseptansekriterier:
 - Man får utdelt en robot i det man starter spillet
 - Roboten må ha et basisutseende
 - Roboten skal være synlig på brettet
 - Roboten har forventet plassering på brett i forhold til posisjonsdata
-######Arbeidsoppgaver:
+
+Arbeidsoppgaver:
 - Tildele robot-brikke til spiller av spillet (foreløpig bare en deltaker)
 - Gi grafisk utseende til robot
 
 
 #####Brukerhistorie 3: interaktiv robot
 “Som spiller trenger jeg at roboten min kan bevege seg på brettet slik at min robot kan interagere med brettet og dets elementer.”
-######Akseptansekriterier:
+
+Akseptansekriterier:
 - Spiller kan styre hvilken retning robot beveger seg i/hvor langt
 - Robot kan bevege seg fra posisjon x1,y1 til x2,y2
 - Roboten kan bevege seg opp, ned, til venstre og høyre
 - Endringen i posisjon er representert grafisk
-######Arbeidsoppgaver
-- Sette fast forretningslogikk for hvordan en robot påvirkes av elementer på brettet.
+
+Arbeidsoppgaver
+- Sette fast forretningslogikk for hvordan en robot påvirkes av elementer på brettet
 - Styring av robot med piltaster
 
 
@@ -95,10 +101,12 @@ delen av denne leveransen som skal være kode. Vi har kommet frem til følgende 
 
 #####Brukerhistorie 4: brukervennlighet
 “Som eier av spillet trenger jeg at det funker på alle operativsystemer slik at så mange som mulig kan bruke spillet.”
-######Akseptansekriterier:
+
+Akseptansekriterier:
 - Kjører på Windows
 - Kjører på Mac
 - Kjører på Linux
-######Arbeidsoppgaver
-- Teste på macOS og linux, at prosjektet bygger som det skal.
+
+Arbeidsoppgaver
+- Teste på macOS og linux at prosjektet bygger som det skal
 
