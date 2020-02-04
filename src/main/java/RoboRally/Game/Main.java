@@ -10,7 +10,7 @@ public class Main {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "RoboRally";
         //cfg.useGL30 = true;
-        cfg.width = 1280;
+        cfg.width = 720;
         cfg.height = 720;
 
         new LwjglApplication(new Renderer(), cfg);
