@@ -1,74 +1,73 @@
 package RoboRally.Board;
 import java.util.ArrayList;
 
+/**
+ * Currently this works by first initializing the board with open tiles, then reading in the different
+ * elements to be placed on the board.
+ *
+ * Might keep this separate in the future for each type of element or group types of elements if it
+ * looks like it would be easier.
+ *
+ * First iteration utilizes an Enum to keep track of the elements on the board-
+ *
+ * Known BUG: as lasers and beams can share a position with other objects, the last read element will be the
+ * only element stored in our board. This should be addressed when we create Tile objects (see UML for planned
+ * implementation)
+ *
+ * It's for that same reason that we have a lot of repeated code in the readXYZ() methods in this class,
+ * to better be able to create different objects with different properties to be used for game-logic     *
+ *
+ * something like: new Belt("Yellow", Direction.NORTH) or: new Wall ([North, West]) or w/e
+ *
+ *TODO As Tiled designates an ID to every given tile in a tilemap, investigate if this changes per map or
+ * if it stays the same regardless of which map is made with it.
+ * Also check if we can set this ID ourselves for IDs that make more sense for our use.
+ *
+ *TODO would be nice to add some long-term solutions for getting width of the board we're loading in here
+ * if we ever get around to having different boards.
+ *
+ * Methods are currently public for testing purposes
+ */
+
 public class Board {
     private int boardWidth;
     private int boardSize;
     private ArrayList<Tile> grid = new ArrayList<>();
-    // stores all elements on the board
-    private ArrayList<Boolean> players = new ArrayList<>();
-    // stores all locations of the players. Might be better with a different type than Boolean.
-    private BoardAndLayers board = new BoardAndLayers();
 
-    /**
-     * Currently this works by first initializing the board with open tiles, then reading in the different
-     * elements to be placed on the board.
-     *
-     * Might keep this separate in the future for each type of element or group types of elements if it
-     * looks like it would be easier.
-     *
-     * First iteration utilizes an Enum to keep track of the elements on the board-
-     *
-     * Known BUG: as lasers and beams can share a position with other objects, the last read element will be the
-     * only element stored in our board. This should be addressed when we create Tile objects (see UML for planned
-     * implementation)
-     *
-     * It's for that same reason that we have a lot of repeated code in the readXYZ() methods in this class,
-     * to better be able to create different objects with different properties to be used for game-logic     *
-     *
-     * something like: new Belt("Yellow", Direction.NORTH) or: new Wall ([North, West]) or w/e
-     *
-     *TODO As Tiled designates an ID to every given tile in a tilemap, investigate if this changes per map or
-     * if it stays the same regardless of which map is made with it.
-     * Also check if we can set this ID ourselves for IDs that make more sense for our use.
-     *
-     *TODO would be nice to add some long-term solutions for getting width of the board we're loading in here
-     * if we ever get around to having different boards.
-     */
-    public Board() {
+    public Board(int boardWidth, int boardSize, BoardAndLayers board) {
+        // boardWidth = 12; the current hardcoded board is 12 wide
+        // boardSize = board.getLayers(0).length; the length of the array containing the background layer.
 
-        boardWidth = 12; // the current hardcoded board is 12 wide
-        boardSize = board.getLayers(0).length; // the length of the array containing the background layer.
+        this.boardWidth = boardWidth;
+        this.boardSize = boardSize;
 
         for (int tile : board.getLayers(0)) {
             grid.add(Tile.OPEN);
         }
 
         // call each method to read in the elements stored in the different layers of the board.
-        readHoles(board);
-        readWrenches(board);
-        readCogs(board);
-        readYellowBelts(board);
-        readBlueBelts(board);
-        readBeams(board);
-        readLasers(board);
-        readSpawnpoints(board);
-        readVictoryPoints(board);
-        readWalls(board);
+        readHoles(board.getLayers(1));
+        readWrenches(board.getLayers(2));
+        readCogs(board.getLayers(3));
+        readYellowBelts(board.getLayers(4));
+        readBlueBelts(board.getLayers(5));
+        readBeams(board.getLayers(6));
+        readLasers(board.getLayers(7));
+        readSpawnpoints(board.getLayers(8));
+        readVictoryPoints(board.getLayers(9));
+        readWalls(board.getLayers(10));
 
 
     }
 
     // TODO There is a lot of repetition in the readXYZ() methods, this should be addressed after Tile objects are in.
-    private void readHoles(BoardAndLayers board) {
-        int[] layer = board.getLayers(1);
+    public void readHoles(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
-            if (layer[i]==6)
+            if (layer[i] == 6)
                 grid.set(i, Tile.HOLE);
     }
 
-    private void readWrenches(BoardAndLayers board) {
-        int[] layer = board.getLayers(2);
+    public void readWrenches(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==7)
                 grid.set(i, Tile.WRENCH);
@@ -76,8 +75,7 @@ public class Board {
                 grid.set(i, Tile.WRENCH);
     }
 
-    private void readCogs(BoardAndLayers board) {
-        int[] layer = board.getLayers(3);
+    public void readCogs(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==53)
                 grid.set(i, Tile.COG);
@@ -85,8 +83,7 @@ public class Board {
                 grid.set(i, Tile.COG);
     }
 
-    private void readYellowBelts(BoardAndLayers board) {
-        int[] layer = board.getLayers(4);
+    public void readYellowBelts(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i] == 33)
                 grid.set(i, Tile.BELT_YELLOW);
@@ -106,8 +103,7 @@ public class Board {
                 grid.set(i, Tile.BELT_YELLOW);
     }
 
-    private void readBlueBelts(BoardAndLayers board) {
-        int[] layer = board.getLayers(5);
+    public void readBlueBelts(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==14)
                 grid.set(i, Tile.BELT_BLUE);
@@ -115,22 +111,19 @@ public class Board {
                 grid.set(i, Tile.BELT_BLUE);
     }
 
-    private void readBeams(BoardAndLayers board) {
-        int[] layer = board.getLayers(6);
+    public void readBeams(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==39)
                 grid.set(i, Tile.BEAM);
     }
 
-    private void readLasers(BoardAndLayers board) {
-        int[] layer = board.getLayers(7);
+    public void readLasers(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==38)
                 grid.set(i, Tile.LASER);
     }
 
-    private void readSpawnpoints(BoardAndLayers board) {
-        int[] layer = board.getLayers(8);
+    public void readSpawnpoints(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==121)
                 grid.set(i, Tile.SPAWNPOINT);
@@ -151,8 +144,7 @@ public class Board {
     }
 
 
-    private void readVictoryPoints(BoardAndLayers board) {
-        int[] layer = board.getLayers(9);
+    public void readVictoryPoints(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==55)
                 grid.set(i, Tile.FLAG);
@@ -162,8 +154,7 @@ public class Board {
                 grid.set(i, Tile.FLAG);
     }
 
-    public void readWalls(BoardAndLayers board) {
-        int[] layer = board.getLayers(1);
+    public void readWalls(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i] == 8)
                 grid.set(i, Tile.WALL);
@@ -182,7 +173,7 @@ public class Board {
             else if (layer[i] == 32)
                 grid.set(i, Tile.WALL);
     }
-    
+
     public Tile get(Position pos) {
         return grid.get(pos.getX() + pos.getY()*boardWidth);
     }
