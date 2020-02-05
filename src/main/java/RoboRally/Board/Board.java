@@ -35,9 +35,6 @@ public class Board {
     private ArrayList<Tile> grid = new ArrayList<>();
 
     public Board(int boardWidth, int boardSize, BoardAndLayers board) {
-        // boardWidth = 12; the current hardcoded board is 12 wide
-        // boardSize = board.getLayers(0).length; the length of the array containing the background layer.
-
         this.boardWidth = boardWidth;
         this.boardSize = boardSize;
 

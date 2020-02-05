@@ -25,8 +25,6 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Cell playerTile; // regular player texture.
-    private Cell playerDeath; // player texture when dead
-    private Cell playerVictory; // player texture with victory
     private Vector2 playerPosition;
     private int boardWidth;
     private int boardHeight;
@@ -42,24 +40,6 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
         board = loader.load("boards/Board1.tmx");
 
         background = (TiledMapTileLayer) board.getLayers().get("background");
-        /*
-        Unused code
-
-        should we get all these layers or is it unnecessary? Tutorial says to, but we only really use the playerLayer
-        and the background layer to get the dimensions of the board and move the player
-
-        holes = (TiledMapTileLayer) board.getLayers().get("holes");
-        wrenches = (TiledMapTileLayer) board.getLayers().get("wrenches");
-        belts_yellow = (TiledMapTileLayer) board.getLayers().get("belts_yellow");
-        belts_blue = (TiledMapTileLayer) board.getLayers().get("belts_blue");
-        cogs = (TiledMapTileLayer) board.getLayers().get("cogs");
-        beams = (TiledMapTileLayer) board.getLayers().get("beams");
-        lasers = (TiledMapTileLayer) board.getLayers().get("lasers");
-        spawn = (TiledMapTileLayer) board.getLayers().get("spawnpoints");
-        flag = (TiledMapTileLayer) board.getLayers().get("flags");
-        walls = (TiledMapTileLayer) board.getLayers().get("walls");
-
-        */
 
         boardWidth = background.getWidth();
         boardHeight = background.getHeight();
@@ -76,15 +56,7 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
 
         playerTile = new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png"))));
-        /*
-        playerDeath = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Tower.png"))));
-        playerVictory = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Tower.png"))));
 
-               different images for the player tile can be entered here, a death model, a victory model etc.
-               TODO missing logic to utilize these models
-         */
 
         playerPosition = new Vector2(6,2);
 
