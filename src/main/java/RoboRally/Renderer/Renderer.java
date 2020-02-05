@@ -20,13 +20,16 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Renderer extends InputAdapter implements ApplicationListener  {
     private TiledMap board;
-    private TiledMapTileLayer background, belts, holes, walls, wrenches, spawn, flag, playerLayer;
+    private TiledMapTileLayer background, belts_yellow,belts_blue, holes, walls, wrenches, spawn, flag,
+            cogs, beams, lasers, playerLayer;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Cell playerTile; // regular player texture.
     private Cell playerDeath; // player texture when dead
     private Cell playerVictory; // player texture with victory
     private Vector2 playerPosition;
+    private int boardWidth;
+    private int boardHeight;
 
 
 
@@ -36,87 +39,87 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
         Board and camera:
          */
         TmxMapLoader loader = new TmxMapLoader();
-        board = loader.load("boards/Checkmate.tmx");
+        board = loader.load("boards/Board1.tmx");
 
-        background = (TiledMapTileLayer) board.getLayers().get("Background");
-        belts = (TiledMapTileLayer) board.getLayers().get("Belts");
-        holes = (TiledMapTileLayer) board.getLayers().get("Holes");
-        walls = (TiledMapTileLayer) board.getLayers().get("Walls");
-        wrenches = (TiledMapTileLayer) board.getLayers().get("Wrenches");
-        spawn = (TiledMapTileLayer) board.getLayers().get("Spawnpoints");
-        flag = (TiledMapTileLayer) board.getLayers().get("Victorypoints");
+        background = (TiledMapTileLayer) board.getLayers().get("background");
+        /*
+        Unused code
+
+        should we get all these layers or is it unnecessary? Tutorial says to, but we only really use the playerLayer
+        and the background layer to get the dimensions of the board and move the player
+
+        holes = (TiledMapTileLayer) board.getLayers().get("holes");
+        wrenches = (TiledMapTileLayer) board.getLayers().get("wrenches");
+        belts_yellow = (TiledMapTileLayer) board.getLayers().get("belts_yellow");
+        belts_blue = (TiledMapTileLayer) board.getLayers().get("belts_blue");
+        cogs = (TiledMapTileLayer) board.getLayers().get("cogs");
+        beams = (TiledMapTileLayer) board.getLayers().get("beams");
+        lasers = (TiledMapTileLayer) board.getLayers().get("lasers");
+        spawn = (TiledMapTileLayer) board.getLayers().get("spawnpoints");
+        flag = (TiledMapTileLayer) board.getLayers().get("flags");
+        walls = (TiledMapTileLayer) board.getLayers().get("walls");
+
+        */
+
+        boardWidth = background.getWidth();
+        boardHeight = background.getHeight();
 
         renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
-        // TODO her må det finnes en bedre måte å besteme unitScale på, foreløpig er float tallet 1/pixler.
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, background.getWidth(),background.getHeight());
+        camera.setToOrtho(false, boardWidth,boardHeight);
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+
         camera.update();
         renderer.setView(camera);
 
-        //different images for the player tile,
+
         playerTile = new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png"))));
+        /*
         playerDeath = new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png"))));
         playerVictory = new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png"))));
 
+               different images for the player tile can be entered here, a death model, a victory model etc.
+               TODO missing logic to utilize these models
+         */
+
         playerPosition = new Vector2(6,2);
+
         //input
         Gdx.input.setInputProcessor(this);
-    }
-
-
-    private boolean checkDeath(Vector2 position) {
-        return holes.getCell((int) position.x, (int) position.y) != null;
-    }
-
-    private boolean checkVictory(Vector2 position) {
-        return flag.getCell((int) position.x, (int) position.y) != null;
     }
 
     @Override
     public boolean keyUp(int keycode) {
         switch(keycode) {
-            // TODO Don't know why the map clears the player position, it shouldn't?
-            /*
-                setCell is limited by the board dimensions x(0-15) y(0-17), using max(0, x) and min(14,x) to ensure the position
-                of the player does not move off the board.
-             */
+            // I think we're supposed to clear the player's previous position in addition to setting the new one here.
+            // but it works so who knows.
             case Input.Keys.LEFT:
-                playerPosition = new Vector2((Math.min(13, Math.max(0,(int)playerPosition.x-1))),
-                        (Math.min(17, (Math.max(0,(int)playerPosition.y)))));
+                playerPosition = new Vector2((Math.min(boardWidth, Math.max(0,(int)playerPosition.x-1))),
+                        (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y)))));
                 playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
                 return true;
 
             case Input.Keys.RIGHT:
-                playerPosition = new Vector2((Math.min(13, (Math.max(0,(int)playerPosition.x+1)))),
-                        (Math.min(17, (Math.max(0,(int)playerPosition.y)))));
+                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0,(int)playerPosition.x+1)))),
+                        (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y)))));
                 playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
                 return true;
             case Input.Keys.DOWN:
-                playerPosition = new Vector2((Math.min(13, (Math.max(0,(int)playerPosition.x)))),
-                        (Math.min(17, (Math.max(0,(int)playerPosition.y-1)))));
+                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0,(int)playerPosition.x)))),
+                        (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y-1)))));
                 playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
                 return true;
             case Input.Keys.UP:
-                playerPosition = new Vector2((Math.min(13, (Math.max(0,(int)playerPosition.x)))),
-                        (Math.min(17, (Math.max(0,(int)playerPosition.y+1)))));
+                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0,(int)playerPosition.x)))),
+                        (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y+1)))));
                 playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
                 return true;
         }
         return false;
-        /*
-        if (checkVictory(playerPosition)) {
-            playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerVictory);
-        } else if (checkDeath(playerPosition)) {
-            playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerDeath);
-        } else {
-
-        }
-         */
     }
 
     @Override
@@ -131,7 +134,7 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        playerLayer = new TiledMapTileLayer(background.getWidth(), background.getHeight(), 300, 300);
+        playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
 
         playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y, playerTile);
 
@@ -139,7 +142,6 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
         renderer.getBatch().begin();
         renderer.renderTileLayer(playerLayer);
         renderer.getBatch().end();
-        // TODO Få orden på forskjellige layers og hvordan rendere de.
 
     }
 
