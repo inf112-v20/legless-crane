@@ -55,24 +55,16 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
         camera.update();
         renderer.setView(camera);
 
-        /*
-        Player:
-         */
-        // TODO Dette må kunne gjøres bedre vel.
-
+        //different images for the player tile,
         playerTile = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Piece300x300.png"))));
+                (new TextureRegion(new Texture("img/Tower.png"))));
         playerDeath = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Piece300x300.png"))));
+                (new TextureRegion(new Texture("img/Tower.png"))));
         playerVictory = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Piece300x300.png"))));
+                (new TextureRegion(new Texture("img/Tower.png"))));
 
         playerPosition = new Vector2(6,2);
-
-        /*
-        Input:
-         */
-
+        //input
         Gdx.input.setInputProcessor(this);
     }
 
