@@ -9,9 +9,10 @@ public class Main {
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "RoboRally";
-        //cfg.useGL30 = true;
-        cfg.width = 720;
-        cfg.height = 720;
+
+        // Hardcoded board size is a 7:9 ratio
+        cfg.width = 700;
+        cfg.height = 900;
 
         new LwjglApplication(new Renderer(), cfg);
     }

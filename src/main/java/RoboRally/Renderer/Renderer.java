@@ -50,7 +50,7 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
         // TODO her må det finnes en bedre måte å besteme unitScale på, foreløpig er float tallet 1/pixler.
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 14,18);
+        camera.setToOrtho(false, background.getWidth(),background.getHeight());
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
         camera.update();
         renderer.setView(camera);
