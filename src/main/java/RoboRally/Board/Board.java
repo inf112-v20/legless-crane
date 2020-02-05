@@ -35,8 +35,6 @@ public class Board {
         }
     }
 
-
-    
     public Tile get(Position pos) {
         return grid.get(pos.getX() + pos.getY()*boardSize);
     }
