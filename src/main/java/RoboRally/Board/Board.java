@@ -13,9 +13,7 @@ public class Board {
         // TODO: Ask for input, or just automatically pick a board?
         // TODO: need to set the boardSize so we can use get(pos) and set(pos, state) and update the board after creation
         readBoard(boards.getBoard(0));
-
-
-
+        boardSize = 15;
     }
 
     public void readBoard(int[] board) {
