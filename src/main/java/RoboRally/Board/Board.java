@@ -170,6 +170,7 @@ public class Board {
             else if (layer[i] == 32)
                 grid.set(i, Tile.WALL);
     }
+    
 
     public Tile get(Position pos) {
         return grid.get(pos.getX() + pos.getY()*boardWidth);
