@@ -70,24 +70,24 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
             // I think we're supposed to clear the player's previous position in addition to setting the new one here.
             // but it works so who knows.
             case Input.Keys.LEFT:
-                playerPosition = new Vector2((Math.min(boardWidth, Math.max(0,(int)playerPosition.x-1))),
+                playerPosition = new Vector2((Math.min(boardWidth-1, Math.max(0,(int)playerPosition.x-1))),
                         (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y)))));
                 playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
                 return true;
 
             case Input.Keys.RIGHT:
-                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0,(int)playerPosition.x+1)))),
+                playerPosition = new Vector2((Math.min(boardWidth-1, (Math.max(0,(int)playerPosition.x+1)))),
                         (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y)))));
                 playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
                 return true;
             case Input.Keys.DOWN:
                 playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0,(int)playerPosition.x)))),
-                        (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y-1)))));
+                        (Math.min(boardHeight-1, (Math.max(0,(int)playerPosition.y-1)))));
                 playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
                 return true;
             case Input.Keys.UP:
                 playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0,(int)playerPosition.x)))),
-                        (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y+1)))));
+                        (Math.min(boardHeight-1, (Math.max(0,(int)playerPosition.y+1)))));
                 playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
                 return true;
         }

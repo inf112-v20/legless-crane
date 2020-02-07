@@ -111,5 +111,4 @@ delen av denne leveransen som skal være kode. Vi har kommet frem til følgende 
 - Teste på macOS og linux at prosjektet bygger som det skal
 
 ### Resterende
-- Viser til Wiki for prosjekt-retrospektiv, dokumentasjon og møtereferater
-- UML
+- Viser til Wiki for prosjekt-retrospektiv, dokumentasjon, møtereferater og UML
