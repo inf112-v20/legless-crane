@@ -58,13 +58,13 @@ public class Board {
     }
 
     // TODO There is a lot of repetition in the readXYZ() methods, this should be addressed after Tile objects are in.
-    public void readHoles(int[] layer) {
+    private void readHoles(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i] == 6)
                 grid.set(i, Tile.HOLE);
     }
 
-    public void readWrenches(int[] layer) {
+    private void readWrenches(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==7)
                 grid.set(i, Tile.WRENCH);
@@ -72,7 +72,7 @@ public class Board {
                 grid.set(i, Tile.WRENCH);
     }
 
-    public void readCogs(int[] layer) {
+    private void readCogs(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==53)
                 grid.set(i, Tile.COG);
@@ -80,7 +80,7 @@ public class Board {
                 grid.set(i, Tile.COG);
     }
 
-    public void readYellowBelts(int[] layer) {
+    private void readYellowBelts(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i] == 33)
                 grid.set(i, Tile.BELT_YELLOW);
@@ -100,7 +100,7 @@ public class Board {
                 grid.set(i, Tile.BELT_YELLOW);
     }
 
-    public void readBlueBelts(int[] layer) {
+    private void readBlueBelts(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==14)
                 grid.set(i, Tile.BELT_BLUE);
@@ -108,19 +108,19 @@ public class Board {
                 grid.set(i, Tile.BELT_BLUE);
     }
 
-    public void readBeams(int[] layer) {
+    private void readBeams(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==39)
                 grid.set(i, Tile.BEAM);
     }
 
-    public void readLasers(int[] layer) {
+    private void readLasers(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==38)
                 grid.set(i, Tile.LASER);
     }
 
-    public void readSpawnpoints(int[] layer) {
+    private void readSpawnpoints(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==121)
                 grid.set(i, Tile.SPAWNPOINT);
@@ -141,7 +141,7 @@ public class Board {
     }
 
 
-    public void readVictoryPoints(int[] layer) {
+    private void readVictoryPoints(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==55)
                 grid.set(i, Tile.FLAG);
@@ -151,7 +151,7 @@ public class Board {
                 grid.set(i, Tile.FLAG);
     }
 
-    public void readWalls(int[] layer) {
+    private void readWalls(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i] == 8)
                 grid.set(i, Tile.WALL);
