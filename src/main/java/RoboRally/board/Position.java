@@ -1,4 +1,4 @@
-package RoboRally.Board;
+package RoboRally.board;
 
 public class Position {
     private int x;

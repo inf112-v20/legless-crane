@@ -1,4 +1,4 @@
-package RoboRally.Board;
+package RoboRally.board;
 import java.util.ArrayList;
 
 /**
@@ -34,14 +34,13 @@ public class Board {
     private int boardSize;
     private ArrayList<Tile> grid = new ArrayList<>();
 
-    public Board(int boardWidth, int boardSize, BoardAndLayers board) {
+    public Board(int boardWidth, int boardSize, GameBoard board) {
         this.boardWidth = boardWidth;
         this.boardSize = boardSize;
 
-        for (int tile : board.getLayers(0)) {
+        for (int i = 0; i < boardSize; i++) {
             grid.add(Tile.OPEN);
         }
-
         // call each method to read in the elements stored in the different layers of the board.
         readHoles(board.getLayers(1));
         readWrenches(board.getLayers(2));
@@ -53,8 +52,6 @@ public class Board {
         readSpawnpoints(board.getLayers(8));
         readVictoryPoints(board.getLayers(9));
         readWalls(board.getLayers(10));
-
-
     }
 
     // TODO There is a lot of repetition in the readXYZ() methods, this should be addressed after Tile objects are in.

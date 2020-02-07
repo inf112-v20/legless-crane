@@ -1,6 +1,6 @@
-package RoboRally.Board;
+package RoboRally.board;
 
-public class BoardAndLayers {
+public class GameBoard {
     /* Could store boards in a list of lists sort of like this
         Order of layers:
      * 0 - background
@@ -15,14 +15,14 @@ public class BoardAndLayers {
      * 9 - flags
      * 10 - walls
      */
-    int[][] gameBoard;
+    private int[][] gameBoard;
 
-    public BoardAndLayers(int[][] board) {
+    public GameBoard(int[][] board) {
         gameBoard = board;
     }
 
 
-    public BoardAndLayers() {
+    public GameBoard() {
         gameBoard = new int[][]{{
                 0,0,0,0,0,0,0,0,0,0,0,0,
                 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -210,7 +210,7 @@ public class BoardAndLayers {
                 0,30,30,0,0,0,0,0,0,23,23,0,
                 0,0,0,0,0,0,30,0,0,0,0,0,
                 0,0,0,0,0,0,30,0,0,0,0,0
-        }
+            }
         };
     }
 

@@ -1,4 +1,4 @@
-package RoboRally.Renderer;
+package RoboRally.gui;
 
 
 import com.badlogic.gdx.ApplicationListener;
@@ -20,8 +20,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Renderer extends InputAdapter implements ApplicationListener  {
     private TiledMap board;
-    private TiledMapTileLayer background, belts_yellow,belts_blue, holes, walls, wrenches, spawn, flag,
-            cogs, beams, lasers, playerLayer;
+    private TiledMapTileLayer background, playerLayer;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Cell playerTile; // regular player texture.
@@ -29,13 +28,9 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
     private int boardWidth;
     private int boardHeight;
 
-
-
     @Override
     public void create() {
-        /*
-        Board and camera:
-         */
+        // Loading in board from tmx file
         TmxMapLoader loader = new TmxMapLoader();
         board = loader.load("boards/Board1.tmx");
 
@@ -44,6 +39,7 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
         boardWidth = background.getWidth();
         boardHeight = background.getHeight();
 
+        // creating a new camera and 2D/Orthogonal renderer
         renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
 
         camera = new OrthographicCamera();
@@ -53,14 +49,14 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
         camera.update();
         renderer.setView(camera);
 
-
+        // getting texture for player piece
         playerTile = new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png"))));
 
 
         playerPosition = new Vector2(6,2);
 
-        //input
+        // making this renderer the input processor.
         Gdx.input.setInputProcessor(this);
     }
 

@@ -1,9 +1,9 @@
-package Testing;
+package testing;
 
-import RoboRally.Board.Board;
-import RoboRally.Board.BoardAndLayers;
-import RoboRally.Board.Position;
-import RoboRally.Board.Tile;
+import RoboRally.board.Board;
+import RoboRally.board.GameBoard;
+import RoboRally.board.Position;
+import RoboRally.board.Tile;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -77,7 +77,7 @@ public class SimpleBoardReadingTests {
             0,0,0,0,0
     }};
 
-    Board board = new Board(5, 25, new BoardAndLayers(testBoard));
+    Board board = new Board(5, 25, new GameBoard(testBoard));
 
     // Beams and lasers will be tested eventually
 
