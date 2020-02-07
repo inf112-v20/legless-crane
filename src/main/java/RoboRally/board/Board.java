@@ -31,12 +31,14 @@ import java.util.ArrayList;
 
 public class Board {
     private int boardWidth;
+    private int boardHeight;
     private int boardSize;
     private ArrayList<Tile> grid = new ArrayList<>();
 
-    public Board(int boardWidth, int boardSize, GameBoard board) {
+    public Board(int boardWidth, int boardHeight, GameBoard board) {
         this.boardWidth = boardWidth;
-        this.boardSize = boardSize;
+        this.boardHeight = boardHeight;
+        boardSize = boardWidth*boardHeight;
 
         for (int i = 0; i < boardSize; i++) {
             grid.add(Tile.OPEN);
@@ -176,4 +178,10 @@ public class Board {
     public void set(Position pos, Tile state) {
         grid.set(pos.getX() + pos.getY()*boardWidth, state);
     }
+
+    public int getBoardSize() {return boardSize;}
+
+    public int getBoardWidth() {return boardWidth;}
+
+    public int getBoardHeight() {return boardHeight;}
 }
