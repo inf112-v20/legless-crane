@@ -94,7 +94,7 @@ delen av denne leveransen som skal være kode. Vi har kommet frem til følgende 
 
 ##### Arbeidsoppgaver
 - Sette fast forretningslogikk for hvordan en robot påvirkes av elementer på brettet
-- Styring av robot med piltaster
+- Styring av robot med piltaster (inntil programmeringskort er på plass)
 
 
 
@@ -108,7 +108,7 @@ delen av denne leveransen som skal være kode. Vi har kommet frem til følgende 
 - Kjører på Linux
 
 ##### Arbeidsoppgaver
-- Teste på macOS og linux at prosjektet bygger som det skal
+- Teste på macOS og linux at prosjektet bygger som det skal (utviklingen skjer på windows)
 
 ### Resterende
 - Viser til Wiki for prosjekt-retrospektiv, dokumentasjon, møtereferater og UML
