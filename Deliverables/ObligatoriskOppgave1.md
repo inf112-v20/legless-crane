@@ -112,4 +112,5 @@ delen av denne leveransen som skal være kode. Vi har kommet frem til følgende 
 - Teste på macOS og linux at prosjektet bygger som det skal (utviklingen skjer på windows)
 
 ### Resterende
-- Viser til Wiki for prosjekt-retrospektiv, dokumentasjon, møtereferater og UML
+- Viser til Wiki for prosjekt-retrospektiv, dokumentasjon og møtereferater.
+- UML ligger i /Deliverables som .PNG filer. Disse vil bli oppdatert når vi jobber videre i fremtidige sprints.
