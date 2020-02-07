@@ -23,15 +23,16 @@ I forbindelse med høynivåkravene som er gjennomgått i forelesning, så har vi
 - Spillet må kjøre på forskjellige operativsystem
 
 ##### Videre i spillet:
-- Jobbe videre med roboten, legge til oppførsel (bevegelse, liv, død, backup)
+- Jobbe videre med roboten, legge til oppførsel (liv, død, backup)
 - Opprette programkort (verdi, bevegelses info)
 - Styre robot ved hjelp av programkort
 - Innføre runder (utdeling av kort, valg 9 av 5 programmeringskort i prioritert rekkefølge)
 - Innføre faser (5 faser, 1 programkort per fase, oppdatering av backup)
 - Restart ved backup ved død (kan dø 3 ganger før du er ute)
+- Robot kan ikke gå gjennom vegger
 - Hull -> dø -> restart
 - Utenfor brettet -> dø -> restart
-- Flere roboter (minst 2)
+- Flere roboter (minst 2) - Alle skal få utdelt kort ved ny runde
 - Flytte flere roboter samtidig
 - Legge til “FactoryItems” (manipulasjon av oppførselen/tilstanden til spilleren):
 - Flagg (3 stk, stigende rekkefølge, essensielt for å kunne oppnå seier)
@@ -40,7 +41,7 @@ I forbindelse med høynivåkravene som er gjennomgått i forelesning, så har vi
 - La robot bli påvirket av FactoryItems. 
 - Innføre sammenhengen mellom skade og programkort i fasene/rundene
 - Håndtering av konflikt i bevegelser
-- Høy skade -> fastbrenning av programkort -> færre kort utdelt neste runde
+- Høy skade -> fastbrenning av programkort
 - Opprydding i en fase. 
 - Innføre laser på robot (inkludert retning). Roboter kan skade hverandre
 
