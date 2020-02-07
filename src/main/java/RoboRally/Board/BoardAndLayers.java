@@ -6,9 +6,9 @@ public class BoardAndLayers {
      * 0 - background
      * 1 - holes
      * 2 - wrenches
-     * 3 - belts_yellow
-     * 4 - belts_blue
-     * 5 - cogs
+     * 3 - cogs
+     * 4 - belts_yellow
+     * 5 - belts_blue
      * 6 - beams
      * 7 - lasers
      * 8 - spawnpoints
