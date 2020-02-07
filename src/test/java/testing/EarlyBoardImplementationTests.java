@@ -1,15 +1,17 @@
 package testing;
 
-import RoboRally.board.Board;
-import RoboRally.board.GameBoard;
-import RoboRally.board.Position;
-import RoboRally.board.Tile;
+import roborally.board.Board;
+import roborally.board.GameBoard;
+import roborally.board.Position;
+import roborally.board.Tile;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+
 
 public class EarlyBoardImplementationTests {
-    int[][] testBoard = new int[][]{{
+    private int[][] testBoard = new int[][]{{
             0,0,0,0,0,
             0,0,0,0,0,
             0,0,0,0,0,
@@ -77,7 +79,7 @@ public class EarlyBoardImplementationTests {
             0,0,0,0,0
     }};
 
-    Board board = new Board(5, 5, new GameBoard(testBoard));
+    private Board board = new Board(5, 5, new GameBoard(testBoard));
 
     // Beams and lasers will be tested eventually
 

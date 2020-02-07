@@ -8,7 +8,7 @@ Sindre starter som “teamlead”, Andreas som kundekontakt, Kjersti som booking
 Til “project-board” velger vi GitHub (for å ikke spre oss over flere plattformer enn nødvendig).
 
 ## Deloppgave 2
-Det overordnede målet for applikasjonen RoboRally er å skape et spill som er plattformuavhengig, gøy og lett å bruke. 
+Det overordnede målet for applikasjonen roborally er å skape et spill som er plattformuavhengig, gøy og lett å bruke. 
 Vi vil jobbe mot å møte de kravene som kunden stiller, der vil skal ha de mest grunnleggende spillfunksjonene på plass (som å kunne opprette spiller, interagere med elementer på spillebrettet og ha anledning til å vinne eller tape). 
 Grafisk framstilling er også noe som vi må jobbe mot, der vi alle har lite erfaring. 
 
@@ -45,7 +45,6 @@ I forbindelse med høynivåkravene som er gjennomgått i forelesning, så har vi
   - Opprydding i en fase. 
   - Innføre laser på robot (inkludert retning). Roboter kan skade hverandre
 
-
 ## Deloppgave 3
 Med tanke på prosjektmetodikk, så velger vi å satse på scrum som base, da spesielt med tanke på konseptene sprint, planlegging og retrospektiv teknikk. Eventuelt om vi prøver ut XP og kanban, og muligens litt parprogrammering for å oppnå mer erfaring der. For å kunne utvikle fungerende og veldokumentert programvare under prosjektet, har vi gjort oss tanker om metoder som kan hjelpe underveis i prosjektet. Vi vil forsøke å dokumentere det meste som ikke er opplagt, da også eventuelt konflikter/utfordringer underveis. Ingen av oss er vant til en slik form for gruppearbeid (helhetlig enighet i forbindelse med både prosjekt og kode), som vi da tenker spesielt kan by på en utfordring. Ellers vil vil sette fokus på beherskelse av git (hyppige commits) og god kommunikasjon. Vi tenker å aktivere varsler på slack (både pc/mobil) for generell planlegging og fagrelaterte saker.
   
@@ -56,7 +55,7 @@ Når det kommer til organiseringen av selve prosjektet, ser vi et behov for å m
 Viser til github-repositoriumet som tilhører gruppen (legless-crane) i forbindelsen med den
 delen av denne leveransen som skal være kode. Vi har kommet frem til følgende brukerhistorier og medfølgende arbeidsoppgaver:
 ### Brukerhistorie 1: grafisk representering av brett
-“Som spiller trenger jeg en visuell representasjon av brettet slik at jeg kan spille RoboRally uten å måtte huske hvordan brettet ser ut.”
+“Som spiller trenger jeg en visuell representasjon av brettet slik at jeg kan spille roborally uten å måtte huske hvordan brettet ser ut.”
 
 ##### Akseptansekriterier:
   - Forventet størrelse og antall ruter

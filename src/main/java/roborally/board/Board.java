@@ -1,4 +1,4 @@
-package RoboRally.board;
+package roborally.board;
 import java.util.ArrayList;
 
 /**

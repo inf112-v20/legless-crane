@@ -1,4 +1,4 @@
-package RoboRally.board;
+package roborally.board;
 
 public class GameBoard {
     /* Could store boards in a list of lists sort of like this

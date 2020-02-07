@@ -1,4 +1,4 @@
-package RoboRally.board;
+package roborally.board;
 
 public enum Tile {
     /* TODO replace Enum with Tile objects

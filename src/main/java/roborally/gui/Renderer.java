@@ -1,4 +1,4 @@
-package RoboRally.gui;
+package roborally.gui;
 
 
 import com.badlogic.gdx.ApplicationListener;
@@ -20,7 +20,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Renderer extends InputAdapter implements ApplicationListener  {
     private TiledMap board;
-    private TiledMapTileLayer background, playerLayer;
+    private TiledMapTileLayer background;
+    private TiledMapTileLayer playerLayer;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Cell playerTile; // regular player texture.
@@ -66,28 +67,29 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
             // I think we're supposed to clear the player's previous position in addition to setting the new one here.
             // but it works so who knows.
             case Input.Keys.LEFT:
-                playerPosition = new Vector2((Math.min(boardWidth-1, Math.max(0,(int)playerPosition.x-1))),
-                        (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y)))));
-                playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
+                playerPosition = new Vector2((Math.min(boardWidth - 1, Math.max(0, (int) playerPosition.x - 1))),
+                        (Math.min(boardHeight, (Math.max(0, (int) playerPosition.y)))));
+                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
                 return true;
 
             case Input.Keys.RIGHT:
-                playerPosition = new Vector2((Math.min(boardWidth-1, (Math.max(0,(int)playerPosition.x+1)))),
-                        (Math.min(boardHeight, (Math.max(0,(int)playerPosition.y)))));
-                playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
+                playerPosition = new Vector2((Math.min(boardWidth - 1, (Math.max(0, (int) playerPosition.x + 1)))),
+                        (Math.min(boardHeight, (Math.max(0, (int) playerPosition.y)))));
+                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
                 return true;
             case Input.Keys.DOWN:
-                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0,(int)playerPosition.x)))),
-                        (Math.min(boardHeight-1, (Math.max(0,(int)playerPosition.y-1)))));
-                playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
+                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0, (int) playerPosition.x)))),
+                        (Math.min(boardHeight - 1, (Math.max(0, (int) playerPosition.y - 1)))));
+                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
                 return true;
             case Input.Keys.UP:
-                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0,(int)playerPosition.x)))),
-                        (Math.min(boardHeight-1, (Math.max(0,(int)playerPosition.y+1)))));
-                playerLayer.setCell((int)playerPosition.x, (int)playerPosition.y, playerTile);
+                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0, (int) playerPosition.x)))),
+                        (Math.min(boardHeight - 1, (Math.max(0, (int) playerPosition.y + 1)))));
+                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override
@@ -113,10 +115,14 @@ public class Renderer extends InputAdapter implements ApplicationListener  {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+        //TODO put something in this empty method?
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+        //TODO put something in this empty method?
+    }
 
     @Override
     public void dispose(){
