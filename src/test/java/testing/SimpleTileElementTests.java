@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
 
-public class EarlyBoardImplementationTests {
+public class SimpleTileElementTests {
     private int[][] testBoard = new int[][]{{
             0,0,0,0,0,
             0,0,0,0,0,
