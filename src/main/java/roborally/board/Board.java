@@ -54,6 +54,10 @@ public class Board {
         readSpawnpoints(board.getLayers(8));
         readVictoryPoints(board.getLayers(9));
         readWalls(board.getLayers(10));
+
+        //TODO best solution I've found to save the map and it's tiles is to do so in different layers, separated by
+        // their logic, due to the overlapping nature of some maps.
+        // movers in one, blockers in one, laser in one?
     }
 
     // TODO There is a lot of repetition in the readXYZ() methods, this should be addressed after Tile objects are in.
