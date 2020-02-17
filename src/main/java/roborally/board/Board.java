@@ -1,4 +1,12 @@
 package roborally.board;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -35,7 +43,33 @@ public class Board {
     private int boardSize;
     private ArrayList<Tile> grid = new ArrayList<>();
 
-    public Board(int boardWidth, int boardHeight, GameBoard board) {
+    public Board(int boardWidth, int boardHeight, File file) throws ParserConfigurationException, IOException, SAXException {
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+
+        // Getting each layer from the .tmx file
+        ArrayList<String> rawBoard = new ArrayList<>();
+        for (int i = 0; i<11;i++)
+            rawBoard.add(document.getElementsByTagName("layer").item(i).getTextContent().replaceAll("\\s",""));
+
+
+        ArrayList<String[]> tempStringList = new ArrayList<>();
+        ArrayList<int[]> boardWithLayers = new ArrayList<>();
+        // splitting the String into a list
+        for (String layer : rawBoard) { tempStringList.add(layer.split(",")); }
+
+        // parsing for ints on that list, and adding to boardWithLayers which is an arraylist of int arrays containting
+        // the ID for each element on each layer.
+        // TODO there's probably a better way to store this data.
+        for (String[] layer : tempStringList) {
+            int[] tempArray = new int[layer.length];
+            for (int i = 0; i < layer.length; i++)
+                tempArray[i] = Integer.parseInt(layer[i]);
+            boardWithLayers.add(tempArray);
+        }
+
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         boardSize = boardWidth*boardHeight;
@@ -44,16 +78,16 @@ public class Board {
             grid.add(Tile.OPEN);
         }
         // call each method to read in the elements stored in the different layers of the board.
-        readHoles(board.getLayers(1));
-        readWrenches(board.getLayers(2));
-        readCogs(board.getLayers(3));
-        readYellowBelts(board.getLayers(4));
-        readBlueBelts(board.getLayers(5));
-        readBeams(board.getLayers(6));
-        readLasers(board.getLayers(7));
-        readSpawnpoints(board.getLayers(8));
-        readVictoryPoints(board.getLayers(9));
-        readWalls(board.getLayers(10));
+        readHoles(boardWithLayers.get(1));
+        readWrenches(boardWithLayers.get(2));
+        readCogs(boardWithLayers.get(3));
+        readYellowBelts(boardWithLayers.get(4));
+        readBlueBelts(boardWithLayers.get(5));
+        readBeams(boardWithLayers.get(6));
+        readLasers(boardWithLayers.get(7));
+        readSpawnpoints(boardWithLayers.get(8));
+        readVictoryPoints(boardWithLayers.get(9));
+        readWalls(boardWithLayers.get(10));
 
         //TODO best solution I've found to save the map and it's tiles is to do so in different layers, separated by
         // their logic, due to the overlapping nature of some maps.

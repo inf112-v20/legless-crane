@@ -1,85 +1,26 @@
 package testing;
 
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
 import roborally.board.Board;
-import roborally.board.GameBoard;
 import roborally.board.Position;
 import roborally.board.Tile;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 
 public class SimpleTileElementTests {
-    private int[][] testBoard = new int[][]{{
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0
-    },{
-            0,0,0,0,0,
-            0,6,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0
-    },{
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,7,0
-    },{
-            0,0,54,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0
-    },{
-            0,0,0,0,0,
-            0,0,0,0,0,
-            49,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0
-    },{
-            0,0,0,0,21,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0
-    },{
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0
-    },{
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0
-    },{
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,129,0,0,0
-    },{
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,71,0,
-            0,0,0,0,0
-    },{
-            0,23,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0,0,0
-    }};
 
-    private Board board = new Board(5, 5, new GameBoard(testBoard));
+    private Board board;
+
+    public SimpleTileElementTests() throws IOException, SAXException, ParserConfigurationException {
+        board = new Board(5, 5, new File("src/test/testingResources/testBoard0.tmx"));
+    }
 
     // Beams and lasers will not be tested in this simple test version
 
