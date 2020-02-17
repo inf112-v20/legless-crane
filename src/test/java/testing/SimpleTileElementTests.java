@@ -1,13 +1,13 @@
 package testing;
 
+import org.junit.jupiter.api.Test;
 import roborally.board.Board;
 import roborally.board.GameBoard;
 import roborally.board.Position;
 import roborally.board.Tile;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 
 public class SimpleTileElementTests {
@@ -81,7 +81,7 @@ public class SimpleTileElementTests {
 
     private Board board = new Board(5, 5, new GameBoard(testBoard));
 
-    // Beams and lasers will be tested eventually
+    // Beams and lasers will not be tested in this simple test version
 
     @Test
     public void boardIsFilledWithOpenTiles() { assertEquals(Tile.OPEN, board.get(new Position(0,0))); }
@@ -112,99 +112,66 @@ public class SimpleTileElementTests {
 
     @Test
     public void holeTileNotInUnexpectedPosition() {
-        for (int y = 0; y< board.getBoardHeight(); y++) {
-            for (int x = 0; x < board.getBoardWidth(); x++) {
-                if (x == 1 && y == 1)
-                    continue;
-                else
+        for (int y = 0; y< board.getBoardHeight(); y++)
+            for (int x = 0; x < board.getBoardWidth(); x++)
+                if (x != 1 && y != 1)
                     assertNotSame(Tile.HOLE, board.get(new Position(x, y)));
-            }
-        }
     }
 
     @Test
     public void wrenchTileNotInUnexpectedPosition() {
-        for (int y = 0; y< board.getBoardHeight(); y++) {
-            for (int x = 0; x < board.getBoardWidth(); x++) {
-                if (x == 3 && y == 4)
-                    continue;
-                else
+        for (int y = 0; y< board.getBoardHeight(); y++)
+            for (int x = 0; x < board.getBoardWidth(); x++)
+                if (x != 3 && y != 4)
                     assertNotSame(Tile.WRENCH, board.get(new Position(x, y)));
-            }
-        }
     }
 
     @Test
     public void cogTileNotInUnexpectedPosition() {
-        for (int y = 0; y< board.getBoardHeight(); y++) {
-            for (int x = 0; x < board.getBoardWidth(); x++) {
-                if (x == 2 && y == 0)
-                    continue;
-                else
+        for (int y = 0; y< board.getBoardHeight(); y++)
+            for (int x = 0; x < board.getBoardWidth(); x++)
+                if (x != 2 && y != 0)
                     assertNotSame(Tile.COG, board.get(new Position(x, y)));
-            }
-        }
     }
 
     @Test
     public void yellowBeltTileNotInUnexpectedPosition() {
-        for (int y = 0; y< board.getBoardHeight(); y++) {
-            for (int x = 0; x < board.getBoardWidth(); x++) {
-                if (x == 0 && y == 2)
-                    continue;
-                else
+        for (int y = 0; y< board.getBoardHeight(); y++)
+            for (int x = 0; x < board.getBoardWidth(); x++)
+                if (x != 0 && y != 2)
                     assertNotSame(Tile.BELT_YELLOW, board.get(new Position(x, y)));
-            }
-        }
     }
 
     @Test
     public void blueBeltTileNotInUnexpectedPosition() {
-        for (int y = 0; y< board.getBoardHeight(); y++) {
-            for (int x = 0; x < board.getBoardWidth(); x++) {
-                if (x == 4 && y == 0)
-                    continue;
-                else
+        for (int y = 0; y< board.getBoardHeight(); y++)
+            for (int x = 0; x < board.getBoardWidth(); x++)
+                if (x != 4 && y != 0)
                     assertNotSame(Tile.BELT_BLUE, board.get(new Position(x, y)));
-            }
-        }
     }
 
 
     @Test
     public void spawnTileNotInUnexpectedPosition() {
-        for (int y = 0; y< board.getBoardHeight(); y++) {
-            for (int x = 0; x < board.getBoardWidth(); x++) {
-                if (x == 1 && y == 4)
-                    continue;
-                else
+        for (int y = 0; y< board.getBoardHeight(); y++)
+            for (int x = 0; x < board.getBoardWidth(); x++)
+                if (x != 1 && y != 4)
                     assertNotSame(Tile.SPAWNPOINT, board.get(new Position(x, y)));
-            }
-        }
     }
 
     @Test
     public void flagTileNotInUnexpectedPosition() {
-        for (int y = 0; y< board.getBoardHeight(); y++) {
-            for (int x = 0; x < board.getBoardWidth(); x++) {
-                if (x == 3 && y == 3)
-                    continue;
-                else
+        for (int y = 0; y< board.getBoardHeight(); y++)
+            for (int x = 0; x < board.getBoardWidth(); x++)
+                if (x != 3 && y != 3)
                     assertNotSame(Tile.FLAG, board.get(new Position(x, y)));
-            }
-        }
     }
 
     @Test
     public void wallTileNotInUnexpectedPosition() {
-        for (int y = 0; y< board.getBoardHeight(); y++) {
-            for (int x = 0; x < board.getBoardWidth(); x++) {
-                if (x == 1 && y == 0)
-                    continue;
-                else
+        for (int y = 0; y< board.getBoardHeight(); y++)
+            for (int x = 0; x < board.getBoardWidth(); x++)
+                if (x != 1 && y != 0)
                     assertNotSame(Tile.WALL, board.get(new Position(x, y)));
-            }
-        }
     }
-
 }

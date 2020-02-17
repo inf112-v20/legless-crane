@@ -1,6 +1,6 @@
 package testing;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AdvancedTileElementTests {
     //TODO waiting to implement more advanced tests for new Tile objects
