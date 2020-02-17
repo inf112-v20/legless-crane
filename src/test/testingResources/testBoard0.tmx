@@ -28,7 +28,7 @@
 0,0,0,7,0
 </data>
  </layer>
- <layer id="5" name="belts_yellow" width="5" height="5" locked="1">
+ <layer id="4" name="belts_yellow" width="5" height="5" locked="1">
   <data encoding="csv">
 0,0,0,0,0,
 0,0,0,0,0,
@@ -37,7 +37,7 @@
 0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="belts_blue" width="5" height="5" locked="1">
+ <layer id="5" name="belts_blue" width="5" height="5" locked="1">
   <data encoding="csv">
 0,0,0,0,21,
 0,0,0,0,0,
@@ -46,7 +46,7 @@
 0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="cogs" width="5" height="5" locked="1">
+ <layer id="6" name="cogs" width="5" height="5" locked="1">
   <data encoding="csv">
 0,0,54,0,0,
 0,0,0,0,0,

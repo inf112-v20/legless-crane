@@ -80,9 +80,9 @@ public class Board {
         // call each method to read in the elements stored in the different layers of the board.
         readHoles(boardWithLayers.get(1));
         readWrenches(boardWithLayers.get(2));
-        readCogs(boardWithLayers.get(3));
-        readYellowBelts(boardWithLayers.get(4));
-        readBlueBelts(boardWithLayers.get(5));
+        readYellowBelts(boardWithLayers.get(3));
+        readBlueBelts(boardWithLayers.get(4));
+        readCogs(boardWithLayers.get(5));
         readBeams(boardWithLayers.get(6));
         readLasers(boardWithLayers.get(7));
         readSpawnpoints(boardWithLayers.get(8));
