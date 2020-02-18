@@ -1,5 +1,7 @@
 package roborally.board;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,7 +36,6 @@ import java.util.ArrayList;
  *TODO would be nice to add some long-term solutions for getting width of the board we're loading in here
  * if we ever get around to having different boards.
  *
- * Methods are currently public for testing purposes
  */
 
 public class Board {
@@ -42,41 +43,16 @@ public class Board {
     private int boardHeight;
     private int boardSize;
     private ArrayList<Tile> grid = new ArrayList<>();
+    private ArrayList<int[]> boardWithLayers = new ArrayList<>();
 
-    public Board(int boardWidth, int boardHeight, File file) throws ParserConfigurationException, IOException, SAXException {
+    public Board(File file) throws ParserConfigurationException, IOException, SAXException {
+        //Todo We can assume that there is always a background, it has no effect on the gamelogic, so why store?
 
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
-
-        // Getting each layer from the .tmx file
-        ArrayList<String> rawBoard = new ArrayList<>();
-        for (int i = 0; i<11;i++)
-            rawBoard.add(document.getElementsByTagName("layer").item(i).getTextContent().replaceAll("\\s",""));
-
-
-        ArrayList<String[]> tempStringList = new ArrayList<>();
-        ArrayList<int[]> boardWithLayers = new ArrayList<>();
-        // splitting the String into a list
-        for (String layer : rawBoard) { tempStringList.add(layer.split(",")); }
-
-        // parsing for ints on that list, and adding to boardWithLayers which is an arraylist of int arrays containting
-        // the ID for each element on each layer.
-        // TODO there's probably a better way to store this data.
-        for (String[] layer : tempStringList) {
-            int[] tempArray = new int[layer.length];
-            for (int i = 0; i < layer.length; i++)
-                tempArray[i] = Integer.parseInt(layer[i]);
-            boardWithLayers.add(tempArray);
-        }
-
-        this.boardWidth = boardWidth;
-        this.boardHeight = boardHeight;
-        boardSize = boardWidth*boardHeight;
-
+        readBoardFromFile(file);
         for (int i = 0; i < boardSize; i++) {
             grid.add(Tile.OPEN);
         }
+
         // call each method to read in the elements stored in the different layers of the board.
         readHoles(boardWithLayers.get(1));
         readWrenches(boardWithLayers.get(2));
@@ -94,7 +70,40 @@ public class Board {
         // movers in one, blockers in one, laser in one?
     }
 
-    // TODO There is a lot of repetition in the readXYZ() methods, this should be addressed after Tile objects are in.
+    private void readBoardFromFile(File file) throws IOException, SAXException, ParserConfigurationException {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+
+        // reading inn the board width and height and storing it
+        NodeList nodeList = document.getElementsByTagName("layer");
+        Element el = (Element)nodeList.item(0);
+        boardWidth = Integer.parseInt(el.getAttribute("width"));
+        boardHeight = Integer.parseInt(el.getAttribute("height"));
+        boardSize = boardWidth*boardHeight;
+
+        /*
+        Getting each layer from the .tmx (xml) file, .getTextContent() gives us a String with spaces before and after
+        and separating each line for the y axis.
+
+        Removing all spaces and splitting the string into an array by utilizing .split()
+         */
+        ArrayList<String[]> rawBoard = new ArrayList<>();
+        //TODO start from 1 as there is no reason to read in the background tileIDs yet.
+        for (int i = 0; i<11;i++)
+            rawBoard.add(document.getElementsByTagName("layer").item(i).getTextContent()
+                    .replaceAll("\\s","").split(","));
+
+        // parsing for ints on that list, and adding to boardWithLayers which is an ArrayList of int arrays containing
+        // the ID for each element on each layer.
+        for (String[] layer : rawBoard) {
+            int[] tempArray = new int[layer.length];
+            for (int i = 0; i < layer.length; i++)
+                tempArray[i] = Integer.parseInt(layer[i]);
+            boardWithLayers.add(tempArray);
+        }
+    }
+
     private void readHoles(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i] == 6)

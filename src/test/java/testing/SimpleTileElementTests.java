@@ -19,7 +19,7 @@ public class SimpleTileElementTests {
     private Board board;
 
     public SimpleTileElementTests() throws IOException, SAXException, ParserConfigurationException {
-        board = new Board(5, 5, new File("src/test/testingResources/testBoard0.tmx"));
+        board = new Board(new File("src/test/testingResources/testBoard0.tmx"));
     }
 
     // Beams and lasers will not be tested in this simple test version
