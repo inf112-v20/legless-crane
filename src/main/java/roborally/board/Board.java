@@ -29,13 +29,6 @@ import java.util.ArrayList;
  *
  * something like: new Belt("Yellow", Direction.NORTH) or: new Wall ([North, West]) or w/e
  *
- *TODO As Tiled designates an ID to every given tile in a tilemap, investigate if this changes per map or
- * if it stays the same regardless of which map is made with it.
- * Also check if we can set this ID ourselves for IDs that make more sense for our use.
- *
- *TODO would be nice to add some long-term solutions for getting width of the board we're loading in here
- * if we ever get around to having different boards.
- *
  */
 
 public class Board {
@@ -46,8 +39,8 @@ public class Board {
     private ArrayList<int[]> boardWithLayers = new ArrayList<>();
 
     public Board(File file) throws ParserConfigurationException, IOException, SAXException {
-        //Todo We can assume that there is always a background, it has no effect on the gamelogic, so why store?
 
+        // There might not be a point in storing an "Open" tile if it has no logic attached to it.
         readBoardFromFile(file);
         for (int i = 0; i < boardSize; i++) {
             grid.add(Tile.OPEN);
@@ -89,7 +82,7 @@ public class Board {
         Removing all spaces and splitting the string into an array by utilizing .split()
          */
         ArrayList<String[]> rawBoard = new ArrayList<>();
-        //TODO start from 1 as there is no reason to read in the background tileIDs yet.
+
         for (int i = 0; i<11;i++)
             rawBoard.add(document.getElementsByTagName("layer").item(i).getTextContent()
                     .replaceAll("\\s","").split(","));
@@ -104,195 +97,9 @@ public class Board {
         }
     }
 
-    private void readHoles(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i] == 6)
-                grid.set(i, Tile.HOLE);
-    }
+    public int getBoardWidth() {return boardWidth;}
 
-    private void readWrenches(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i]==7)
-                grid.set(i, Tile.WRENCH);
-            else if (layer[i] == 15)
-                grid.set(i, Tile.WRENCH);
-    }
-
-    private void readYellowBelts(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i] == 33) // east to south, bend
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 34) // south to west, bend
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 35) // south to east, bend
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 36) // west to south, bend
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 41) // north to east, bend
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 42) // west to north, bend
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 43) // east to north, bend
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 44) // north to west, bend
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 49) // going north, straight
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 50) // going south, straight
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 51) // going west, straight
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 52) // going east, straight
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 57) // south & west to north, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 58) // north & west to east, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 59) // north & east to south, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 60) // south & east to west, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 61) // north & south to east, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 62) // east & west to south, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 65) // south & east to north, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 66) // south & west to east, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 67) // north & west to south, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 68) // north & east to west, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 69) // east & west to north, merge
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 70) // north & south to west, merge
-                grid.set(i, Tile.BELT_YELLOW);
-    }
-
-    private void readBlueBelts(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i] == 17) // east to south, bend
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 18) // south to west, bend
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 19) // south to east, bend
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 20) // west to south, bend
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 25) // north to east, bend
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 26) // west to north, bend
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 27) // east to north, bend
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 28) // north to west, bend
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 13) // going north, straight
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 21) // going south, straight
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 22) // going west, straight
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 14) // going east, straight
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 73) // south & west to north, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 74) // north & west to east, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 75) // north & east to south, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 76) // south & east to west, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 81) // north & south to east, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 82) // east & west to south, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 77) // south & east to north, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 78) // south & west to east, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 86) // north & west to south, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 85) // north & east to west, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 84) // east & west to north, merge
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 83) // north & south to west, merge
-                grid.set(i, Tile.BELT_BLUE);
-    }
-
-    private void readCogs(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i]==53)
-                grid.set(i, Tile.COG);
-            else if (layer[i] == 54)
-                grid.set(i, Tile.COG);
-    }
-
-    private void readBeams(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i]==39)
-                grid.set(i, Tile.BEAM);
-    }
-
-    private void readLasers(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i]==38)
-                grid.set(i, Tile.LASER);
-    }
-
-    private void readSpawnpoints(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i]==121)
-                grid.set(i, Tile.SPAWNPOINT);
-            else if (layer[i] == 122)
-                grid.set(i, Tile.SPAWNPOINT);
-            else if (layer[i] == 123)
-                grid.set(i, Tile.SPAWNPOINT);
-            else if (layer[i] == 124)
-                grid.set(i, Tile.SPAWNPOINT);
-            else if (layer[i] == 129)
-                grid.set(i, Tile.SPAWNPOINT);
-            else if (layer[i] == 130)
-                grid.set(i, Tile.SPAWNPOINT);
-            else if (layer[i] == 131)
-                grid.set(i, Tile.SPAWNPOINT);
-            else if (layer[i] == 132)
-                grid.set(i, Tile.SPAWNPOINT);
-    }
-
-
-    private void readVictoryPoints(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i]==55)
-                grid.set(i, Tile.FLAG);
-            else if (layer[i] == 63)
-                grid.set(i, Tile.FLAG);
-            else if (layer[i] == 71)
-                grid.set(i, Tile.FLAG);
-    }
-
-    private void readWalls(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i] == 8)
-                grid.set(i, Tile.WALL);
-            else if (layer[i] == 16)
-                grid.set(i, Tile.WALL);
-            else if (layer[i] == 23)
-                grid.set(i, Tile.WALL);
-            else if (layer[i] == 24)
-                grid.set(i, Tile.WALL);
-            else if (layer[i] == 29)
-                grid.set(i, Tile.WALL);
-            else if (layer[i] == 30)
-                grid.set(i, Tile.WALL);
-            else if (layer[i] == 31)
-                grid.set(i, Tile.WALL);
-            else if (layer[i] == 32)
-                grid.set(i, Tile.WALL);
-    }
-    
+    public int getBoardHeight() {return boardHeight;}
 
     public Tile get(Position pos) {
         return grid.get(pos.getX() + pos.getY()*boardWidth);
@@ -302,9 +109,214 @@ public class Board {
         grid.set(pos.getX() + pos.getY()*boardWidth, state);
     }
 
-    public int getBoardSize() {return boardSize;}
+    private void readBeams(int[] layer) {
+        // might be entirely unnecessary, depending on how we implement beams and lasers.
+        for (int i = 0; i<boardSize-1; i++)
+            if (layer[i]==39)
+                grid.set(i, Tile.BEAM);
+    }
 
-    public int getBoardWidth() {return boardWidth;}
+    private void readLasers(int[] layer) {
+        // might be entirely unnecessary, depending on how we implement beams and lasers.
+        for (int i = 0; i<boardSize-1; i++)
+            if (layer[i]==38)
+                grid.set(i, Tile.LASER);
+    }
+    private void readHoles(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++) {
+            if (layer[i] == 6)
+                grid.set(i, Tile.HOLE);
+        }
+    }
 
-    public int getBoardHeight() {return boardHeight;}
+    private void readWrenches(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++) {
+            switch (layer[i]) {
+                case 7:
+                    grid.set(i, Tile.WRENCH);
+                case 15:
+                    grid.set(i, Tile.WRENCH);
+            }
+        }
+    }
+
+    private void readCogs(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++) {
+            switch (layer[i]) {
+                case 53:
+                    grid.set(i, Tile.COG);
+                case 54:
+                    grid.set(i, Tile.COG);
+            }
+        }
+    }
+
+    private void readVictoryPoints(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++) {
+            switch (layer[i]) {
+                case 55:
+                    grid.set(i, Tile.FLAG);
+                case 63:
+                    grid.set(i, Tile.FLAG);
+                case 71:
+                    grid.set(i, Tile.FLAG);
+            }
+        }
+    }
+
+    private void readSpawnpoints(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++) {
+            switch(layer[i]) {
+                case 121:
+                    grid.set(i, Tile.SPAWNPOINT);
+                case 122:
+                    grid.set(i, Tile.SPAWNPOINT);
+                case 123:
+                    grid.set(i, Tile.SPAWNPOINT);
+                case 124:
+                    grid.set(i, Tile.SPAWNPOINT);
+                case 129:
+                    grid.set(i, Tile.SPAWNPOINT);
+                case 130:
+                    grid.set(i, Tile.SPAWNPOINT);
+                case 131:
+                    grid.set(i, Tile.SPAWNPOINT);
+                case 132:
+                    grid.set(i, Tile.SPAWNPOINT);
+            }
+        }
+    }
+
+    private void readWalls(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++) {
+            switch (layer[i]) {
+                case 8:
+                    grid.set(i, Tile.WALL);
+                case 16:
+                    grid.set(i, Tile.WALL);
+                case 23:
+                    grid.set(i, Tile.WALL);
+                case 24:
+                    grid.set(i, Tile.WALL);
+                case 29:
+                    grid.set(i, Tile.WALL);
+                case 30:
+                    grid.set(i, Tile.WALL);
+                case 31:
+                    grid.set(i, Tile.WALL);
+                case 32:
+                    grid.set(i, Tile.WALL);
+            }
+        }
+    }
+
+    private void readYellowBelts(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++) {
+            switch (layer[i]) {
+                case 33:
+                    grid.set(i, Tile.BELT_YELLOW); // east to south, bend
+                case 34:
+                    grid.set(i, Tile.BELT_YELLOW); // south to west, bend
+                case 35:
+                    grid.set(i, Tile.BELT_YELLOW); // south to east, bend
+                case 36:
+                    grid.set(i, Tile.BELT_YELLOW); // west to south, bend
+                case 41:
+                    grid.set(i, Tile.BELT_YELLOW); // north to east, bend
+                case 42:
+                    grid.set(i, Tile.BELT_YELLOW); // west to north, bend
+                case 43:
+                    grid.set(i, Tile.BELT_YELLOW); // east to north, bend
+                case 44:
+                    grid.set(i, Tile.BELT_YELLOW); // north to west, bend
+                case 49:
+                    grid.set(i, Tile.BELT_YELLOW); // going north, straight
+                case 50:
+                    grid.set(i, Tile.BELT_YELLOW); // going south, straight
+                case 51:
+                    grid.set(i, Tile.BELT_YELLOW); // going west, straight
+                case 52:
+                    grid.set(i, Tile.BELT_YELLOW); // going east, straight
+                case 57:
+                    grid.set(i, Tile.BELT_YELLOW); // south & west to north, merge
+                case 58:
+                    grid.set(i, Tile.BELT_YELLOW); // north & west to east, merge
+                case 59:
+                    grid.set(i, Tile.BELT_YELLOW); // north & east to south, merge
+                case 60:
+                    grid.set(i, Tile.BELT_YELLOW); // south & east to west, merge
+                case 61:
+                    grid.set(i, Tile.BELT_YELLOW); // north & south to east, merge
+                case 62:
+                    grid.set(i, Tile.BELT_YELLOW); // east & west to south, merge
+                case 65:
+                    grid.set(i, Tile.BELT_YELLOW); // south & east to north, merge
+                case 66:
+                    grid.set(i, Tile.BELT_YELLOW); // south & west to east, merge
+                case 67:
+                    grid.set(i, Tile.BELT_YELLOW); // north & west to south, merge
+                case 68:
+                    grid.set(i, Tile.BELT_YELLOW); // north & east to west, merge
+                case 69:
+                    grid.set(i, Tile.BELT_YELLOW); // east & west to north, merge
+                case 70:
+                    grid.set(i, Tile.BELT_YELLOW); // north & south to west, merge
+            }
+        }
+    }
+
+    private void readBlueBelts(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++) {
+            switch (layer[i]) {
+                case 17:
+                    grid.set(i, Tile.BELT_BLUE); // east to south, bend
+                case 18:
+                    grid.set(i, Tile.BELT_BLUE); // south to west, bend
+                case 19:
+                    grid.set(i, Tile.BELT_BLUE); // south to east, bend
+                case 20:
+                    grid.set(i, Tile.BELT_BLUE); // west to south, bend
+                case 25:
+                    grid.set(i, Tile.BELT_BLUE); // north to east, bend
+                case 26:
+                    grid.set(i, Tile.BELT_BLUE); // west to north, bend
+                case 27:
+                    grid.set(i, Tile.BELT_BLUE); // east to north, bend
+                case 28:
+                    grid.set(i, Tile.BELT_BLUE); // north to west, bend
+                case 13:
+                    grid.set(i, Tile.BELT_BLUE); // going north, straight
+                case 21:
+                    grid.set(i, Tile.BELT_BLUE); // going south, straight
+                case 22:
+                    grid.set(i, Tile.BELT_BLUE); // going west, straight
+                case 14:
+                    grid.set(i, Tile.BELT_BLUE); // going east, straight
+                case 73:
+                    grid.set(i, Tile.BELT_BLUE); // south & west to north, merge
+                case 74:
+                    grid.set(i, Tile.BELT_BLUE); // north & west to east, merge
+                case 75:
+                    grid.set(i, Tile.BELT_BLUE); // north & east to south, merge
+                case 76:
+                    grid.set(i, Tile.BELT_BLUE); // south & east to west, merge
+                case 81:
+                    grid.set(i, Tile.BELT_BLUE); // north & south to east, merge
+                case 82:
+                    grid.set(i, Tile.BELT_BLUE); // east & west to south, merge
+                case 77:
+                    grid.set(i, Tile.BELT_BLUE); // south & east to north, merge
+                case 78:
+                    grid.set(i, Tile.BELT_BLUE); // south & west to east, merge
+                case 86:
+                    grid.set(i, Tile.BELT_BLUE); // north & west to south, merge
+                case 85:
+                    grid.set(i, Tile.BELT_BLUE); // north & east to west, merge
+                case 84:
+                    grid.set(i, Tile.BELT_BLUE); // east & west to north, merge
+                case 83:
+                    grid.set(i, Tile.BELT_BLUE); // north & south to west, merge
+            }
+        }
+    }
 }
