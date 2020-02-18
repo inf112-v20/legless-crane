@@ -118,40 +118,116 @@ public class Board {
                 grid.set(i, Tile.WRENCH);
     }
 
+    private void readYellowBelts(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++)
+            if (layer[i] == 33) // east to south, bend
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 34) // south to west, bend
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 35) // south to east, bend
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 36) // west to south, bend
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 41) // north to east, bend
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 42) // west to north, bend
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 43) // east to north, bend
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 44) // north to west, bend
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 49) // going north, straight
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 50) // going south, straight
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 51) // going west, straight
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 52) // going east, straight
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 57) // south & west to north, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 58) // north & west to east, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 59) // north & east to south, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 60) // south & east to west, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 61) // north & south to east, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 62) // east & west to south, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 65) // south & east to north, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 66) // south & west to east, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 67) // north & west to south, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 68) // north & east to west, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 69) // east & west to north, merge
+                grid.set(i, Tile.BELT_YELLOW);
+            else if (layer[i] == 70) // north & south to west, merge
+                grid.set(i, Tile.BELT_YELLOW);
+    }
+
+    private void readBlueBelts(int[] layer) {
+        for (int i = 0; i<boardSize-1; i++)
+            if (layer[i] == 17) // east to south, bend
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 18) // south to west, bend
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 19) // south to east, bend
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 20) // west to south, bend
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 25) // north to east, bend
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 26) // west to north, bend
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 27) // east to north, bend
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 28) // north to west, bend
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 13) // going north, straight
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 21) // going south, straight
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 22) // going west, straight
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 14) // going east, straight
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 73) // south & west to north, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 74) // north & west to east, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 75) // north & east to south, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 76) // south & east to west, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 81) // north & south to east, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 82) // east & west to south, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 77) // south & east to north, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 78) // south & west to east, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 86) // north & west to south, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 85) // north & east to west, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 84) // east & west to north, merge
+                grid.set(i, Tile.BELT_BLUE);
+            else if (layer[i] == 83) // north & south to west, merge
+                grid.set(i, Tile.BELT_BLUE);
+    }
+
     private void readCogs(int[] layer) {
         for (int i = 0; i<boardSize-1; i++)
             if (layer[i]==53)
                 grid.set(i, Tile.COG);
             else if (layer[i] == 54)
                 grid.set(i, Tile.COG);
-    }
-
-    private void readYellowBelts(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i] == 33)
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 36)
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 41)
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 44)
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 49)
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 50)
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 51)
-                grid.set(i, Tile.BELT_YELLOW);
-            else if (layer[i] == 52)
-                grid.set(i, Tile.BELT_YELLOW);
-    }
-
-    private void readBlueBelts(int[] layer) {
-        for (int i = 0; i<boardSize-1; i++)
-            if (layer[i]==14)
-                grid.set(i, Tile.BELT_BLUE);
-            else if (layer[i] == 21)
-                grid.set(i, Tile.BELT_BLUE);
     }
 
     private void readBeams(int[] layer) {
