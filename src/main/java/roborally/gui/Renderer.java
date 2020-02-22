@@ -1,132 +1,73 @@
 package roborally.gui;
 
-
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import roborally.screens.GameScreen;
+import roborally.screens.MenuScreen;
+import roborally.screens.LoadingScreen;
 
+public class Renderer extends Game implements ApplicationListener  {
+    public static final int WIDTH = 1600;
+    public static final int HEIGHT = 1600;
 
-public class Renderer extends InputAdapter implements ApplicationListener  {
-    private TiledMap board;
-    private TiledMapTileLayer background;
-    private TiledMapTileLayer playerLayer;
-    private OrthogonalTiledMapRenderer renderer;
-    private OrthographicCamera camera;
-    private Cell playerTile; // regular player texture.
-    private Vector2 playerPosition;
-    private int boardWidth;
-    private int boardHeight;
+    public SpriteBatch batch;
+    public BitmapFont font;
+    public OrthographicCamera camera;
+    public AssetManager assets;
+    public LoadingScreen loadingScreen;
+    public MenuScreen menuScreen;
+    public GameScreen gameScreen;
 
     @Override
     public void create() {
-        // Loading in board from tmx file
-        TmxMapLoader loader = new TmxMapLoader();
-        board = loader.load("boards/Board1.tmx");
-
-        background = (TiledMapTileLayer) board.getLayers().get("background");
-
-        boardWidth = background.getWidth();
-        boardHeight = background.getHeight();
-
-        // creating a new camera and 2D/Orthogonal renderer
-        renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
-
+        // "Start-state"
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, boardWidth,boardHeight);
-        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+        camera.setToOrtho(false, WIDTH, HEIGHT);
+        assets = new AssetManager();
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+        font.setColor(Color.BLACK);
 
-        camera.update();
-        renderer.setView(camera);
+        loadingScreen = new LoadingScreen(this);
+        menuScreen = new MenuScreen(this);
+        gameScreen = new GameScreen(this);
 
-        // getting texture for player piece
-        playerTile = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Tower.png"))));
-
-
-        playerPosition = new Vector2(6,2);
-
-        // making this renderer the input processor.
-        Gdx.input.setInputProcessor(this);
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        switch(keycode) {
-            // I think we're supposed to clear the player's previous position in addition to setting the new one here.
-            // but it works so who knows.
-            case Input.Keys.LEFT:
-                playerPosition = new Vector2((Math.min(boardWidth - 1, Math.max(0, (int) playerPosition.x - 1))),
-                        (Math.min(boardHeight, (Math.max(0, (int) playerPosition.y)))));
-                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
-                return true;
-
-            case Input.Keys.RIGHT:
-                playerPosition = new Vector2((Math.min(boardWidth - 1, (Math.max(0, (int) playerPosition.x + 1)))),
-                        (Math.min(boardHeight, (Math.max(0, (int) playerPosition.y)))));
-                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
-                return true;
-            case Input.Keys.DOWN:
-                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0, (int) playerPosition.x)))),
-                        (Math.min(boardHeight - 1, (Math.max(0, (int) playerPosition.y - 1)))));
-                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
-                return true;
-            case Input.Keys.UP:
-                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0, (int) playerPosition.x)))),
-                        (Math.min(boardHeight - 1, (Math.max(0, (int) playerPosition.y + 1)))));
-                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
-                return true;
-            default:
-                return false;
-        }
+        // Start-screen:
+        this.setScreen(new LoadingScreen(this));
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();
+
     }
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
-
-        playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y, playerTile);
-
-        renderer.render();
-        renderer.getBatch().begin();
-        renderer.renderTileLayer(playerLayer);
-        renderer.getBatch().end();
+        // While having multiple screens: super.render() calls the render of the current screen
+        super.render();
     }
 
     @Override
     public void pause() {
-        //TODO put something in this empty method?
+
     }
 
     @Override
     public void resume() {
-        //TODO put something in this empty method?
+
     }
 
     @Override
     public void dispose(){
-        board.dispose();
-        renderer.dispose();
+        batch.dispose();
+        font.dispose();
+        assets.dispose();
+        loadingScreen.dispose();
+        menuScreen.dispose();
+        gameScreen.dispose();
     }
 }
