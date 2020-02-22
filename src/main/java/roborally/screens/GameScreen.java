@@ -22,17 +22,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -41,8 +33,7 @@ import roborally.gui.Renderer;
 
 
 public class GameScreen implements Screen {
-    /* Originally from the Renderer-class
-    */
+    /* Originally from the Renderer-class:
     private TiledMap board;
     private TiledMapTileLayer background;
     private TiledMapTileLayer playerLayer;
@@ -52,7 +43,7 @@ public class GameScreen implements Screen {
     private Vector2 playerPosition;
     private int boardWidth;
     private int boardHeight;
-
+     */
 
     private final Renderer app;
     private Stage stage;
@@ -62,13 +53,11 @@ public class GameScreen implements Screen {
     private TextButton moveDown;
     private TextButton moveLeft;
     private TextButton moveRight;
-    private ShapeRenderer shapeRenderer;
 
-    public GameScreen(final Renderer app) {        // Constructor here is equal to Create() in Renderer
+    public GameScreen(final Renderer app) {
         this.app = app;
         // Creating main stage
         this.stage = new Stage(new FitViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
-        this.shapeRenderer = new ShapeRenderer();
     }
 
     public void update(float delta) {
@@ -77,11 +66,8 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         // show() gets called every time the screen-object is being called -> (put game logic here)
-        Gdx.input.setInputProcessor(stage);         // keep track of how actors interact/influence/being influenced on stage
+        Gdx.input.setInputProcessor(stage);         // keep track of how actors interact/influence/are being influenced on stage
         stage.clear(); // reload site
-
-
-
 
         // UI: graphical representation buttons
         this.skin = new Skin();
@@ -90,6 +76,40 @@ public class GameScreen implements Screen {
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
 
         initButtons();
+        // initBoard(); ?
+
+        /*
+        Originally from the Renderer-class:
+        // Loading in board from tmx file
+        TmxMapLoader loader = new TmxMapLoader();
+        board = loader.load("boards/Board1.tmx");
+
+        background = (TiledMapTileLayer) board.getLayers().get("background");
+
+        boardWidth = background.getWidth();
+        boardHeight = background.getHeight();
+
+        // creating a new camera and 2D/Orthogonal renderer
+        renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, boardWidth,boardHeight);
+        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+
+        camera.update();
+        renderer.setView(camera);
+
+        // getting texture for player piece
+        playerTile = new Cell().setTile(new StaticTiledMapTile
+                (new TextureRegion(new Texture("img/Tower.png"))));
+
+
+        playerPosition = new Vector2(6,2);
+
+        // making this renderer the input processor.
+        Gdx.input.setInputProcessor(this); */
+
+
     }
 
     @Override
@@ -113,13 +133,9 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(v);
-        stage.draw();    // KOR SKAL DENNE?
+        stage.draw();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        // Something here?
-        shapeRenderer.end();
-
-        app.batch.begin();  // getBatch?
+        app.batch.begin();
         app.font.draw(app.batch, "GameScreen", 1000, 1000);
         app.batch.end();
     }
@@ -160,10 +176,78 @@ public class GameScreen implements Screen {
         renderer.dispose();
          */
         stage.dispose();
-        shapeRenderer.dispose();
     }
 
-    /*
+    private void queueAssets(){
+        app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
+    }
+
+    private void initButtons() {
+
+        buttonMenu = new TextButton("Main menu", skin, "default");
+        buttonMenu.setPosition(1200, 100);
+        buttonMenu.setSize(300, 100);
+        buttonMenu.getLabel().setFontScale(3.0f);
+        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
+        buttonMenu.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                app.setScreen(app.menuScreen);
+            }
+        });
+        moveUp = new TextButton("moveUp", skin, "default");
+        moveUp.setPosition(400, 350);
+        moveUp.setSize(300, 100);
+        moveUp.getLabel().setFontScale(3.0f);
+        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
+        moveUp.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // TODO: move player
+            }
+        });
+        moveDown = new TextButton("Move down", skin, "default");
+        moveDown.setPosition(400, 50);
+        moveDown.setSize(300, 100);
+        moveDown.getLabel().setFontScale(3.0f);
+        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
+        moveDown.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // TODO: move player
+            }
+        });
+
+        moveLeft = new TextButton("Move left", skin, "default");
+        moveLeft .setPosition(200, 200);
+        moveLeft .setSize(300, 100);
+        moveLeft .getLabel().setFontScale(3.0f);
+        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
+        moveLeft .addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // TODO: move player
+            }
+        });
+        moveRight = new TextButton("Move right", skin, "default");
+        moveRight.setPosition(600, 200);
+        moveRight.setSize(300, 100);
+        moveRight.getLabel().setFontScale(3.0f);
+        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
+        moveRight.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // TODO: move player
+            }
+        });
+
+        stage.addActor(buttonMenu);
+        stage.addActor(moveUp);
+        stage.addActor(moveDown);
+        stage.addActor(moveLeft);
+        stage.addActor(moveRight);
+    }
+        /*
     Originally from the Renderer-class
     @Override
     public boolean keyUp(int keycode) {
@@ -195,73 +279,4 @@ public class GameScreen implements Screen {
                 return false;
         }
     } */
-    private void queueAssets(){
-        app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
-    }
-
-    private void initButtons() {
-
-        buttonMenu = new TextButton("Main menu", skin, "default");
-        buttonMenu.setPosition(1200, 100);
-        buttonMenu.setSize(300, 100);
-        buttonMenu.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
-        buttonMenu.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                app.setScreen(app.menuScreen);
-            }
-        });
-        moveUp = new TextButton("moveUp", skin, "default");
-        moveUp.setPosition(400, 350);
-        moveUp.setSize(300, 100);
-        moveUp.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
-        moveUp.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // TODO
-            }
-        });
-        moveDown = new TextButton("Move down", skin, "default");
-        moveDown.setPosition(400, 50);
-        moveDown.setSize(300, 100);
-        moveDown.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
-        moveDown.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // TODO
-            }
-        });
-
-        moveLeft = new TextButton("Move left", skin, "default");
-        moveLeft .setPosition(200, 200);
-        moveLeft .setSize(300, 100);
-        moveLeft .getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
-        moveLeft .addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // TODO
-            }
-        });
-        moveRight = new TextButton("Move right", skin, "default");
-        moveRight.setPosition(600, 200);
-        moveRight.setSize(300, 100);
-        moveRight.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
-        moveRight.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // TODO
-            }
-        });
-
-        stage.addActor(buttonMenu);
-        stage.addActor(moveUp);
-        stage.addActor(moveDown);
-        stage.addActor(moveLeft);
-        stage.addActor(moveRight);
-    }
 }
