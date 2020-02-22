@@ -10,7 +10,7 @@ public class Main {
         cfg.title = "RoboRally";
         // Hardcoded board size is a 7:9 ratio
         cfg.width = 2000;
-        cfg.height = 2000;
+        cfg.height = 1500;
         new LwjglApplication(new Renderer(), cfg);
     }
 }

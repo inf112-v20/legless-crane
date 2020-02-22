@@ -61,7 +61,7 @@ public class MenuScreen implements Screen {
         shapeRenderer.end();
 
         app.batch.begin();
-        app.font.draw(app.batch, "MENU",20,20);
+        app.font.draw(app.batch, "MENU",970,1900);
         app.batch.end();
     }
 

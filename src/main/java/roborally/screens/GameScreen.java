@@ -22,9 +22,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import roborally.gui.Renderer;
 
@@ -44,28 +50,33 @@ public class GameScreen implements Screen {
 
     private final Renderer app;
     private Stage stage;
+    private Skin skin;
+    private TextButton buttonMenu;
+    private ShapeRenderer shapeRenderer;
 
     public GameScreen(final Renderer app) {        // Constructor here is equal to Create() in Renderer
         this.app = app;
         // Creating main stage
         this.stage = new Stage(new FitViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     public void update(float delta) {
     }
 
-
-
-
-
-
-
     @Override
     public void show() {
         // show() gets called every time the screen-object is being called -> Put the game logic here
         Gdx.input.setInputProcessor(stage);              // keep track of how actors interact/influence/being
+        stage.clear(); // reload site
 
-        stage.clear();
+        // UI: graphical representation buttons
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font",app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+
+        initButtons();
     }
 
     @Override
@@ -90,6 +101,10 @@ public class GameScreen implements Screen {
 
         update(v);
         stage.draw();    // KOR SKAL DENNE?
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        // Something here?
+        shapeRenderer.end();
 
         app.batch.begin();  // getBatch?
         app.font.draw(app.batch, "GameScreen", 1000, 1000);
@@ -132,6 +147,7 @@ public class GameScreen implements Screen {
         renderer.dispose();
          */
         stage.dispose();
+        shapeRenderer.dispose();
     }
 
     /*
@@ -166,4 +182,23 @@ public class GameScreen implements Screen {
                 return false;
         }
     } */
+    private void queueAssets(){
+        app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
+    }
+
+    private void initButtons() {
+
+        buttonMenu = new TextButton("Main menu", skin, "default");
+        buttonMenu.setPosition(650, 250);
+        buttonMenu.setSize(300, 100);
+        buttonMenu.getLabel().setFontScale(3.0f);
+        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
+        buttonMenu.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                app.setScreen(app.menuScreen);
+            }
+        });
+        stage.addActor(buttonMenu);
+    }
 }
