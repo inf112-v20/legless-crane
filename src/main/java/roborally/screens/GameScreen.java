@@ -18,9 +18,15 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
  */
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import roborally.gui.Renderer;
 
 
 public class GameScreen implements Screen {
@@ -36,6 +42,19 @@ public class GameScreen implements Screen {
     private int boardHeight;
     */
 
+    private final Renderer app;
+    private Stage stage;
+
+    public GameScreen(final Renderer app) {        // Constructor here is equal to Create() in Renderer
+        this.app = app;
+        // Creating main stage
+        this.stage = new Stage(new FitViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
+    }
+
+    public void update(float delta) {
+    }
+
+
 
 
 
@@ -43,7 +62,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        // show() gets called every time the screen-object is being called -> Put the game logic here
+        Gdx.input.setInputProcessor(stage);              // keep track of how actors interact/influence/being
 
+        stage.clear();
     }
 
     @Override
@@ -63,12 +85,20 @@ public class GameScreen implements Screen {
         renderer.getBatch().end();
          */
 
+        Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        update(v);
+        stage.draw();    // KOR SKAL DENNE?
 
+        app.batch.begin();  // getBatch?
+        app.font.draw(app.batch, "GameScreen", 120, 120);
+        app.batch.end();
     }
 
     @Override
-    public void resize(int i, int i1) {
+    public void resize(int width, int height) {
+        stage.getViewport().update(width,height, false); // check this one as getting more stages
 
         /*
         Originally from the Renderer-class:
@@ -101,7 +131,7 @@ public class GameScreen implements Screen {
         board.dispose();
         renderer.dispose();
          */
-
+        stage.dispose();
     }
 
     /*
