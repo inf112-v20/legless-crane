@@ -97,8 +97,9 @@ public class MenuScreen implements Screen {
     private void initButtons(){
 
         buttonPlay = new TextButton("Let's play",skin, "default");
-        buttonPlay.setPosition(650,800);
-        buttonPlay.setSize(280,60);
+        buttonPlay.setPosition(650,750);
+        buttonPlay.setSize(300,100);
+        buttonPlay.getLabel().setFontScale(3.0f);
         //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
         buttonPlay.addListener(new ClickListener(){
             @Override
@@ -107,10 +108,10 @@ public class MenuScreen implements Screen {
             }
         });
 
-
         buttonQuit = new TextButton("Quit",skin, "default");
-        buttonQuit.setPosition(650,700);
-        buttonQuit.setSize(280,60);
+        buttonQuit.setPosition(650,600);
+        buttonQuit.setSize(300,100);
+        buttonQuit.getLabel().setFontScale(3.0f);
         buttonQuit.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

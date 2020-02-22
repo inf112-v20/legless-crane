@@ -92,7 +92,7 @@ public class GameScreen implements Screen {
         stage.draw();    // KOR SKAL DENNE?
 
         app.batch.begin();  // getBatch?
-        app.font.draw(app.batch, "GameScreen", 120, 120);
+        app.font.draw(app.batch, "GameScreen", 1000, 1000);
         app.batch.end();
     }
 
