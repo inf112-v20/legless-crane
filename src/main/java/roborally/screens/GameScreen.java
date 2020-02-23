@@ -83,10 +83,12 @@ public class GameScreen implements Screen {
 
         TmxMapLoader loader = new TmxMapLoader();
         board = loader.load("boards/Board1.tmx");
+
         background = (TiledMapTileLayer) board.getLayers().get("background");
 
         boardWidth = background.getWidth();
         boardHeight = background.getHeight();
+
         renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
 
         camera = new OrthographicCamera();
@@ -100,7 +102,7 @@ public class GameScreen implements Screen {
                 (new TextureRegion(new Texture("img/Tower.png"))));
 
 
-        playerPosition = new Vector2(6,2);
+        playerPosition = new Vector2(4,8);
 
         // Additional UI on the stage: graphical representation of buttons
         this.skin = new Skin();
@@ -182,15 +184,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width,height, false); // check this one as getting more stages
-
+        stage.getViewport().update(width,height, false); // check this one as getting more stages?
         /*
         Originally from the Renderer-class:
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
          */
-
     }
 
     @Override
