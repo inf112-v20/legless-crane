@@ -11,8 +11,8 @@ import roborally.screens.MenuScreen;
 import roborally.screens.LoadingScreen;
 
 public class Renderer extends Game implements ApplicationListener  {
-    public static final int WIDTH = 1600;
-    public static final int HEIGHT = 1600;
+    public static final int WIDTH = 2000;
+    public static final int HEIGHT = 1500;
 
     public SpriteBatch batch;
     public BitmapFont font;

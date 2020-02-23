@@ -20,11 +20,22 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -33,7 +44,7 @@ import roborally.gui.Renderer;
 
 
 public class GameScreen implements Screen {
-    /* Originally from the Renderer-class:
+    // Originally from the Renderer-class:
     private TiledMap board;
     private TiledMapTileLayer background;
     private TiledMapTileLayer playerLayer;
@@ -43,7 +54,7 @@ public class GameScreen implements Screen {
     private Vector2 playerPosition;
     private int boardWidth;
     private int boardHeight;
-     */
+
 
     private final Renderer app;
     private Stage stage;
@@ -56,27 +67,48 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Renderer app) {
         this.app = app;
-        // Creating main stage
         this.stage = new Stage(new FitViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
+
     }
 
-    public void update(float delta) {
-    }
+    public void update(float f) { stage.act(f); }
 
     @Override
     public void show() {
+
         // show() gets called every time the screen-object is being called -> (put game logic here)
         Gdx.input.setInputProcessor(stage);         // keep track of how actors interact/influence/are being influenced on stage
         stage.clear(); // reload site
 
-        // UI: graphical representation buttons
+
+        TmxMapLoader loader = new TmxMapLoader();
+        board = loader.load("boards/Board1.tmx");
+        background = (TiledMapTileLayer) board.getLayers().get("background");
+
+        boardWidth = background.getWidth();
+        boardHeight = background.getHeight();
+        renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, boardWidth,boardHeight);
+        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+
+        camera.update();
+        renderer.setView(camera);
+
+        playerTile = new Cell().setTile(new StaticTiledMapTile
+                (new TextureRegion(new Texture("img/Tower.png"))));
+
+
+        playerPosition = new Vector2(6,2);
+
+        // Additional UI on the stage: graphical representation of buttons
         this.skin = new Skin();
         this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
         this.skin.add("default-font",app.font);
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
 
         initButtons();
-        // initBoard(); ?
 
         /*
         Originally from the Renderer-class:
@@ -108,8 +140,6 @@ public class GameScreen implements Screen {
 
         // making this renderer the input processor.
         Gdx.input.setInputProcessor(this); */
-
-
     }
 
     @Override
@@ -129,10 +159,20 @@ public class GameScreen implements Screen {
         renderer.getBatch().end();
          */
 
+        stage.act(v);                      // ??
+
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(v);
+
+        playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
+
+        playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y, playerTile);
+
+
+        renderer.setView(camera); //?????????
+        renderer.render(); ///???
         stage.draw();
 
         app.batch.begin();

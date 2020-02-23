@@ -3,11 +3,11 @@ package roborally.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -16,9 +16,9 @@ import roborally.gui.Renderer;
 
 public class MenuScreen implements Screen {
     private final Renderer app;
-    private ShapeRenderer shapeRenderer;
     private Stage stage;
     private Skin skin;
+    private Image logo;
 
     private TextButton buttonPlay;
     private TextButton buttonQuit;
@@ -26,7 +26,6 @@ public class MenuScreen implements Screen {
     public MenuScreen(final Renderer app){
         this.app = app;
         this.stage = new Stage(new StretchViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
-        this.shapeRenderer = new ShapeRenderer();
     }
 
     private void update(float f){
@@ -36,13 +35,17 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        stage.clear(); // reload site
+        stage.clear();
 
-        // UI: graphical representation buttons
         this.skin = new Skin();
         this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
         this.skin.add("default-font",app.font);
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+
+        Texture splashTex = new Texture(Gdx.files.internal("img/logo.png"));
+        logo = new Image(splashTex);
+        logo.setPosition(stage.getWidth()/2-300,stage.getHeight()/2-16);
+        stage.addActor(logo);
 
         initButtons();
     }
@@ -55,10 +58,6 @@ public class MenuScreen implements Screen {
         update(v);
 
         stage.draw();
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        // Something here?
-        shapeRenderer.end();
 
         app.batch.begin();
         app.font.draw(app.batch, "MENU",970,1900);
@@ -88,7 +87,6 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        shapeRenderer.dispose();
     }
 
     private void queueAssets(){
@@ -97,7 +95,7 @@ public class MenuScreen implements Screen {
     private void initButtons(){
 
         buttonPlay = new TextButton("Let's play",skin, "default");
-        buttonPlay.setPosition(650,750);
+        buttonPlay.setPosition(850,300);
         buttonPlay.setSize(300,100);
         buttonPlay.getLabel().setFontScale(3.0f);
         //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
@@ -109,7 +107,7 @@ public class MenuScreen implements Screen {
         });
 
         buttonQuit = new TextButton("Quit",skin, "default");
-        buttonQuit.setPosition(650,600);
+        buttonQuit.setPosition(850,150);
         buttonQuit.setSize(300,100);
         buttonQuit.getLabel().setFontScale(3.0f);
         buttonQuit.addListener(new ClickListener(){
@@ -121,6 +119,5 @@ public class MenuScreen implements Screen {
 
         stage.addActor(buttonPlay);
         stage.addActor(buttonQuit);
-
     }
 }
