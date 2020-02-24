@@ -20,7 +20,6 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -42,6 +41,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import roborally.gui.Renderer;
 
+// Class need to be "cleaned up"
 
 public class GameScreen implements Screen {
     // Originally from the Renderer-class:
@@ -55,7 +55,6 @@ public class GameScreen implements Screen {
     private int boardWidth;
     private int boardHeight;
 
-
     private final Renderer app;
     private Stage stage;
     private Skin skin;
@@ -68,18 +67,15 @@ public class GameScreen implements Screen {
     public GameScreen(final Renderer app) {
         this.app = app;
         this.stage = new Stage(new FitViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
-
     }
 
     public void update(float f) { stage.act(f); }
 
     @Override
     public void show() {
-
         // show() gets called every time the screen-object is being called -> (put game logic here)
         Gdx.input.setInputProcessor(stage);         // keep track of how actors interact/influence/are being influenced on stage
         stage.clear(); // reload site
-
 
         TmxMapLoader loader = new TmxMapLoader();
         board = loader.load("boards/Board1.tmx");
@@ -89,6 +85,7 @@ public class GameScreen implements Screen {
         boardWidth = background.getWidth();
         boardHeight = background.getHeight();
 
+        // creating a new camera and 2D/Orthogonal renderer
         renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
 
         camera = new OrthographicCamera();
@@ -98,11 +95,12 @@ public class GameScreen implements Screen {
         camera.update();
         renderer.setView(camera);
 
+        // getting texture for player piece
         playerTile = new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png"))));
 
 
-        playerPosition = new Vector2(4,8);
+        playerPosition = new Vector2(6,2);
 
         // Additional UI on the stage: graphical representation of buttons
         this.skin = new Skin();
@@ -141,7 +139,7 @@ public class GameScreen implements Screen {
         playerPosition = new Vector2(6,2);
 
         // making this renderer the input processor.
-        Gdx.input.setInputProcessor(this); */
+        Gdx.input.setInputProcessor(this);  // Denne skal vekk, gjelder keyboad-input */
     }
 
     @Override
@@ -160,21 +158,23 @@ public class GameScreen implements Screen {
         renderer.renderTileLayer(playerLayer);
         renderer.getBatch().end();
          */
-
-        stage.act(v);                      // ??
-
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(v);
 
         playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
-
         playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y, playerTile);
-
 
         renderer.setView(camera); //?????????
         renderer.render(); ///???
+
+        renderer.render();
+        renderer.getBatch().begin();
+        renderer.renderTileLayer(playerLayer);
+        renderer.getBatch().end();
+
+        stage.act(v);                      // ??
         stage.draw();
 
         app.batch.begin();
@@ -184,13 +184,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width,height, false); // check this one as getting more stages?
-        /*
-        Originally from the Renderer-class:
+        stage.getViewport().update(width,height, true); // check this one as getting more stages?
+/*
+        // Originally from the Renderer-class:
         camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();
-         */
+        camera.viewportHeight = height;*/
+        //camera.update();
+
     }
 
     @Override
@@ -216,12 +216,39 @@ public class GameScreen implements Screen {
         renderer.dispose();
          */
         stage.dispose();
+        board.dispose();
+        renderer.dispose();
     }
 
     private void queueAssets(){
         app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
     }
 
+    private void initMap(){
+
+        TmxMapLoader loader = new TmxMapLoader();
+        board = loader.load("boards/Board1.tmx");
+
+        background = (TiledMapTileLayer) board.getLayers().get("background");
+
+        boardWidth = background.getWidth();
+        boardHeight = background.getHeight();
+
+        renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, boardWidth,boardHeight);
+        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+
+        camera.update();
+        renderer.setView(camera);
+
+        playerTile = new Cell().setTile(new StaticTiledMapTile
+                (new TextureRegion(new Texture("img/Tower.png"))));
+
+
+        playerPosition = new Vector2(4,8);
+    }
     private void initButtons() {
 
         buttonMenu = new TextButton("Main menu", skin, "default");
@@ -243,7 +270,9 @@ public class GameScreen implements Screen {
         moveUp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: move player
+                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0, (int) playerPosition.x)))),
+                        (Math.min(boardHeight - 1, (Math.max(0, (int) playerPosition.y + 1)))));
+                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
             }
         });
         moveDown = new TextButton("Move down", skin, "default");
@@ -254,7 +283,9 @@ public class GameScreen implements Screen {
         moveDown.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: move player
+                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0, (int) playerPosition.x)))),
+                        (Math.min(boardHeight - 1, (Math.max(0, (int) playerPosition.y - 1)))));
+                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
             }
         });
 
@@ -266,7 +297,9 @@ public class GameScreen implements Screen {
         moveLeft .addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: move player
+                playerPosition = new Vector2((Math.min(boardWidth - 1, Math.max(0, (int) playerPosition.x - 1))),
+                        (Math.min(boardHeight, (Math.max(0, (int) playerPosition.y)))));
+                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
             }
         });
         moveRight = new TextButton("Move right", skin, "default");
@@ -277,7 +310,9 @@ public class GameScreen implements Screen {
         moveRight.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: move player
+                playerPosition = new Vector2((Math.min(boardWidth - 1, (Math.max(0, (int) playerPosition.x + 1)))),
+                        (Math.min(boardHeight, (Math.max(0, (int) playerPosition.y)))));
+                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
             }
         });
 
