@@ -25,9 +25,8 @@ public class LoadingScreen implements Screen {
     private void update(float f){
         progress = MathUtils.lerp(progress, app.assets.getProgress(),.2f);
 
-        if (app.assets.update() && progress <= app.assets.getProgress()-.001f){       // Directs to game after all upload. (What is inside ququeAssets();)
+        if (app.assets.update() && progress <= app.assets.getProgress()-.001f)       // Directs to game after all upload. (What is inside ququeAssets();)
             app.setScreen(app.menuScreen);
-        }
     }
 
     @Override
@@ -58,24 +57,16 @@ public class LoadingScreen implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {
-
-    }
+    public void resize(int i, int i1) {/*intentionally empty method*/}
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {/*intentionally empty method*/}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {/*intentionally empty method*/}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {/*intentionally empty method*/}
 
     @Override
     public void dispose() {

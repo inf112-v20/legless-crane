@@ -65,24 +65,16 @@ public class MenuScreen implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {
-
-    }
+    public void resize(int i, int i1) {/*intentionally empty method*/}
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {/*intentionally empty method*/}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {/*intentionally empty method*/}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {/*intentionally empty method*/}
 
     @Override
     public void dispose() {
@@ -100,10 +92,7 @@ public class MenuScreen implements Screen {
         buttonPlay.getLabel().setFontScale(3.0f);
         buttonPlay.addListener(new ClickListener(){
             @Override
-            public void clicked(InputEvent event, float x, float y){
-                app.setScreen(app.gameScreen);
-            }
-        });
+            public void clicked(InputEvent event, float x, float y){ app.setScreen(app.gameScreen); }});
 
         buttonQuit = new TextButton("Quit",skin, "default");
         buttonQuit.setPosition(850,150);
@@ -111,10 +100,7 @@ public class MenuScreen implements Screen {
         buttonQuit.getLabel().setFontScale(3.0f);
         buttonQuit.addListener(new ClickListener(){
             @Override
-            public void clicked(InputEvent event, float x, float y){
-                Gdx.app.exit();
-            }
-        });
+            public void clicked(InputEvent event, float x, float y){ Gdx.app.exit(); }});
 
         stage.addActor(buttonPlay);
         stage.addActor(buttonQuit);
