@@ -112,54 +112,10 @@ public class GameScreen implements Screen {
 
         initButtons();
 
-        /*
-        Originally from the Renderer-class:
-        // Loading in board from tmx file
-        TmxMapLoader loader = new TmxMapLoader();
-        board = loader.load("boards/Board1.tmx");
-
-        background = (TiledMapTileLayer) board.getLayers().get("background");
-
-        boardWidth = background.getWidth();
-        boardHeight = background.getHeight();
-
-        // creating a new camera and 2D/Orthogonal renderer
-        renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, boardWidth,boardHeight);
-        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
-
-        camera.update();
-        renderer.setView(camera);
-
-        // getting texture for player piece
-        playerTile = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Tower.png"))));
-
-
-        playerPosition = new Vector2(6,2);
-
-        // making this renderer the input processor.
-        Gdx.input.setInputProcessor(this); */
     }
 
     @Override
     public void render(float v) {
-        /*
-        Orignially from the Renderer-class:
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
-
-        playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y, playerTile);
-
-        renderer.render();
-        renderer.getBatch().begin();
-        renderer.renderTileLayer(playerLayer);
-        renderer.getBatch().end();
-         */
 
         stage.act(v);                      // ??
 
@@ -185,12 +141,6 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width,height, false); // check this one as getting more stages?
-        /*
-        Originally from the Renderer-class:
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();
-         */
     }
 
     @Override
@@ -210,11 +160,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        /*
-        Originally from the Renderer-class:
-        board.dispose();
-        renderer.dispose();
-         */
         stage.dispose();
     }
 
@@ -287,36 +232,4 @@ public class GameScreen implements Screen {
         stage.addActor(moveLeft);
         stage.addActor(moveRight);
     }
-        /*
-    Originally from the Renderer-class
-    @Override
-    public boolean keyUp(int keycode) {
-        switch(keycode) {
-            // I think we're supposed to clear the player's previous position in addition to setting the new one here.
-            // but it works so who knows.
-            case Input.Keys.LEFT:
-                playerPosition = new Vector2((Math.min(boardWidth - 1, Math.max(0, (int) playerPosition.x - 1))),
-                        (Math.min(boardHeight, (Math.max(0, (int) playerPosition.y)))));
-                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
-                return true;
-
-            case Input.Keys.RIGHT:
-                playerPosition = new Vector2((Math.min(boardWidth - 1, (Math.max(0, (int) playerPosition.x + 1)))),
-                        (Math.min(boardHeight, (Math.max(0, (int) playerPosition.y)))));
-                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
-                return true;
-            case Input.Keys.DOWN:
-                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0, (int) playerPosition.x)))),
-                        (Math.min(boardHeight - 1, (Math.max(0, (int) playerPosition.y - 1)))));
-                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
-                return true;
-            case Input.Keys.UP:
-                playerPosition = new Vector2((Math.min(boardWidth, (Math.max(0, (int) playerPosition.x)))),
-                        (Math.min(boardHeight - 1, (Math.max(0, (int) playerPosition.y + 1)))));
-                playerLayer.setCell((int) playerPosition.x, (int) playerPosition.y, playerTile);
-                return true;
-            default:
-                return false;
-        }
-    } */
 }
