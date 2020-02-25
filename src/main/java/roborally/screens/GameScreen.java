@@ -49,17 +49,20 @@ public class GameScreen implements Screen {
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
 
-    public void update(float f) { stage.act(f); }
+    // Calls the Actor.act(float) method on each actor in the stage.
+    // Updates the actor based on time. Typically this is called each frame by Stage.act(float)
+    // public void update(float f) { stage.act(f); }
+    //update(v); //TODO essentially stage.act(v), use either or?
 
     @Override
     public void show() {
-        // show() gets called every time the screen-object is being called -> (put game logic here)
+        // show() gets called every time the screen-object is being called i.e. switching to this screen
         Gdx.input.setInputProcessor(stage);         // keep track of how actors interact/influence/are being influenced on stage
         stage.clear(); // reload site
 
+        // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
         TmxMapLoader loader = new TmxMapLoader();
         board = loader.load("boards/Board1.tmx");
-
         background = (TiledMapTileLayer) board.getLayers().get("background");
 
         boardWidth = background.getWidth();
@@ -67,10 +70,9 @@ public class GameScreen implements Screen {
 
         // creating a new camera and 2D/Orthogonal renderer
         renderer = new OrthogonalTiledMapRenderer(board, 1 / 300f);
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, boardWidth, boardHeight);
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); // centering camera
 
         camera.update();
         renderer.setView(camera);
@@ -80,7 +82,7 @@ public class GameScreen implements Screen {
                 (new TextureRegion(new Texture("img/Tower.png"))));
 
 
-        playerPosition = new Vector2(6, 2);
+        playerPosition = new Vector2(6, 2); // starting position for the player
 
         // Additional UI on the stage: graphical representation of buttons
         this.skin = new Skin();
@@ -93,30 +95,21 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float v) {
-        stage.act(v);                      // ??
-
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        update(v);
 
         playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
         playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y, playerTile);
 
-        renderer.setView(camera); //?????????
-        renderer.render(); ///???
-
+        // render the game map
         renderer.render();
+        // render the player
         renderer.getBatch().begin();
         renderer.renderTileLayer(playerLayer);
         renderer.getBatch().end();
 
-        stage.act(v);                      // ??
+        // render buttons:
         stage.draw();
-
-        app.batch.begin();
-        app.font.draw(app.batch, "GameScreen", 1000, 1000);
-        app.batch.end();
     }
 
     @Override

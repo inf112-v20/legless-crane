@@ -13,6 +13,7 @@ import roborally.screens.MenuScreen;
 import roborally.screens.LoadingScreen;
 
 public class Application extends Game  {
+    // Hardcoded board size is a 7:9 ratio
     public static final int WIDTH = 2000;
     public static final int HEIGHT = 1500;
 
@@ -25,12 +26,11 @@ public class Application extends Game  {
     public GameScreen gameScreen;
 
     public static void main(String[] args) {
-        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "RoboRally";
-        // Hardcoded board size is a 7:9 ratio
-        cfg.width = 2000;
-        cfg.height = 1500;
-        new LwjglApplication(new Application(), cfg);
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.title = "RoboRally";
+        config.width = WIDTH;
+        config.height = HEIGHT;
+        new LwjglApplication(new Application(), config);
     }
 
     @Override
