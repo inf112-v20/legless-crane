@@ -78,7 +78,7 @@ public class GameScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(board, 1 / 400f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, boardWidth, boardHeight);
-        camera.position.set(camera.viewportWidth / 10f, camera.viewportHeight / 10f, 0); // centering camera
+        camera.position.set(camera.viewportWidth / 4f, camera.viewportHeight / 4f, 0); // centering camera
 
         camera.update();
         renderer.setView(camera);
@@ -142,7 +142,7 @@ public class GameScreen implements Screen {
 
     private void initButtons() {
         buttonMenu = new TextButton("Main menu", skin, "default");
-        buttonMenu.setPosition(1200, 100);
+        buttonMenu.setPosition(1400, 125);
         buttonMenu.setSize(300, 100);
         buttonMenu.getLabel().setFontScale(3.0f);
         buttonMenu.addListener(new ClickListener() {
@@ -152,7 +152,7 @@ public class GameScreen implements Screen {
             }
         });
         moveUp = new TextButton("moveUp", skin, "default");
-        moveUp.setPosition(400, 350);
+        moveUp.setPosition(1000, 50);
         moveUp.setSize(300, 100);
         moveUp.getLabel().setFontScale(3.0f);
         moveUp.addListener(new ClickListener() {
@@ -163,7 +163,7 @@ public class GameScreen implements Screen {
             }
         });
         moveDown = new TextButton("Move down", skin, "default");
-        moveDown.setPosition(400, 50);
+        moveDown.setPosition(600, 50);
         moveDown.setSize(300, 100);
         moveDown.getLabel().setFontScale(3.0f);
         moveDown.addListener(new ClickListener() {
@@ -174,7 +174,7 @@ public class GameScreen implements Screen {
         });
 
         moveLeft = new TextButton("Move left", skin, "default");
-        moveLeft.setPosition(200, 200);
+        moveLeft.setPosition(600, 200);
         moveLeft.setSize(300, 100);
         moveLeft.getLabel().setFontScale(3.0f);
         moveLeft.addListener(new ClickListener() {
@@ -184,7 +184,7 @@ public class GameScreen implements Screen {
             }
         });
         moveRight = new TextButton("Move right", skin, "default");
-        moveRight.setPosition(600, 200);
+        moveRight.setPosition(1000, 200);
         moveRight.setSize(300, 100);
         moveRight.getLabel().setFontScale(3.0f);
         moveRight.addListener(new ClickListener() {
