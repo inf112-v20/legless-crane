@@ -23,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import roborally.gui.Renderer;
 
-
 public class GameScreen implements Screen {
     // Originally from the Renderer-class:
     private TiledMap board;
@@ -35,7 +34,6 @@ public class GameScreen implements Screen {
     private Vector2 playerPosition;
     private int boardWidth;
     private int boardHeight;
-
 
     private final Renderer app;
     private Stage stage;
@@ -49,18 +47,115 @@ public class GameScreen implements Screen {
     public GameScreen(final Renderer app) {
         this.app = app;
         this.stage = new Stage(new FitViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
-
     }
 
     public void update(float f) { stage.act(f); }
 
     @Override
     public void show() {
-
         // show() gets called every time the screen-object is being called -> (put game logic here)
         Gdx.input.setInputProcessor(stage);         // keep track of how actors interact/influence/are being influenced on stage
         stage.clear(); // reload site
 
+        TmxMapLoader loader = new TmxMapLoader();
+        board = loader.load("boards/Board1.tmx");
+
+        background = (TiledMapTileLayer) board.getLayers().get("background");
+
+        boardWidth = background.getWidth();
+        boardHeight = background.getHeight();
+
+        // creating a new camera and 2D/Orthogonal renderer
+        renderer = new OrthogonalTiledMapRenderer(board, 1 / 300f);
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, boardWidth, boardHeight);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+
+        camera.update();
+        renderer.setView(camera);
+
+        // getting texture for player piece
+        playerTile = new Cell().setTile(new StaticTiledMapTile
+                (new TextureRegion(new Texture("img/Tower.png"))));
+
+
+        playerPosition = new Vector2(6, 2);
+
+        // Additional UI on the stage: graphical representation of buttons
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font", app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+
+        initButtons();
+    }
+
+    /*
+    Main gameloop
+     */
+    @Override
+    public void render(float v) {
+        stage.act(v);                      // ??
+
+        Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        update(v);
+
+        playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
+        playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y, playerTile);
+
+        renderer.setView(camera); //?????????
+        renderer.render(); ///???
+
+        renderer.render();
+        renderer.getBatch().begin();
+        renderer.renderTileLayer(playerLayer);
+        renderer.getBatch().end();
+
+        stage.act(v);                      // ??
+        stage.draw();
+
+        app.batch.begin();
+        app.font.draw(app.batch, "GameScreen", 1000, 1000);
+        app.batch.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width,height, false); // check this one as getting more stages?
+        stage.getViewport().update(width,height, true); // check this one as getting more stages?
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        board.dispose();
+        renderer.dispose();
+    }
+
+    private void queueAssets(){
+        app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
+    }
+
+    private void initMap(){
 
         TmxMapLoader loader = new TmxMapLoader();
         board = loader.load("boards/Board1.tmx");
@@ -84,72 +179,7 @@ public class GameScreen implements Screen {
 
 
         playerPosition = new Vector2(4,8);
-
-        // Additional UI on the stage: graphical representation of buttons
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font",app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-
-        initButtons();
-
     }
-
-    /*
-    Main gameloop
-     */
-    @Override
-    public void render(float v) {
-        stage.act(v);                      // ??
-
-        Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        update(v);
-
-        playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
-
-        playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y, playerTile);
-
-
-        renderer.setView(camera); //?????????
-        renderer.render(); ///???
-        stage.draw();
-
-        app.batch.begin();
-        app.font.draw(app.batch, "GameScreen", 1000, 1000);
-        app.batch.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width,height, false); // check this one as getting more stages?
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
-
-    private void queueAssets(){
-        app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
-    }
-
     private void initButtons() {
 
         buttonMenu = new TextButton("Main menu", skin, "default");
@@ -169,7 +199,7 @@ public class GameScreen implements Screen {
         moveUp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: move player
+                updatePlayerPosition(playerPosition.x, playerPosition.y+1);
             }
         });
         moveDown = new TextButton("Move down", skin, "default");
@@ -179,7 +209,7 @@ public class GameScreen implements Screen {
         moveDown.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: move player
+                updatePlayerPosition(playerPosition.x, playerPosition.y-1);
             }
         });
 
@@ -190,7 +220,7 @@ public class GameScreen implements Screen {
         moveLeft.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: move player
+                updatePlayerPosition(playerPosition.x-1, playerPosition.y);
             }
         });
         moveRight = new TextButton("Move right", skin, "default");
@@ -200,7 +230,7 @@ public class GameScreen implements Screen {
         moveRight.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: move player
+                updatePlayerPosition(playerPosition.x+1, playerPosition.y);
             }
         });
 
@@ -210,4 +240,13 @@ public class GameScreen implements Screen {
         stage.addActor(moveLeft);
         stage.addActor(moveRight);
     }
+
+    // method for
+    private void updatePlayerPosition(float x, float y) {
+        playerPosition = new Vector2(validMove(x, boardWidth), validMove(y, boardHeight));
+        playerLayer.setCell((int) x, (int) y, playerTile);
+    }
+
+    // can add other logic here to check if there are walls etc blocking movement
+    private int validMove(float move, int bound) { return (Math.min(bound - 1, (Math.max(0, (int)move)))); }
 }
