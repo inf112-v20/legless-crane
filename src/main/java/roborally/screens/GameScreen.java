@@ -91,9 +91,6 @@ public class GameScreen implements Screen {
         initButtons();
     }
 
-    /*
-    Main gameloop
-     */
     @Override
     public void render(float v) {
         stage.act(v);                      // ??
@@ -126,23 +123,16 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         stage.getViewport().update(width,height, false); // check this one as getting more stages?
         stage.getViewport().update(width,height, true); // check this one as getting more stages?
-
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {/*intentionally empty method*/}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {/*intentionally empty method*/}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {/*intentionally empty method*/}
 
     @Override
     public void dispose() {
@@ -151,35 +141,8 @@ public class GameScreen implements Screen {
         renderer.dispose();
     }
 
-    private void queueAssets(){
-        app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
-    }
+    private void queueAssets(){ app.assets.load("ui/uiskin.atlas", TextureAtlas.class); }
 
-    private void initMap(){
-
-        TmxMapLoader loader = new TmxMapLoader();
-        board = loader.load("boards/Board1.tmx");
-
-        background = (TiledMapTileLayer) board.getLayers().get("background");
-
-        boardWidth = background.getWidth();
-        boardHeight = background.getHeight();
-
-        renderer = new OrthogonalTiledMapRenderer(board, 1/300f);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, boardWidth,boardHeight);
-        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
-
-        camera.update();
-        renderer.setView(camera);
-
-        playerTile = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Tower.png"))));
-
-
-        playerPosition = new Vector2(4,8);
-    }
     private void initButtons() {
 
         buttonMenu = new TextButton("Main menu", skin, "default");
@@ -241,7 +204,6 @@ public class GameScreen implements Screen {
         stage.addActor(moveRight);
     }
 
-    // method for
     private void updatePlayerPosition(float x, float y) {
         playerPosition = new Vector2(validMove(x, boardWidth), validMove(y, boardHeight));
         playerLayer.setCell((int) x, (int) y, playerTile);
