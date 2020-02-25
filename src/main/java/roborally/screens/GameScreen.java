@@ -1,26 +1,7 @@
 package roborally.screens;
 
-/*
-Originally from the Renderer-class
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.math.Vector2;
- */
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -114,9 +95,11 @@ public class GameScreen implements Screen {
 
     }
 
+    /*
+    Main gameloop
+     */
     @Override
     public void render(float v) {
-
         stage.act(v);                      // ??
 
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
@@ -173,7 +156,6 @@ public class GameScreen implements Screen {
         buttonMenu.setPosition(1200, 100);
         buttonMenu.setSize(300, 100);
         buttonMenu.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
         buttonMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -184,7 +166,6 @@ public class GameScreen implements Screen {
         moveUp.setPosition(400, 350);
         moveUp.setSize(300, 100);
         moveUp.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
         moveUp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -195,7 +176,6 @@ public class GameScreen implements Screen {
         moveDown.setPosition(400, 50);
         moveDown.setSize(300, 100);
         moveDown.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
         moveDown.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -204,11 +184,10 @@ public class GameScreen implements Screen {
         });
 
         moveLeft = new TextButton("Move left", skin, "default");
-        moveLeft .setPosition(200, 200);
-        moveLeft .setSize(300, 100);
-        moveLeft .getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
-        moveLeft .addListener(new ClickListener() {
+        moveLeft.setPosition(200, 200);
+        moveLeft.setSize(300, 100);
+        moveLeft.getLabel().setFontScale(3.0f);
+        moveLeft.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: move player
@@ -218,7 +197,6 @@ public class GameScreen implements Screen {
         moveRight.setPosition(600, 200);
         moveRight.setSize(300, 100);
         moveRight.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
         moveRight.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

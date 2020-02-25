@@ -98,7 +98,6 @@ public class MenuScreen implements Screen {
         buttonPlay.setPosition(850,300);
         buttonPlay.setSize(300,100);
         buttonPlay.getLabel().setFontScale(3.0f);
-        //buttonPlay.addAction(sequence(alpha(0),parallel(fadeIn(-5f), moveBy(0,-20,.5f, Interpolation.pow5Out))));
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
