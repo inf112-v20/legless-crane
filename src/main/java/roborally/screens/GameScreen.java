@@ -54,14 +54,16 @@ public class GameScreen implements Screen {
     // public void update(float f) { stage.act(f); }
     //update(v); //TODO essentially stage.act(v), use either or?
 
+    private void update(float f){
+        stage.act(f);
+    }
+
     @Override
     public void show() {
-
-        Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // show() gets called every time the screen-object is being called i.e. switching to this screen
         Gdx.input.setInputProcessor(stage);         // keep track of how actors interact/influence/are being influenced on stage
         stage.clear(); // reload site
+
 
         // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
         TmxMapLoader loader = new TmxMapLoader();
@@ -73,10 +75,10 @@ public class GameScreen implements Screen {
         boardHeight = background.getHeight();
 
         // creating a new camera and 2D/Orthogonal renderer
-        renderer = new OrthogonalTiledMapRenderer(board, 1 / 300f);
+        renderer = new OrthogonalTiledMapRenderer(board, 1 / 400f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, boardWidth, boardHeight);
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); // centering camera
+        camera.position.set(camera.viewportWidth / 10f, camera.viewportHeight / 10f, 0); // centering camera
 
         camera.update();
         renderer.setView(camera);
@@ -101,6 +103,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float v) {
+        Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // Called when the screen should render itself.'
         // render the game map
         renderer.render();
@@ -109,13 +113,13 @@ public class GameScreen implements Screen {
         renderer.renderTileLayer(playerLayer);
         renderer.getBatch().end();
         // render buttons:
+        update(v);
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width,height, false); // check this one as getting more stages?
-        stage.getViewport().update(width,height, true); // check this one as getting more stages?
     }
 
     @Override
