@@ -1,7 +1,9 @@
-package roborally.gui;
+package roborally;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,7 +12,7 @@ import roborally.screens.GameScreen;
 import roborally.screens.MenuScreen;
 import roborally.screens.LoadingScreen;
 
-public class Renderer extends Game implements ApplicationListener  {
+public class Application extends Game  {
     public static final int WIDTH = 2000;
     public static final int HEIGHT = 1500;
 
@@ -21,6 +23,15 @@ public class Renderer extends Game implements ApplicationListener  {
     public LoadingScreen loadingScreen;
     public MenuScreen menuScreen;
     public GameScreen gameScreen;
+
+    public static void main(String[] args) {
+        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+        cfg.title = "RoboRally";
+        // Hardcoded board size is a 7:9 ratio
+        cfg.width = 2000;
+        cfg.height = 1500;
+        new LwjglApplication(new Application(), cfg);
+    }
 
     @Override
     public void create() {
@@ -41,9 +52,7 @@ public class Renderer extends Game implements ApplicationListener  {
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
+    public void resize(int width, int height) {/*intentionally empty method*/}
 
     @Override
     public void render() {
@@ -52,14 +61,10 @@ public class Renderer extends Game implements ApplicationListener  {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {/*intentionally empty method*/}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {/*intentionally empty method*/}
 
     @Override
     public void dispose(){

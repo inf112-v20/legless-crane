@@ -12,10 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import roborally.gui.Renderer;
+import roborally.Application;
 
 public class MenuScreen implements Screen {
-    private final Renderer app;
+    private final Application app;
     private Stage stage;
     private Skin skin;
     private Image logo;
@@ -23,9 +23,9 @@ public class MenuScreen implements Screen {
     private TextButton buttonPlay;
     private TextButton buttonQuit;
 
-    public MenuScreen(final Renderer app){
+    public MenuScreen(final Application app){
         this.app = app;
-        this.stage = new Stage(new StretchViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
+        this.stage = new Stage(new StretchViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
 
     private void update(float f){

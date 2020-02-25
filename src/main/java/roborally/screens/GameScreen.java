@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import roborally.gui.Renderer;
+import roborally.Application;
 
 public class GameScreen implements Screen {
     // Originally from the Renderer-class:
@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
     private int boardWidth;
     private int boardHeight;
 
-    private final Renderer app;
+    private final Application app;
     private Stage stage;
     private Skin skin;
     private TextButton buttonMenu;
@@ -44,9 +44,9 @@ public class GameScreen implements Screen {
     private TextButton moveLeft;
     private TextButton moveRight;
 
-    public GameScreen(final Renderer app) {
+    public GameScreen(final Application app) {
         this.app = app;
-        this.stage = new Stage(new FitViewport(Renderer.WIDTH, Renderer.HEIGHT, app.camera));
+        this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
 
     public void update(float f) { stage.act(f); }

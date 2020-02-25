@@ -7,15 +7,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import roborally.gui.Renderer;
+import roborally.Application;
 
 public class LoadingScreen implements Screen {
     // Constructors in the "screen-classses" are equal to Create() in the Renderer-class
-    private final Renderer app;
+    private final Application app;
     private ShapeRenderer shapeRenderer;
     private float progress;
 
-    public LoadingScreen(final Renderer app){
+    public LoadingScreen(final Application app){
         this.app = app;
         this.shapeRenderer = new ShapeRenderer();
 
