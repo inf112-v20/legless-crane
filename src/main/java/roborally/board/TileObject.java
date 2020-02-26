@@ -94,7 +94,7 @@ public class TileObject {
         private boolean isSpawner;
         private int movementSpeed;
 
-        public TileBuilder(int mandatoryVariable){
+        public TileBuilder(){
             // Might be no need to provide mandatory variables, are there any traits that all tiles have either
             // or?
         }

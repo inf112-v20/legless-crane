@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -36,6 +37,7 @@ public class Board {
     private int boardHeight;
     private int boardSize;
     private ArrayList<Tile> grid = new ArrayList<>();
+    private ArrayList<TileObject> newGrid = new ArrayList<>();
     private ArrayList<int[]> boardWithLayers = new ArrayList<>();
 
     public Board(File file) throws ParserConfigurationException, IOException, SAXException {
@@ -48,6 +50,7 @@ public class Board {
         }
 
         // call each method to read in the elements stored in the different layers of the board.
+        /*
         readHoles(boardWithLayers.get(1));
         readWrenches(boardWithLayers.get(2));
         readYellowBelts(boardWithLayers.get(3));
@@ -58,6 +61,8 @@ public class Board {
         readSpawnpoints(boardWithLayers.get(8));
         readVictoryPoints(boardWithLayers.get(9));
         readWalls(boardWithLayers.get(10));
+        */
+        readBoard(boardWithLayers);
 
 
         for(int i = 0, j = grid.size() - 1; i < j; i++) {
@@ -75,6 +80,7 @@ public class Board {
                 grid.set(k, temp);
             }
         }
+        //TODO this is a super dumb way of doing this, find something better
     }
 
     private void readBoardFromFile(File file) throws IOException, SAXException, ParserConfigurationException {
@@ -122,6 +128,29 @@ public class Board {
     public void set(int x, int y, Tile tile) {
         grid.set(x + y*boardWidth, tile);
     }
+
+
+
+    private void readBoard(ArrayList<int[]> board){
+        for (int i = 0; i<boardSize-1; i++) {
+            // for every tile TODO: (is the -1 here an issue?)
+            for (int j = 1; j < board.size(); i++) {
+                //check every board, skip the background
+
+
+
+                
+            }
+        }
+    }
+
+
+
+
+
+
+
+
 
     private void readBeams(int[] layer) {
         // might be entirely unnecessary, depending on how we implement beams and lasers.
