@@ -51,29 +51,11 @@ public class GameScreen implements Screen {
 
     // Calls the Actor.act(float) method on each actor in the stage.
     // Updates the actor based on time. Typically this is called each frame by Stage.act(float)
-    // public void update(float f) { stage.act(f); }
-    //update(v); //TODO essentially stage.act(v), use either or?
-
     private void update(float f){
         stage.act(f);
     }
 
-    @Override
-    public void show() {
-        // show() gets called every time the screen-object is being called i.e. switching to this screen
-        Gdx.input.setInputProcessor(stage);         // keep track of how actors interact/influence/are being influenced on stage
-        stage.clear(); // reload site
-
-
-        // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
-        TmxMapLoader loader = new TmxMapLoader();
-        board = loader.load("boards/Board1.tmx");
-        background = (TiledMapTileLayer) board.getLayers().get("background");
-
-
-        boardWidth = background.getWidth();
-        boardHeight = background.getHeight();
-
+    private void createCam() {
         // creating a new camera and 2D/Orthogonal renderer
         renderer = new OrthogonalTiledMapRenderer(board, 1 / 400f);
         camera = new OrthographicCamera();
@@ -82,7 +64,19 @@ public class GameScreen implements Screen {
 
         camera.update();
         renderer.setView(camera);
+    }
 
+    private void loadBoard() {
+        // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
+        TmxMapLoader loader = new TmxMapLoader();
+        board = loader.load("boards/Board1.tmx");
+        background = (TiledMapTileLayer) board.getLayers().get("background");
+
+        boardWidth = background.getWidth();
+        boardHeight = background.getHeight();
+    }
+
+    private void placePlayer() {
         // getting texture for player piece
         playerTile = new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png"))));
@@ -91,6 +85,17 @@ public class GameScreen implements Screen {
         playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
         playerPosition = new Vector2(6, 2); // starting position for the player
         playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y,playerTile);
+    }
+
+    @Override
+    public void show() {
+        // show() gets called every time the screen-object is being called i.e. switching to this screen
+        Gdx.input.setInputProcessor(stage); // keep track of how actors interact/influence/are being influenced on stage
+        stage.clear(); // reload site
+
+        loadBoard();
+        createCam();
+        placePlayer();
 
         // Additional UI on the stage: graphical representation of buttons
         this.skin = new Skin();
@@ -99,13 +104,19 @@ public class GameScreen implements Screen {
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
 
         initButtons();
+
+        /*Game loop here?
+
+        while (true) {
+            // crashes the game
+        } */
     }
 
     @Override
     public void render(float v) {
+        // render is called when the screen should render itself. (On it's own?)
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Called when the screen should render itself.'
         // render the game map
         renderer.render();
         // render the player
