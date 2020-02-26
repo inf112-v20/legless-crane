@@ -21,17 +21,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import org.xml.sax.SAXException;
 import roborally.Application;
+import roborally.board.Board;
+import roborally.board.Tile;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 
 public class GameScreen implements Screen {
     // Originally from the Renderer-class:
-    private TiledMap board;
+    private TiledMap boardgfx;
+    private Board board;
     private TiledMapTileLayer background;
     private TiledMapTileLayer playerLayer;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private TiledMapTileLayer.Cell playerTile; // regular player texture.
-    private Vector2 playerPosition;
+    public Vector2 playerPosition;
     private int boardWidth;
     private int boardHeight;
 
@@ -57,7 +65,7 @@ public class GameScreen implements Screen {
 
     private void createCam() {
         // creating a new camera and 2D/Orthogonal renderer
-        renderer = new OrthogonalTiledMapRenderer(board, 1 / 400f);
+        renderer = new OrthogonalTiledMapRenderer(boardgfx, 1 / 400f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, boardWidth, boardHeight);
         camera.position.set(camera.viewportWidth / 4f, camera.viewportHeight / 4f, 0); // centering camera
@@ -66,11 +74,16 @@ public class GameScreen implements Screen {
         renderer.setView(camera);
     }
 
-    private void loadBoard() {
+
+
+    private void loadBoard() throws IOException, SAXException, ParserConfigurationException {
+        //TODO load in a Board here too for use in logic?
+        board = new Board(new File("src/main/assets/boards/Board1.tmx"));
+
         // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
         TmxMapLoader loader = new TmxMapLoader();
-        board = loader.load("boards/Board1.tmx");
-        background = (TiledMapTileLayer) board.getLayers().get("background");
+        boardgfx = loader.load("src/main/assets/boards/Board1.tmx");
+        background = (TiledMapTileLayer) boardgfx.getLayers().get("background");
 
         boardWidth = background.getWidth();
         boardHeight = background.getHeight();
@@ -83,8 +96,10 @@ public class GameScreen implements Screen {
 
         // creating a layer to hold the player, setting the player's position and
         playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
-        playerPosition = new Vector2(6, 2); // starting position for the player
+        // starting position for the player
+        playerPosition = new Vector2(6, 2);
         playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y,playerTile);
+
     }
 
     @Override
@@ -93,7 +108,12 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(stage); // keep track of how actors interact/influence/are being influenced on stage
         stage.clear(); // reload site
 
-        loadBoard();
+        try {
+            loadBoard();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } //TODO find a better way to handle this?
+
         createCam();
         placePlayer();
 
@@ -104,17 +124,11 @@ public class GameScreen implements Screen {
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
 
         initButtons();
-
-        /*Game loop here?
-
-        while (true) {
-            // crashes the game
-        } */
     }
 
     @Override
     public void render(float v) {
-        // render is called when the screen should render itself. (On it's own?)
+        // render is called when the screen should render itself, which happens all the time
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // render the game map
@@ -145,11 +159,30 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        board.dispose();
+        boardgfx.dispose();
         renderer.dispose();
     }
 
     private void queueAssets(){ app.assets.load("ui/uiskin.atlas", TextureAtlas.class); }
+
+    /*
+    Can add current pos here when we get directional walls in,
+    check if a wall in currentPos or nextPos blocks movement between the two tiles.
+    */
+    private boolean willCollide(int x, int y) { return board.get(x, y) == Tile.WALL; }
+
+    private void updatePlayerPosition(Vector2 currentPos, float newX, float newY) {
+        if (validMove(newX,newY) && !willCollide((int) newX, (int) newY)) {
+            playerPosition = new Vector2(newX, newY);
+            playerLayer.setCell((int) newX, (int) newY, playerTile);
+            playerLayer.setCell((int)currentPos.x, (int)currentPos.y, null);
+        }
+    }
+
+    // can add other logic here to check if there are walls etc blocking movement
+    private boolean validMove(float x, float y) {
+        return (x < boardWidth && x >= 0) && (y < boardHeight && y >= 0);
+    }
 
     private void initButtons() {
         buttonMenu = new TextButton("Main menu", skin, "default");
@@ -209,18 +242,5 @@ public class GameScreen implements Screen {
         stage.addActor(moveDown);
         stage.addActor(moveLeft);
         stage.addActor(moveRight);
-    }
-
-    private void updatePlayerPosition(Vector2 currentPos, float newX, float newY) {
-        if (validMove(newX,newY)) {
-            playerPosition = new Vector2(newX, newY);
-            playerLayer.setCell((int) newX, (int) newY, playerTile);
-            playerLayer.setCell((int)currentPos.x, (int)currentPos.y, null);
-        }
-    }
-
-    // can add other logic here to check if there are walls etc blocking movement
-    private boolean validMove(float x, float y) {
-        return (x < boardWidth && x >= 0) && (y < boardHeight && y >= 0);
     }
 }

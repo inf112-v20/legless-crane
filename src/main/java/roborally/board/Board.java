@@ -42,6 +42,7 @@ public class Board {
 
         // There might not be a point in storing an "Open" tile if it has no logic attached to it.
         readBoardFromFile(file);
+
         for (int i = 0; i < boardSize; i++) {
             grid.add(Tile.OPEN);
         }
@@ -58,9 +59,22 @@ public class Board {
         readVictoryPoints(boardWithLayers.get(9));
         readWalls(boardWithLayers.get(10));
 
-        //TODO best solution I've found to save the map and it's tiles is to do so in different layers, separated by
-        // their logic, due to the overlapping nature of some maps.
-        // movers in one, blockers in one, laser in one?
+
+        for(int i = 0, j = grid.size() - 1; i < j; i++) {
+            grid.add(i, grid.remove(j));
+        } // reverse arraylist, This makes the map mirrored
+        // columns are in the wrong order
+        // rows in the right
+
+        // reverses column order
+        for (int i = 0; i < grid.size(); i += boardWidth) {
+            int endOfBlock = Math.min(i + boardWidth, grid.size());
+            for (int j = i, k = endOfBlock - 1; j < k; j++, k--) {
+                Tile temp = grid.get(j);
+                grid.set(j, grid.get(k));
+                grid.set(k, temp);
+            }
+        }
     }
 
     private void readBoardFromFile(File file) throws IOException, SAXException, ParserConfigurationException {
@@ -101,12 +115,12 @@ public class Board {
 
     public int getBoardHeight() {return boardHeight;}
 
-    public Tile get(Position pos) {
-        return grid.get(pos.getX() + pos.getY()*boardWidth);
+    public Tile get(int x, int y) {
+        return grid.get(x + y*boardWidth);
     }
 
-    public void set(Position pos, Tile state) {
-        grid.set(pos.getX() + pos.getY()*boardWidth, state);
+    public void set(int x, int y, Tile tile) {
+        grid.set(x + y*boardWidth, tile);
     }
 
     private void readBeams(int[] layer) {
