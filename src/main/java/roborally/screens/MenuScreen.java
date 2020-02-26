@@ -16,12 +16,8 @@ import roborally.Application;
 
 public class MenuScreen implements Screen {
     private final Application app;
-    private Stage stage;
+    private final Stage stage;
     private Skin skin;
-    private Image logo;
-
-    private TextButton buttonPlay;
-    private TextButton buttonQuit;
 
     public MenuScreen(final Application app){
         this.app = app;
@@ -43,7 +39,7 @@ public class MenuScreen implements Screen {
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
 
         Texture splashTex = new Texture(Gdx.files.internal("img/logo.png"));
-        logo = new Image(splashTex);
+        Image logo = new Image(splashTex);
         logo.setPosition(stage.getWidth()/2-300,stage.getHeight()/2-16);
         stage.addActor(logo);
 
@@ -86,7 +82,7 @@ public class MenuScreen implements Screen {
     }
     private void initButtons(){
 
-        buttonPlay = new TextButton("Let's play",skin, "default");
+        TextButton buttonPlay = new TextButton("Let's play", skin, "default");
         buttonPlay.setPosition(850,300);
         buttonPlay.setSize(300,100);
         buttonPlay.getLabel().setFontScale(3.0f);
@@ -94,7 +90,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y){ app.setScreen(app.gameScreen); }});
 
-        buttonQuit = new TextButton("Quit",skin, "default");
+        TextButton buttonQuit = new TextButton("Quit", skin, "default");
         buttonQuit.setPosition(850,150);
         buttonQuit.setSize(300,100);
         buttonQuit.getLabel().setFontScale(3.0f);

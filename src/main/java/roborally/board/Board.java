@@ -33,10 +33,9 @@ import java.util.ArrayList;
 
 public class Board {
     private int boardWidth;
-    private int boardHeight;
     private int boardSize;
-    private ArrayList<TileObject> tiles = new ArrayList<>();
-    private ArrayList<int[]> boardWithLayers = new ArrayList<>();
+    private final ArrayList<TileObject> tiles = new ArrayList<>();
+    private final ArrayList<int[]> boardWithLayers = new ArrayList<>();
 
     public Board(File file) throws ParserConfigurationException, IOException, SAXException {
         readBoardFromFile(file);
@@ -74,8 +73,8 @@ public class Board {
         NodeList nodeList = document.getElementsByTagName("layer");
         Element el = (Element)nodeList.item(0);
         boardWidth = Integer.parseInt(el.getAttribute("width"));
-        boardHeight = Integer.parseInt(el.getAttribute("height"));
-        boardSize = boardWidth*boardHeight;
+        int boardHeight = Integer.parseInt(el.getAttribute("height"));
+        boardSize = boardWidth* boardHeight;
 
         /*
         Getting each layer from the .tmx (xml) file, .getTextContent() gives us a String with spaces before and after
@@ -99,9 +98,6 @@ public class Board {
         }
     }
 
-    public int getBoardWidth() {return boardWidth;}
-
-    public int getBoardHeight() {return boardHeight;}
 
     public TileObject get(int x, int y) { return tiles.get(x + y*boardWidth); } // no set method currently
 

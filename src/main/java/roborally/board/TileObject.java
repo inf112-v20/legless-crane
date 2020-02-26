@@ -4,22 +4,22 @@ public class TileObject {
     // No mandatory parameters for constructor yet.
 
     //optional parameters for constructor
-    private boolean canBlockMovement;
-    private boolean canKillPlayer;
-    private boolean canMergeLanes;
-    private boolean canMovePlayer;
-    private boolean canRotate;
-    private boolean canBackup;
-    private boolean canRepair;
-    private boolean isSpawner;
-    private boolean isFlag;
-    private int rotation;
-    private int flagNum;
-    private int movementSpeed;
-    private Direction[] blockingDirections;
-    private Direction[] fromDirections;
-    private Direction movementDirection;
-    private String name;
+    private final boolean canBlockMovement;
+    private final boolean canKillPlayer;
+    private final boolean canMergeLanes;
+    private final boolean canMovePlayer;
+    private final boolean canRotate;
+    private final boolean canBackup;
+    private final boolean canRepair;
+    private final boolean isSpawner;
+    private final boolean isFlag;
+    private final int rotation;
+    private final int flagNum;
+    private final int movementSpeed;
+    private final Direction[] blockingDirections;
+    private final Direction[] fromDirections;
+    private final Direction movementDirection;
+    private final String name;
 
     private TileObject(TileBuilder builder) {
         //booleans
@@ -53,15 +53,15 @@ public class TileObject {
 
     public boolean canKillPlayer() { return canKillPlayer; }
 
-    public boolean isCanMergeLanes() { return canMergeLanes; }
+    public boolean canMergeLanes() { return canMergeLanes; }
 
-    public boolean isCanMovePlayer() { return canMovePlayer; }
+    public boolean canMovePlayer() { return canMovePlayer; }
 
-    public boolean isCanRotate() { return canRotate; }
+    public boolean canRotate() { return canRotate; }
 
-    public boolean isCanBackup() { return canBackup; }
+    public boolean canBackup() { return canBackup; }
 
-    public boolean isCanRepair() { return canRepair; }
+    public boolean canRepair() { return canRepair; }
 
     public boolean isSpawner() { return isSpawner; }
 

@@ -3,7 +3,6 @@ package testing;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 import roborally.board.Board;
-import roborally.board.Tile;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -27,21 +26,21 @@ public class tempTileObjectTests {
 
     @Test
     public void boardCorrectlyReadsWrenches() {
-        assertTrue(board.get(3,0).isCanRepair());
+        assertTrue(board.get(3,0).canRepair());
     }
 
     @Test
-    public void boardCorrectlyReadsCogs() { assertTrue(board.get(2,4).isCanRotate()); }
+    public void boardCorrectlyReadsCogs() { assertTrue(board.get(2,4).canRotate()); }
 
     @Test
     public void boardCorrectlyReadsYellowBelts() {
-        assertTrue(board.get(0,2).isCanMovePlayer());
+        assertTrue(board.get(0,2).canMovePlayer());
         assertEquals(board.get(0,2).getMovementSpeed(),1);
     }
 
     @Test
     public void boardCorrectlyReadsBlueBelts() {
-        assertTrue(board.get(4,4).isCanMovePlayer());
+        assertTrue(board.get(4,4).canMovePlayer());
         assertEquals(board.get(4,4).getMovementSpeed(),2);
     }
 

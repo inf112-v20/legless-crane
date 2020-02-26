@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
     private int boardHeight;
 
     private final Application app;
-    private Stage stage;
+    private final Stage stage;
     private Skin skin;
 
     public GameScreen(final Application app) {
@@ -164,12 +164,7 @@ public class GameScreen implements Screen {
     */
     private boolean willCollide(int x, int y) {
         TileObject tile = board.get(x,y);
-        if (tile.canBlockMovement()) {
-            System.out.println("Should block movement");
-            return true;
-        }
-        System.out.println("Does not block movement");
-        return false;
+        return tile.canBlockMovement();
     }
 
     private void updatePlayerPosition(Vector2 currentPos, float newX, float newY) {
