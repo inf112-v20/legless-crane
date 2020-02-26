@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.xml.sax.SAXException;
 import roborally.Application;
 import roborally.board.Board;
-import roborally.board.Tile;
+import roborally.board.TileObject;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -34,23 +34,16 @@ public class GameScreen implements Screen {
     // Originally from the Renderer-class:
     private TiledMap boardgfx;
     private Board board;
-    private TiledMapTileLayer background;
     private TiledMapTileLayer playerLayer;
     private OrthogonalTiledMapRenderer renderer;
-    private OrthographicCamera camera;
     private TiledMapTileLayer.Cell playerTile; // regular player texture.
     public Vector2 playerPosition;
     private int boardWidth;
     private int boardHeight;
 
     private final Application app;
-    private Stage stage;
+    private final Stage stage;
     private Skin skin;
-    private TextButton buttonMenu;
-    private TextButton moveUp;
-    private TextButton moveDown;
-    private TextButton moveLeft;
-    private TextButton moveRight;
 
     public GameScreen(final Application app) {
         this.app = app;
@@ -66,7 +59,7 @@ public class GameScreen implements Screen {
     private void createCam() {
         // creating a new camera and 2D/Orthogonal renderer
         renderer = new OrthogonalTiledMapRenderer(boardgfx, 1 / 400f);
-        camera = new OrthographicCamera();
+        OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false, boardWidth, boardHeight);
         camera.position.set(camera.viewportWidth / 4f, camera.viewportHeight / 4f, 0); // centering camera
 
@@ -83,7 +76,7 @@ public class GameScreen implements Screen {
         // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
         TmxMapLoader loader = new TmxMapLoader();
         boardgfx = loader.load("src/main/assets/boards/Board1.tmx");
-        background = (TiledMapTileLayer) boardgfx.getLayers().get("background");
+        TiledMapTileLayer background = (TiledMapTileLayer) boardgfx.getLayers().get("background");
 
         boardWidth = background.getWidth();
         boardHeight = background.getHeight();
@@ -169,7 +162,10 @@ public class GameScreen implements Screen {
     Can add current pos here when we get directional walls in,
     check if a wall in currentPos or nextPos blocks movement between the two tiles.
     */
-    private boolean willCollide(int x, int y) { return board.get(x, y) == Tile.WALL; }
+    private boolean willCollide(int x, int y) {
+        TileObject tile = board.get(x,y);
+        return tile.canBlockMovement();
+    }
 
     private void updatePlayerPosition(Vector2 currentPos, float newX, float newY) {
         if (validMove(newX,newY) && !willCollide((int) newX, (int) newY)) {
@@ -185,7 +181,7 @@ public class GameScreen implements Screen {
     }
 
     private void initButtons() {
-        buttonMenu = new TextButton("Main menu", skin, "default");
+        TextButton buttonMenu = new TextButton("Main menu", skin, "default");
         buttonMenu.setPosition(1400, 125);
         buttonMenu.setSize(300, 100);
         buttonMenu.getLabel().setFontScale(3.0f);
@@ -195,7 +191,7 @@ public class GameScreen implements Screen {
                 app.setScreen(app.menuScreen);
             }
         });
-        moveUp = new TextButton("moveUp", skin, "default");
+        TextButton moveUp = new TextButton("moveUp", skin, "default");
         moveUp.setPosition(1000, 50);
         moveUp.setSize(300, 100);
         moveUp.getLabel().setFontScale(3.0f);
@@ -206,7 +202,7 @@ public class GameScreen implements Screen {
 
             }
         });
-        moveDown = new TextButton("Move down", skin, "default");
+        TextButton moveDown = new TextButton("Move down", skin, "default");
         moveDown.setPosition(600, 50);
         moveDown.setSize(300, 100);
         moveDown.getLabel().setFontScale(3.0f);
@@ -217,7 +213,7 @@ public class GameScreen implements Screen {
             }
         });
 
-        moveLeft = new TextButton("Move left", skin, "default");
+        TextButton moveLeft = new TextButton("Move left", skin, "default");
         moveLeft.setPosition(600, 200);
         moveLeft.setSize(300, 100);
         moveLeft.getLabel().setFontScale(3.0f);
@@ -227,7 +223,7 @@ public class GameScreen implements Screen {
                 updatePlayerPosition(playerPosition, playerPosition.x-1, playerPosition.y);
             }
         });
-        moveRight = new TextButton("Move right", skin, "default");
+        TextButton moveRight = new TextButton("Move right", skin, "default");
         moveRight.setPosition(1000, 200);
         moveRight.setSize(300, 100);
         moveRight.getLabel().setFontScale(3.0f);

@@ -12,7 +12,7 @@ import roborally.Application;
 public class LoadingScreen implements Screen {
     // Constructors in the "screen-classses" are equal to Create() in the Renderer-class
     private final Application app;
-    private ShapeRenderer shapeRenderer;
+    private final ShapeRenderer shapeRenderer;
     private float progress;
 
     public LoadingScreen(final Application app){
