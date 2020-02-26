@@ -19,6 +19,7 @@ public class TileObject {
     private Direction[] blockingDirections;
     private Direction[] fromDirections;
     private Direction movementDirection;
+    private String name;
 
     private TileObject(TileBuilder builder) {
         //booleans
@@ -41,11 +42,16 @@ public class TileObject {
         this.blockingDirections=builder.blockingDirections;
         this.movementDirection=builder.movementDirection;
         this.fromDirections=builder.fromDirections;
+        this.name=builder.name;
     }
     // getters
-    public boolean CanBlockMovement() { return canBlockMovement; }
+    public boolean canBlockMovement() { return canBlockMovement; }
 
-    public boolean CanKillPlayer() { return canKillPlayer; }
+    public String toString() {
+        return name;
+    }
+
+    public boolean canKillPlayer() { return canKillPlayer; }
 
     public boolean isCanMergeLanes() { return canMergeLanes; }
 
@@ -93,15 +99,14 @@ public class TileObject {
         private int flagNum;
         private boolean isSpawner;
         private int movementSpeed;
-
-        public TileBuilder(){
-            // Might be no need to provide mandatory variables, are there any traits that all tiles have either
-            // or?
-        }
+        private String name;
+        public TileBuilder() {/*Currently have no required paramaters, so this is unneeded?*/}
 
         public TileBuilder setBlocker(Direction[] blockingDirections) {
             this.canBlockMovement = true;
             this.blockingDirections = blockingDirections;
+            this.name = "blocker";
+            //System.out.println("Blocker made");
             return this;
         }
 
@@ -139,9 +144,10 @@ public class TileObject {
             return this;
         }
 
-        public TileBuilder setMergeAndMover(Direction movementDirection, Direction[] fromDirections) {
+        public TileBuilder setMergeAndMover(Direction movementDirection, int movementSpeed, Direction[] fromDirections) {
             this.canMergeLanes = true;
             this.canMovePlayer = true;
+            this.movementSpeed = movementSpeed;
             this.fromDirections = fromDirections;
             this.movementDirection = movementDirection;
             return this;
@@ -153,6 +159,7 @@ public class TileObject {
         }
 
         public TileObject build(){
+            //System.out.println(this.canBlockMovement);
             return new TileObject(this);
         }
     }
