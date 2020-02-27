@@ -6,11 +6,40 @@
   <groupId>inf112.legless-crane</groupId>
   <artifactId>roborally</artifactId>
   <version>0.2</version>
-
-  <!-- TODO Remove this? -->
-  <name>mvn-app</name>
+  <packaging>jar</packaging>
   <!-- Project website on github -->
   <url>https://github.com/inf112-v20/legless-crane</url>
+
+  <developers>
+    <developer>
+      <name>Sindre Larsen</name>
+      <roles>
+        <role>team leader</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Hedda Roska</name>
+      <roles>
+        <role>secretary?</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Kjersti Aslesen</name>
+      <roles>
+        <role>lead tester</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Andreas Christensen</name>
+      <roles>
+        <role>customer contact</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -61,8 +90,42 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+              <mainClass>roborally.Application</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
@@ -86,6 +149,14 @@
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addClasspath>true</addClasspath>
+                <mainClass>roborally.Application</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
