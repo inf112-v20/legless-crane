@@ -51,7 +51,7 @@ public class MenuScreen implements Screen {
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //update(v);
+        update(v);
 
         stage.draw();
 
