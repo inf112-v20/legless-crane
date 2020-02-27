@@ -29,56 +29,56 @@ Forbedringspunkter:
 
 ## Deloppgave 2
 Brukerhistorier:
-#### Brukerhistorie #1: spillet må kunne bygge
+##### Brukerhistorie #1: spillet må kunne bygge
 “Som kunde trenger jeg at applikasjonen jeg har bestilt lar seg bygge, det bør ikke være nødvendig å kjøre fra en IDE”
-######Akseptansekriterier:
+#####Akseptansekriterier:
 - Skal kunne vite hvordan man bygger applikasjonen
 - Dette skal være oversiktlig forklart i github(readme.md)
-######Arbeidsoppgaver:
+#####Arbeidsoppgaver:
 - Dokumentere prosjektet bedre i readme.md fra forsiden
 
 #### Brukerhistorie #2: spillet må kunne kjøre
 “Som kunde trenger jeg å kunne kjøre applikasjonen jeg har spilt”
-######Akseptansekriterier
+#####Akseptansekriterier
 - Krasjer ikke ved oppstart
 - Krasjer ikke mens det kjører
-######Arbeidsoppgaver
+#####Arbeidsoppgaver
 - Utføre manuelle og automatiske tester av spillet, sørge for at det kjører relativt problemfritt.
 
 #### Brukerhistorie #3: spillet bør ha tester
 “Som utvikler trenger jeg å kunne teste at oppførselen er som forventet ”
-######Akseptansekriterier
+#####Akseptansekriterier
 - Spillet ikke har runtime-error
 - Forutsigbar oppførsel fra kode
-######Arbeidsoppgaver
+#####Arbeidsoppgaver
 - Opprette manuelle og/eller automatiske tester som sjekker at spillets kode oppfører seg som ønsket.
 
 #### Brukerhistorie #4: man bør kunne bevege brikke via GUI
 “Som spiller trenger jeg å kunne velge bevegelsen som roboten skal gjøre på skjermen via knapper fremfor keyboard, for å senere kunne programmere roboten via programkort.”
-######Akseptansekriterier
+#####Akseptansekriterier
 - Spillebrettet (tmx-fil) og robot må kunne vises/være interaktive i “GameScreen”.
 - Spiller må kunne bevege seg via knapper fremfor keyboard
-######Arbeidsoppgaver
+#####Arbeidsoppgaver
 - Overføre spillebrett og robot fra “Renderer”-klassen til “GameScreen”-klassen
 - Sette seg inn i hvordan man går fra “KeyListener”-input til “Button”-input
 - Implementere/eksperimentere med overgang
 
 #### Brukerhistorie #5: knapper/kort bør ikke overlappe kartet.
 “Som spiller må jeg kunne se hele kartet, det bør ikke blokkeres av knapper fra grensesnittet”
-######Akseptansekriterier
+#####Akseptansekriterier
 - GUI elementer som knapper bør ikke overlappe
 - Bør se relativt ryddig ut ved siden av spillerkartet
-######Arbeidsoppgaver
+#####Arbeidsoppgaver
 - Undersøke muligheter for å få utvidet det som renderes for spiller, for å få plass til knapper utenfor kartet.
 
 
 #### Brukerhistorie #6: spillet bør ha runder og faser (neste sprint)
 “Som spiller ønsker jeg å kunne se en meny før jeg begynner selve spillet, slik at jeg har mulighet til å navigere mellom ulike stadier av et spill (meny, start, avslutt).”
-######Akseptansekriterier
+#####Akseptansekriterier
 - Implementere forskjellige skjermer som meny og spillskjerm
-- Implementere overgang mellom skjermer via knapper 
+- Implementere overgang mellom skjermer via knapper
 - Trekke “Renderer”-klassen vekk fra spillogikk.
-######Arbeidsoppgaver
+#####Arbeidsoppgaver
 - Sette seg inn i konsepter om skjermer/hvordan håndtere overganger.
 - La “Renderer”-klassen ha et overordnet ansvar for å kjøre de ulike skjermene
 - Implementere/eksperimentere med kode
@@ -92,8 +92,7 @@ Det er ikke gjort noen endringer i forhold til hovedkrav som er satt ennå. Hove
 
 I ettertid har det ikke vært prioritert å gjennomføre flere krav, men derimot å sette seg mer inn i LibGDX samt legge om programmet i forbindelse med input og skjermer. Siden sist er det innført “button-input” for å styre brikken, med hensikt om å lettere kunne gjøre overgang til programkort senere (“trykke på knapper”). Det er også lagt til en enkel hovedmeny med anledning til navigasjon mellom meny og spill (inkludert avslutning).
 
-Kjente bugs?
-- Masse feilmeldinger i IntelliJ i src\main\assets\ui\uiskin.atlas på formen “JSON standard does not allow such tokens”. Denne feilmeldingen ser ikke ut til å produsere feil, men vi må nok undersøke hvorfor denne kommer.
+Kjente bugs? Mange feilmeldinger i IntelliJ i src\main\assets\ui\uiskin.atlas på formen “JSON standard does not allow such tokens”. Denne feilmeldingen ser ikke ut til å produsere feil, men vi må nok undersøke hvorfor denne kommer.
 
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, UML under mappen "Deliverables", samt Retrospektiv på Wiki.
