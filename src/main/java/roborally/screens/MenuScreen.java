@@ -61,7 +61,7 @@ public class MenuScreen implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {/*intentionally empty method*/}
+    public void resize(int width, int height) {/*intentionally empty method*/}
 
     @Override
     public void pause() {/*intentionally empty method*/}

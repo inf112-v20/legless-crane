@@ -1,6 +1,6 @@
 package testing;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 import roborally.board.Board;
 
@@ -8,7 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 
 public class tempTileObjectTests {

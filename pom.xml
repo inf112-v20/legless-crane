@@ -9,8 +9,8 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>mvn-app</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <!-- Project website on github -->
+  <url>https://github.com/inf112-v20/legless-crane</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,11 +40,18 @@
     </dependency>
 
     <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>5.4.2</version>
-        <scope>test</scope>
+      <groupId>com.badlogicgames.gdx</groupId>
+      <artifactId>gdx-backend-headless</artifactId>
+      <version>1.6.2</version>
     </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
     <dependency>
       <groupId>org.mockito</groupId>
@@ -53,19 +60,16 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/assets</directory>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>src/main/assets</directory>
-      </testResource>
-    </testResources>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
