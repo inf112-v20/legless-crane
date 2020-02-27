@@ -192,25 +192,25 @@ public class GameScreen implements Screen {
                 app.setScreen(app.menuScreen);
             }
         });
-        TextButton moveUp = new TextButton("moveUp", skin, "default");
+        TextButton moveUp = new TextButton("Move Back", skin, "default");
         moveUp.setPosition(1000, 50);
         moveUp.setSize(300, 100);
         moveUp.getLabel().setFontScale(3.0f);
         moveUp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	forwardMovement();
+            	backwardMovement();
 
             }
         });
-        TextButton moveDown = new TextButton("Move down", skin, "default");
+        TextButton moveDown = new TextButton("Move Ahead", skin, "default");
         moveDown.setPosition(600, 50);
         moveDown.setSize(300, 100);
         moveDown.getLabel().setFontScale(3.0f);
         moveDown.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	downwardMovement();
+            	forwardMovement();
             }
         });
 
@@ -253,33 +253,33 @@ public class GameScreen implements Screen {
 		}	
     	playerTile.setRotation(rotation-=x);
     }
-    private void forwardMovement() {
+    private void backwardMovement() {
     	if (rotation == 0) {
     		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y+1);
     	}
     	else if (rotation == 1) {
-    		updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
+    		updatePlayerPosition(playerPosition,playerPosition.x-1, playerPosition.y);
     	}
     	else if (rotation == 2) {
     		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y-1);
     	}
     	else if (rotation == 3) {
-    		updatePlayerPosition(playerPosition,playerPosition.x-1, playerPosition.y);
+    		updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
     	}
     }
     
-    private void downwardMovement() {
+    private void forwardMovement() {
     	if (rotation == 0) {
     		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y-1);
     	}
     	else if (rotation == 1) {
-    		updatePlayerPosition(playerPosition,playerPosition.x-1, playerPosition.y);
+    		updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
     	}
     	else if (rotation == 2) {
     		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y+1);
     	}
     	else if (rotation == 3) {
-    		updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
+    		updatePlayerPosition(playerPosition,playerPosition.x-1, playerPosition.y);
     	}
     }
 }
