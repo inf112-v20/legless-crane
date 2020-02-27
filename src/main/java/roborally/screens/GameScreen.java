@@ -132,7 +132,7 @@ public class GameScreen implements Screen {
         renderer.renderTileLayer(playerLayer);
         renderer.getBatch().end();
         // render buttons:
-       // update(v);
+        update(v);
         stage.draw();
     }
 
