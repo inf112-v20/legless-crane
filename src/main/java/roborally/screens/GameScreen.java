@@ -40,6 +40,7 @@ public class GameScreen implements Screen {
     public Vector2 playerPosition;
     private int boardWidth;
     private int boardHeight;
+    private int rotation = 0;
 
     private final Application app;
     private final Stage stage;
@@ -198,7 +199,7 @@ public class GameScreen implements Screen {
         moveUp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y+1);
+            	forwardMovement();
 
             }
         });
@@ -209,28 +210,28 @@ public class GameScreen implements Screen {
         moveDown.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y-1);
+            	downwardMovement();
             }
         });
 
-        TextButton moveLeft = new TextButton("Move left", skin, "default");
+        TextButton moveLeft = new TextButton("Rotate left", skin, "default");
         moveLeft.setPosition(600, 200);
         moveLeft.setSize(300, 100);
         moveLeft.getLabel().setFontScale(3.0f);
         moveLeft.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                updatePlayerPosition(playerPosition, playerPosition.x-1, playerPosition.y);
+            	rotatePlayerLeft(playerPosition, 1);
             }
         });
-        TextButton moveRight = new TextButton("Move right", skin, "default");
+        TextButton moveRight = new TextButton("Rotate right", skin, "default");
         moveRight.setPosition(1000, 200);
         moveRight.setSize(300, 100);
         moveRight.getLabel().setFontScale(3.0f);
         moveRight.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
+            	rotatePlayerRight(playerPosition, 1);
             }
         });
         stage.addActor(buttonMenu);
@@ -239,4 +240,47 @@ public class GameScreen implements Screen {
         stage.addActor(moveLeft);
         stage.addActor(moveRight);
     }
+    private void rotatePlayerLeft(Vector2 currentPos, int x) {
+    	if (rotation == 4) {
+			rotation = 0;
+		}	
+    	playerTile.setRotation(rotation+=x);
+    	}
+    	
+    private void rotatePlayerRight(Vector2 currentPos, int x) {
+    	if (rotation == 0) {
+			rotation = 4;
+		}	
+    	playerTile.setRotation(rotation-=x);
+    }
+    private void forwardMovement() {
+    	if (rotation == 0) {
+    		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y+1);
+    	}
+    	else if (rotation == 1) {
+    		updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
+    	}
+    	else if (rotation == 2) {
+    		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y-1);
+    	}
+    	else if (rotation == 3) {
+    		updatePlayerPosition(playerPosition,playerPosition.x-1, playerPosition.y);
+    	}
+    }
+    
+    private void downwardMovement() {
+    	if (rotation == 0) {
+    		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y-1);
+    	}
+    	else if (rotation == 1) {
+    		updatePlayerPosition(playerPosition,playerPosition.x-1, playerPosition.y);
+    	}
+    	else if (rotation == 2) {
+    		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y+1);
+    	}
+    	else if (rotation == 3) {
+    		updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
+    	}
+    }
 }
+
