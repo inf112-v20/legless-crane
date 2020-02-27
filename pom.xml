@@ -91,6 +91,16 @@
     </dependency>
   </dependencies>
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/assets</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/main/assets</directory>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
