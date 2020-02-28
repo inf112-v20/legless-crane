@@ -95,10 +95,9 @@ Det er ikke gjort noen endringer i forhold til hovedkrav som er satt ennå. Hove
 I ettertid har det ikke vært prioritert å gjennomføre flere krav, men derimot å sette seg mer inn i LibGDX samt legge om programmet i forbindelse med input og skjermer. Siden sist er det innført “button-input” for å styre brikken, med hensikt om å lettere kunne gjøre overgang til programkort senere (“trykke på knapper”). Det er også lagt til en enkel hovedmeny med anledning til navigasjon mellom meny og spill (inkludert avslutning).
 
 Kjente bugs? 
--   (fikset?) Mange feilmeldinger i IntelliJ i src\main\assets\ui\uiskin.atlas på formen “JSON standard does not allow such tokens”. Denne feilmeldingen ser ikke ut til å produsere feil, men vi må nok undersøke hvorfor denne kommer
 -   Skjermutviding. Slik som det er nå vil ikke spillet kjøre så sant skjermen justeres
 -   "Boards" med mer enn et element på en rute leses foreløpig ikke riktig i "Board.java" (bare det siste elementet)
--   Venstre roter stopper av og til frem og bak bevegelser intill du bruker høyre roter
+-    Ved å rotere brikken mot venstre kan frem-og tilbakeknappene miste funksjon. Det går fint dersom man roterer mot høyre (igjen). 
 
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, UML under mappen "Deliverables", samt Retrospektiv på Wiki.
