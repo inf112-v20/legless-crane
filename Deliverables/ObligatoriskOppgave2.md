@@ -102,53 +102,76 @@ Kjente bugs?
 
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, UML under mappen "Deliverables", samt Retrospektiv på Wiki.
--   Manuelle tester for gui? (Lever beskrivelser av hvordan testen foregår, så gruppeleder kan teste selv)
 
 ####Manuelle Tester Menuscreen:
  Test Case: Trykk på "Quit"
- Expected: spillet avslutter
- Actual: spillet avslutter
- PASS
+ -   Expected: spillet avslutter
+ -   Actual: spillet avslutter
+ -   PASS
  
  Test Case: Trykk på "Lets Play"
- Expected: Går inn i GameScreen
- Actual: Går inn i GameScreen
- PASS
+ -   Expected: Går inn i GameScreen
+ -   Actual: Går inn i GameScreen
+ -   PASS
  
  ####Manuelle Tester GameScreen:
  
- Test Case: Gå fra GameScreen til MenuScreen med "Main menu"
- Expected: Går inn i MenuScreen
- Actual: Går inn i MenuScreen
- PASS
+Test Case: Gå fra GameScreen til MenuScreen med "Main menu"
+-   Expected: Går inn i MenuScreen
+-   Actual: Går inn i MenuScreen
+-   PASS
  
 Test Case: roter 360 grader med rotate left, trykk 4 ganger
-Expected: roterer 360
-Actual: roterer 360
-PASS
+-   Expected: roterer 360
+-   Actual: roterer 360
+-   PASS
 
 Test Case: roter 360 grader med rotate right, trykk 4 ganger
-Expected: roterer 360
-Actual: roterer 360
-PASS
+-   Expected: roterer 360
+-   Actual: roterer 360
+-   PASS
 
 Test Case: Brikke vendt mot sør beveger seg 1 back så 1 ahead
-Expected: Brikke går 1 bak, så en frem
-Actual: Brikke går 1 bak, så en frem
-PASS
+-   Expected: Brikke går 1 bak, så en frem
+-   Actual: Brikke går 1 bak, så en frem
+-   PASS
 
 Test Case: Brikke vendt mot vest (1 rotate right) beveger seg 1 back så 1 ahead
-Expected: Brikke går 1 bak, så en frem
-Actual: Brikke går 1 bak, så en frem
-PASS
+-   Expected: Brikke går 1 bak, så en frem
+-   Actual: Brikke går 1 bak, så en frem
+-   PASS
 
 Test Case: Brikke vendt mot nord (2 rotate right) beveger seg 1 ahead så 1 back
-Expected: Brikke går 1 frem, så en tilbake
-Actual: Brikke går 1 frem, så en tilbake
-PASS
+-   Expected: Brikke går 1 frem, så en tilbake
+-   Actual: Brikke går 1 frem, så en tilbake
+-   PASS
 
 Test Case: Brikke vendt mot nord (3 rotate right) beveger seg 1 ahead så 1 back
-Expected: Brikke går 1 frem, så en tilbake
-Actual: Brikke går 1 frem, så en tilbake
-PASS
+-   Expected: Brikke går 1 frem, så en tilbake
+-   Actual: Brikke går 1 frem, så en tilbake
+-   PASS
 
+Test Case: brikke (starter på x:6, y:2) vendt mot sør, beveg brikke 13 back til nordlig kant på brettet og forsøk å gå utenfor
+-   Expected: Brikke går 12 steg bak men stopper der pga nordlig bretkant (spiller går ikke utenfor)
+-   Actual: Brikke går 12 steg bak men stopper der pga nordlig bretkant (spiller går ikke utenfor)
+-   PASS
+
+Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter venstre, 1 frem, roter høyre, 2 frem, forsøker å gå utenfor den sørlige brettkanten
+-   Expected: Brikke går til sørlig kant men ikke lengre (spiller går ikke utenfor)
+-   Actual: Brikke går til sørlig kant men ikke lengre (spiller går ikke utenfor)
+-   PASS
+
+Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter venstre, 1 frem, roter høyre, 1 frem, roter venstre, 5 frem, forsøker å gå utenfor den østlige brettkanten
+-   Expected: Brikke går til østlig kant men ikke lengre (spiller går ikke utenfor)
+-   Actual: Brikke går til østlig kant men ikke lengre (spiller går ikke utenfor)
+-   PASS
+
+Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter høyre, 2 frem, roter 3 høyre, 1 frem, roter høyre, 5 frem, forsøker å gå utenfor den vestlige brettkanten
+-   Expected: Brikke går til vestlige kant men ikke lengre (spiller går ikke utenfor)
+-   Actual: Brikke går til vestlige kant men ikke lengre (spiller går ikke utenfor)
+-   PASS
+
+Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter høyre, 2 frem, roter venstre, 1 frem, roter høyre, 5 frem, forsøker å gå utenfor den vestlige brettkanten
+-   Expected: Brikke går til vestlige kant men ikke lengre (spiller går ikke utenfor)
+-   Actual: Spiller får ikke gå frem etter venstre rotate
+-   FAIL
