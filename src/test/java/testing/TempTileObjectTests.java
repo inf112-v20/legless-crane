@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class tempTileObjectTests {
+public class TempTileObjectTests {
 
     private Board board;
 
-    public tempTileObjectTests() throws IOException, SAXException, ParserConfigurationException {
+    public TempTileObjectTests() throws IOException, SAXException, ParserConfigurationException {
         board = new Board(new File("src/test/testingResources/testBoard0.tmx"));
     }
 
