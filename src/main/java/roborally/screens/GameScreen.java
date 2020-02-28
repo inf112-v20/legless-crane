@@ -218,7 +218,7 @@ public class GameScreen implements Screen {
         rotateLeft.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	rotatePlayerLeft(playerPosition, 1);
+            	rotatePlayerLeft(1);
             }
         });
         TextButton rotateRight = new TextButton("Rotate right", skin, "default");
@@ -228,7 +228,7 @@ public class GameScreen implements Screen {
         rotateRight.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	rotatePlayerRight(playerPosition, 1);
+            	rotatePlayerRight(1);
             }
         });
         stage.addActor(buttonMenu);
@@ -237,14 +237,14 @@ public class GameScreen implements Screen {
         stage.addActor(rotateLeft);
         stage.addActor(rotateRight);
     }
-    private void rotatePlayerLeft(Vector2 currentPos, int x) {
+    private void rotatePlayerLeft(int x) {
     	if (rotation == 4) {
 			rotation = 0;
 		}	
     	playerTile.setRotation(rotation+=x);
     	}
     	
-    private void rotatePlayerRight(Vector2 currentPos, int x) {
+    private void rotatePlayerRight(int x) {
     	if (rotation == 0) {
 			rotation = 4;
 		}	
