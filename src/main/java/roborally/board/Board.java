@@ -117,7 +117,7 @@ public class Board {
                             break;
                         case 7:
                             tiles.set(i, new TileObject.TileBuilder().setRepairAndBackup().build()); // wrench and hammer
-                            break;
+                            //break;
                         case 15:
                             tiles.set(i, new TileObject.TileBuilder().setRepairAndBackup().build()); // wrench
                             break;
