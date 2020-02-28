@@ -71,7 +71,6 @@ Brukerhistorier:
 #####Arbeidsoppgaver
 -   Undersøke muligheter for å få utvidet det som renderes for spiller, for å få plass til knapper utenfor kartet.
 
-
 #### Brukerhistorie #6: spillet bør ha runder og faser (neste sprint)
 “Som spiller ønsker jeg å kunne se en meny før jeg begynner selve spillet, slik at jeg har mulighet til å navigere mellom ulike stadier av et spill (meny, start, avslutt).”
 #####Akseptansekriterier
