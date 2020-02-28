@@ -33,51 +33,54 @@ Brukerhistorier:
 “Som kunde trenger jeg at applikasjonen jeg har bestilt lar seg bygge, det bør ikke være nødvendig å kjøre fra en IDE”
 #####Akseptansekriterier:
 -   Skal kunne vite hvordan man bygger applikasjonen
+-   Pom.xml innholdere elementene som kreves for en rikitg og komplett Build
 -   Dette skal være oversiktlig forklart i github(readme.md)
 #####Arbeidsoppgaver:
+-   Oppdater Pom.xml
 -   Dokumentere prosjektet bedre i readme.md fra forsiden
 
 #### Brukerhistorie #2: spillet må kunne kjøre
 “Som kunde trenger jeg å kunne kjøre applikasjonen jeg har spilt”
-#####Akseptansekriterier
+#####Akseptansekriterier:
 -   Krasjer ikke ved oppstart
 -   Krasjer ikke mens det kjører
-#####Arbeidsoppgaver
+#####Arbeidsoppgaver:
 -   Utføre manuelle og automatiske tester av spillet, sørge for at det kjører relativt problemfritt.
 
 #### Brukerhistorie #3: spillet bør ha tester
 “Som utvikler trenger jeg å kunne teste at oppførselen er som forventet ”
-#####Akseptansekriterier
+#####Akseptansekriterier:
 -   Spillet ikke har runtime-error
 -   Forutsigbar oppførsel fra kode
-#####Arbeidsoppgaver
--   Opprette manuelle og/eller automatiske tester som sjekker at spillets kode oppfører seg som ønsket.
+#####Arbeidsoppgaver:
+-   Opprette manuelle og/eller automatiske tester som sjekker at spillets kode oppfører seg som forventet.
 
 #### Brukerhistorie #4: man bør kunne bevege brikke via GUI
 “Som spiller trenger jeg å kunne velge bevegelsen som roboten skal gjøre på skjermen via knapper fremfor keyboard, for å senere kunne programmere roboten via programkort.”
-#####Akseptansekriterier
+#####Akseptansekriterier:
 -   Spillebrettet (tmx-fil) og robot må kunne vises/være interaktive i “GameScreen”.
 -   Spiller må kunne bevege seg via knapper fremfor keyboard
-#####Arbeidsoppgaver
+#####Arbeidsoppgaver:
 -   Overføre spillebrett og robot fra “Renderer”-klassen til “GameScreen”-klassen
 -   Sette seg inn i hvordan man går fra “KeyListener”-input til “Button”-input
 -   Implementere/eksperimentere med overgang
 
 #### Brukerhistorie #5: knapper/kort bør ikke overlappe kartet
 “Som spiller må jeg kunne se hele kartet, det bør ikke blokkeres av knapper fra grensesnittet”
-#####Akseptansekriterier
+#####Akseptansekriterier:
 -   GUI elementer som knapper bør ikke overlappe
 -   Bør se relativt ryddig ut ved siden av spillerkartet
-#####Arbeidsoppgaver
+#####Arbeidsoppgaver:
+-   Dele GameScreen inn i to felt, et for brett og et for styringssenter
 -   Undersøke muligheter for å få utvidet det som renderes for spiller, for å få plass til knapper utenfor kartet.
 
 #### Brukerhistorie #6: spillet bør ha runder og faser (neste sprint)
 “Som spiller ønsker jeg å kunne se en meny før jeg begynner selve spillet, slik at jeg har mulighet til å navigere mellom ulike stadier av et spill (meny, start, avslutt).”
-#####Akseptansekriterier
+#####Akseptansekriterier:
 -   Implementere forskjellige skjermer som meny og spillskjerm
 -   Implementere overgang mellom skjermer via knapper
 -   Trekke “Renderer”-klassen vekk fra spillogikk.
-#####Arbeidsoppgaver
+#####Arbeidsoppgaver:
 -   Sette seg inn i konsepter om skjermer/hvordan håndtere overganger.
 -   La “Renderer”-klassen ha et overordnet ansvar for å kjøre de ulike skjermene
 -   Implementere/eksperimentere med kode
