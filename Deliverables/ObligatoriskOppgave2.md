@@ -4,10 +4,10 @@
 Vi fungerer relativt greit i rollene vi satte første sprint. Kommer til å rotere på roller ved neste sprint og sannsynligvis de følgende etter det igjen. For denne sprinten endte vi opp i en slags overgangsfase hvor rollene ble litt mindre definerte.
 
 Dette innebærer de ulike rollene i semesterprosjektet:
-- Teamleder: lede teamet ved å prøve å sette mål for de ulike sprintene, forsøke å spre arbeidsoppgaver og få alle til å ta ansvar for én del av sprinten.
-- Kundekontakt: overordnet ansvar for kommunikasjon mellom gruppen og gruppeleder
-- Bookingansvarlig: booke grupperom for møter/arbeid slik at teamet har er greit sted å jobbe sammen.
-- Sekretær: utforme referat, overordnet ansvar for å formulere den obligatorisk oppgaven
+-   Teamleder: lede teamet ved å prøve å sette mål for de ulike sprintene, forsøke å spre arbeidsoppgaver og få alle til å ta ansvar for én del av sprinten.
+-   Kundekontakt: overordnet ansvar for kommunikasjon mellom gruppen og gruppeleder
+-   Bookingansvarlig: booke grupperom for møter/arbeid slik at teamet har er greit sted å jobbe sammen.
+-   Sekretær: utforme referat, overordnet ansvar for å formulere den obligatorisk oppgaven
 
 Vi har sett at det blir aktuelt å sette en av oss som ansvarlig for testing. Som da sørger for at vi tester prosjektet tilstrekkelig, og at vi tester relevante deler av prosjektet. Alle har ansvar for at testene blir gjennomført ved commit, og helst består.
 
@@ -22,68 +22,68 @@ Når det gjelder prosjektstruktur endte vi opp med å planlegge mye i første sp
 Referat fra møter ligger i github prosjektet vårt under Wiki -> Møtereferater
 
 Forbedringspunkter:
-- Jevne ut fordelingen av commits fra alle på gruppen (hovedproblemet til gruppen for nå)
-- Vi skal sette av tid til parprogrammering som et virkemiddel for å hjelpe med første punkt.
-- Revurdere strukturen i prosjektet vårt så langt, lener oss nok mer på libGDX enn vi originalt hadde tenkt.
-- Jobbe en del med prosjekttavlen, fordele issues, rydde i issues vi har liggende på tavlen og annet arbeid som trengs.
+-   Jevne ut fordelingen av commits fra alle på gruppen (hovedproblemet til gruppen for nå)
+-   Vi skal sette av tid til parprogrammering som et virkemiddel for å hjelpe med første punkt.
+-   Revurdere strukturen i prosjektet vårt så langt, lener oss nok mer på libGDX enn vi originalt hadde tenkt.
+-   Jobbe en del med prosjekttavlen, fordele issues, rydde i issues vi har liggende på tavlen og annet arbeid som trengs.
 
 ## Deloppgave 2
 Brukerhistorier:
 ##### Brukerhistorie #1: spillet må kunne bygge
 “Som kunde trenger jeg at applikasjonen jeg har bestilt lar seg bygge, det bør ikke være nødvendig å kjøre fra en IDE”
 #####Akseptansekriterier:
-- Skal kunne vite hvordan man bygger applikasjonen
-- Dette skal være oversiktlig forklart i github(readme.md)
+-   Skal kunne vite hvordan man bygger applikasjonen
+-   Dette skal være oversiktlig forklart i github(readme.md)
 #####Arbeidsoppgaver:
-- Dokumentere prosjektet bedre i readme.md fra forsiden
+-   Dokumentere prosjektet bedre i readme.md fra forsiden
 
 #### Brukerhistorie #2: spillet må kunne kjøre
 “Som kunde trenger jeg å kunne kjøre applikasjonen jeg har spilt”
 #####Akseptansekriterier
-- Krasjer ikke ved oppstart
-- Krasjer ikke mens det kjører
+-   Krasjer ikke ved oppstart
+-   Krasjer ikke mens det kjører
 #####Arbeidsoppgaver
-- Utføre manuelle og automatiske tester av spillet, sørge for at det kjører relativt problemfritt.
+-   Utføre manuelle og automatiske tester av spillet, sørge for at det kjører relativt problemfritt.
 
 #### Brukerhistorie #3: spillet bør ha tester
 “Som utvikler trenger jeg å kunne teste at oppførselen er som forventet ”
 #####Akseptansekriterier
-- Spillet ikke har runtime-error
-- Forutsigbar oppførsel fra kode
+-   Spillet ikke har runtime-error
+-   Forutsigbar oppførsel fra kode
 #####Arbeidsoppgaver
-- Opprette manuelle og/eller automatiske tester som sjekker at spillets kode oppfører seg som ønsket.
+-   Opprette manuelle og/eller automatiske tester som sjekker at spillets kode oppfører seg som ønsket.
 
 #### Brukerhistorie #4: man bør kunne bevege brikke via GUI
 “Som spiller trenger jeg å kunne velge bevegelsen som roboten skal gjøre på skjermen via knapper fremfor keyboard, for å senere kunne programmere roboten via programkort.”
 #####Akseptansekriterier
-- Spillebrettet (tmx-fil) og robot må kunne vises/være interaktive i “GameScreen”.
-- Spiller må kunne bevege seg via knapper fremfor keyboard
+-   Spillebrettet (tmx-fil) og robot må kunne vises/være interaktive i “GameScreen”.
+-   Spiller må kunne bevege seg via knapper fremfor keyboard
 #####Arbeidsoppgaver
-- Overføre spillebrett og robot fra “Renderer”-klassen til “GameScreen”-klassen
-- Sette seg inn i hvordan man går fra “KeyListener”-input til “Button”-input
-- Implementere/eksperimentere med overgang
+-   Overføre spillebrett og robot fra “Renderer”-klassen til “GameScreen”-klassen
+-   Sette seg inn i hvordan man går fra “KeyListener”-input til “Button”-input
+-   Implementere/eksperimentere med overgang
 
-#### Brukerhistorie #5: knapper/kort bør ikke overlappe kartet.
+#### Brukerhistorie #5: knapper/kort bør ikke overlappe kartet
 “Som spiller må jeg kunne se hele kartet, det bør ikke blokkeres av knapper fra grensesnittet”
 #####Akseptansekriterier
-- GUI elementer som knapper bør ikke overlappe
-- Bør se relativt ryddig ut ved siden av spillerkartet
+-   GUI elementer som knapper bør ikke overlappe
+-   Bør se relativt ryddig ut ved siden av spillerkartet
 #####Arbeidsoppgaver
-- Undersøke muligheter for å få utvidet det som renderes for spiller, for å få plass til knapper utenfor kartet.
+-   Undersøke muligheter for å få utvidet det som renderes for spiller, for å få plass til knapper utenfor kartet.
 
 
 #### Brukerhistorie #6: spillet bør ha runder og faser (neste sprint)
 “Som spiller ønsker jeg å kunne se en meny før jeg begynner selve spillet, slik at jeg har mulighet til å navigere mellom ulike stadier av et spill (meny, start, avslutt).”
 #####Akseptansekriterier
-- Implementere forskjellige skjermer som meny og spillskjerm
-- Implementere overgang mellom skjermer via knapper
-- Trekke “Renderer”-klassen vekk fra spillogikk.
+-   Implementere forskjellige skjermer som meny og spillskjerm
+-   Implementere overgang mellom skjermer via knapper
+-   Trekke “Renderer”-klassen vekk fra spillogikk.
 #####Arbeidsoppgaver
-- Sette seg inn i konsepter om skjermer/hvordan håndtere overganger.
-- La “Renderer”-klassen ha et overordnet ansvar for å kjøre de ulike skjermene
-- Implementere/eksperimentere med kode
+-   Sette seg inn i konsepter om skjermer/hvordan håndtere overganger.
+-   La “Renderer”-klassen ha et overordnet ansvar for å kjøre de ulike skjermene
+-   Implementere/eksperimentere med kode
 
-####Resterende deloppgaver: 
+####Resterende: 
 Vi har prioritert oppgaver som er relatert til å slå sammen spillogikk og brukergrensesnitt. Å få en prototype av spillet til å fungere etter de kravene vi har satt for denne og forrige sprint. 
 
 Hva ser vi i ettertid? At vi muligens må omstille oss når det kommer til måten vi skal bygge opp spillet. Nytte oss mer av konseptene som allerede er tilgjengelige i LibGDX. 
@@ -96,7 +96,7 @@ Kjente bugs? Mange feilmeldinger i IntelliJ i src\main\assets\ui\uiskin.atlas p�
 
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, UML under mappen "Deliverables", samt Retrospektiv på Wiki.
-- Manuelle tester for gui? (Lever beskrivelser av hvordan testen foregår, så gruppeleder kan teste selv)
+-   Manuelle tester for gui? (Lever beskrivelser av hvordan testen foregår, så gruppeleder kan teste selv)
 
 
 
