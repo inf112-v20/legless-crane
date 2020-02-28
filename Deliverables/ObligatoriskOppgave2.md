@@ -61,7 +61,7 @@ Brukerhistorier:
 -   Spillebrettet (tmx-fil) og robot må kunne vises/være interaktive i “GameScreen”.
 -   Spiller må kunne bevege seg via knapper fremfor keyboard
 #####Arbeidsoppgaver:
--   Overføre spillebrett og robot fra “Renderer”-klassen til “GameScreen”-klassen
+-   Overføre spillebrett og robot fra “Renderer”-klassen til “GameScreen”-klassen.
 -   Sette seg inn i hvordan man går fra “KeyListener”-input til “Button”-input
 -   Implementere/eksperimentere med overgang
 
@@ -175,3 +175,8 @@ Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter høyre, 2 frem, rot
 -   Expected: Brikke går til vestlige kant men ikke lengre (spiller går ikke utenfor)
 -   Actual: Spiller får ikke gå frem etter venstre rotate
 -   FAIL
+
+Test Case: brikke starter på x:6, 7:2 vendt mot sør, 1 ahead, mot brettfelt med vegg
+-   Expected: Brikke skal ikke bevege seg inn på feltet (Vil endres seinere til kun å ikke gå gjennom kanten på feltet)
+-   Actual: Brikke går ikke inn på feltet
+-   PASS 
