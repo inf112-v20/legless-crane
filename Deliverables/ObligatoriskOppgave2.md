@@ -3,22 +3,22 @@
 ## Deloppgave 1
 Vi fungerer relativt greit i rollene vi satte første sprint. Kommer til å rotere på roller ved neste sprint og sannsynligvis de følgende etter det igjen. For denne sprinten endte vi opp i en slags overgangsfase hvor rollene ble litt mindre definerte.
 
-Dette innebærer de ulike rollene i semesterprosjektet:
+Dette er det de ulike rollene innebar i første spirnt og til dels i andre sprint:
 -   Teamleder: lede teamet ved å prøve å sette mål for de ulike sprintene, forsøke å spre arbeidsoppgaver og få alle til å ta ansvar for én del av sprinten.
--   Kundekontakt: overordnet ansvar for kommunikasjon mellom gruppen og gruppeleder
+-   Kundekontakt: overordnet ansvar for kommunikasjon mellom gruppen og kunde (gruppeleder)
 -   Bookingansvarlig: booke grupperom for møter/arbeid slik at teamet har er greit sted å jobbe sammen.
 -   Sekretær: utforme referat, overordnet ansvar for å formulere den obligatorisk oppgaven
 
-Vi har sett at det blir aktuelt å sette en av oss som ansvarlig for testing. Som da sørger for at vi tester prosjektet tilstrekkelig, og at vi tester relevante deler av prosjektet. Alle har ansvar for at testene blir gjennomført ved commit, og helst består.
+Vi har sett at det blir aktuelt å sette en av oss som ansvarlig for testing. Som da sørger for at vi tester prosjektet tilstrekkelig, og at vi tester relevante deler av prosjektet. Alle har ansvar for at testene blir gjennomført ved commit, og helst består. Da vi får inn en ny rolle ser for oss at Bookingasvarlig frafaller, og hvor det da blir gruppens felles ansvar at vi har et sted å jobbe ved møter/parprogrammering.
 
 Våre erfaringer med tanke på teamet har to hovedpunkter.
 Sindre sto for en uproporsjonal andel av commits og kode i første sprint, det er en enighet om at dette ansvaret burde ha fordelt seg mer tidligere slik at enkelte ikke henger etter i endringene som har blitt gjort.
 For å hjelpe med dette avtaler vi tider for samarbeid og parprogrammering i løpet av denne sprinten slik at alle ser noe av koden som vi implementerer og selvsagt også bidrar til den.
-Prosjektmetodikk har vært relativ grei så langt, vi velger å vektlegge mer tid på parprogrammering enn vi gjorde i første sprint, og vi ønsker også å få på plass mer relevante tester. Så litt mer fokus på flere og bedre enhetstester hvor mulig, og manuelle tester hvor ikke.
+Prosjektmetodikk har vært relativ grei så langt, vi velger å vektlegge mer tid på parprogrammering enn vi gjorde i første sprint, og vi ønsker også å få på plass mer relevante tester. Så litt mer fokus på flere og bedre enhetstester hvor mulig, og manuelle tester hvor ikke (se retorspektiv i wiki for oppdatering på hvordan dette har gått.)
 
 Både gruppedynamikk og kommunikasjon fungerer ganske godt, det er lav terskel for å bidra i gruppetimer og i våre møter utenfor onsdagen om man har innspill, spørsmål eller tanker til prosjektet. Her deltar alle aktivt, hvor sekretær og teamleder har sørget for at vi holder oss konkrete til sprinten, og ikke for generelt til prosjektet.
 
-Når det gjelder prosjektstruktur endte vi opp med å planlegge mye i første sprint i fellesskap og ble enige om en plan, som nevnt tidligere ble det til at Sindre sto for alt for mye av implementasjonen av disse planene og commits til prosjektet generelt.
+Når det gjelder prosjektstruktur endte vi opp med å planlegge mye i første sprint i fellesskap og ble enige om en plan, som nevnt tidligere ble det til at Sindre sto for alt for mye av implementasjonen av disse planene og commits til prosjektet generelt. 
 Referat fra møter ligger i github prosjektet vårt under Wiki -> Møtereferater
 
 Forbedringspunkter:
@@ -100,7 +100,8 @@ Kjente bugs?
 Viser til readme.md for teknisk teknisk produktoppsett, UML under mappen "Deliverables", samt Retrospektiv på Wiki.
 -   Manuelle tester for gui? (Lever beskrivelser av hvordan testen foregår, så gruppeleder kan teste selv)
 
-
+####Manuelle Tester:
+ 
 
 
 
