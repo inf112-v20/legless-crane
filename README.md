@@ -20,7 +20,7 @@ cd C:\..\legless-crane\target
 java -jar roborally-0.2.jar
 ```
 
-### Alternative:
+### Alternative #1:
 
 Download [latest release](https://github.com/inf112-v20/legless-crane/releases) of source code (zip/tar.gz) from github
 
@@ -31,6 +31,9 @@ Download [latest release](https://github.com/inf112-v20/legless-crane/releases) 
 #### Run:
 1. Locate target directory in `..\legless-crane\target`
 2. Run `roborally-0.2.jar`
+
+### Alternative #2:
+In case "Alternative #1" does not work, run main from "Application.java" in IntelliJ.
 
 ## Known bugs
 When executing .jar file, it crashes on some PCs.
