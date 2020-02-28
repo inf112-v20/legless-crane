@@ -95,17 +95,60 @@ Det er ikke gjort noen endringer i forhold til hovedkrav som er satt ennå. Hove
 I ettertid har det ikke vært prioritert å gjennomføre flere krav, men derimot å sette seg mer inn i LibGDX samt legge om programmet i forbindelse med input og skjermer. Siden sist er det innført “button-input” for å styre brikken, med hensikt om å lettere kunne gjøre overgang til programkort senere (“trykke på knapper”). Det er også lagt til en enkel hovedmeny med anledning til navigasjon mellom meny og spill (inkludert avslutning).
 
 Kjente bugs? 
--   Mange feilmeldinger i IntelliJ i src\main\assets\ui\uiskin.atlas på formen “JSON standard does not allow such tokens”. Denne feilmeldingen ser ikke ut til å produsere feil, men vi må nok undersøke hvorfor denne kommer
+-   (fikset?) Mange feilmeldinger i IntelliJ i src\main\assets\ui\uiskin.atlas på formen “JSON standard does not allow such tokens”. Denne feilmeldingen ser ikke ut til å produsere feil, men vi må nok undersøke hvorfor denne kommer
 -   Skjermutviding. Slik som det er nå vil ikke spillet kjøre så sant skjermen justeres
 -   "Boards" med mer enn et element på en rute leses foreløpig ikke riktig i "Board.java" (bare det siste elementet)
+-   Venstre roter stopper av og til frem og bak bevegelser intill du bruker høyre roter
 
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, UML under mappen "Deliverables", samt Retrospektiv på Wiki.
 -   Manuelle tester for gui? (Lever beskrivelser av hvordan testen foregår, så gruppeleder kan teste selv)
 
-####Manuelle Tester:
+####Manuelle Tester Menuscreen:
+ Test Case: Trykk på "Quit"
+ Expected: spillet avslutter
+ Actual: spillet avslutter
+ PASS
  
+ Test Case: Trykk på "Lets Play"
+ Expected: Går inn i GameScreen
+ Actual: Går inn i GameScreen
+ PASS
+ 
+ ####Manuelle Tester GameScreen:
+ 
+ Test Case: Gå fra GameScreen til MenuScreen med "Main menu"
+ Expected: Går inn i MenuScreen
+ Actual: Går inn i MenuScreen
+ PASS
+ 
+Test Case: roter 360 grader med rotate left, trykk 4 ganger
+Expected: roterer 360
+Actual: roterer 360
+PASS
 
+Test Case: roter 360 grader med rotate right, trykk 4 ganger
+Expected: roterer 360
+Actual: roterer 360
+PASS
 
+Test Case: Brikke vendt mot sør beveger seg 1 back så 1 ahead
+Expected: Brikke går 1 bak, så en frem
+Actual: Brikke går 1 bak, så en frem
+PASS
 
+Test Case: Brikke vendt mot vest (1 rotate right) beveger seg 1 back så 1 ahead
+Expected: Brikke går 1 bak, så en frem
+Actual: Brikke går 1 bak, så en frem
+PASS
+
+Test Case: Brikke vendt mot nord (2 rotate right) beveger seg 1 ahead så 1 back
+Expected: Brikke går 1 frem, så en tilbake
+Actual: Brikke går 1 frem, så en tilbake
+PASS
+
+Test Case: Brikke vendt mot nord (3 rotate right) beveger seg 1 ahead så 1 back
+Expected: Brikke går 1 frem, så en tilbake
+Actual: Brikke går 1 frem, så en tilbake
+PASS
 

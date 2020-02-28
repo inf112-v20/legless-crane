@@ -38,7 +38,11 @@ Download [latest release](https://github.com/inf112-v20/legless-crane/releases) 
 ## Known bugs
 When executing .jar file, it crashes on some PCs.
 
+Boards with more than one element on a single tile do not read correctly in Board.java, only the last element read in the given tile is saved.
+
+Left rotate sometime prevents robot moving back and ahead, until you use right rotate.
+
+When resizing the game window clickListeners move coordinates, making the buttons useless.
+
 Currently throws "WARNING: An illegal reflective access operation has occurred", 
 when the java version used is >8. This has no effect on function or performance, and is just a warning.
-
-Boards with more than one element on a single tile do not read correctly in Board.java, only the last element read in the given tile is saved.
