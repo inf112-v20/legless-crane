@@ -156,9 +156,6 @@ public class GameScreen implements Screen {
         boardgfx.dispose();
         renderer.dispose();
     }
-
-    private void queueAssets(){ app.assets.load("ui/uiskin.atlas", TextureAtlas.class); }
-
     /*
     Can add current pos here when we get directional walls in,
     check if a wall in currentPos or nextPos blocks movement between the two tiles.

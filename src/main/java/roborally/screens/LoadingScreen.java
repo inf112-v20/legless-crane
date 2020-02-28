@@ -22,7 +22,7 @@ public class LoadingScreen implements Screen {
         queueAssets();
     }
 
-    private void update(float f){
+    private void update(){
         progress = MathUtils.lerp(progress, app.assets.getProgress(),.2f);
 
         if (app.assets.update() && progress <= app.assets.getProgress()-.001f)       // Directs to game after all upload. (What is inside ququeAssets();)
@@ -41,7 +41,7 @@ public class LoadingScreen implements Screen {
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        update(v);
+        update();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);

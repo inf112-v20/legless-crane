@@ -76,10 +76,7 @@ public class MenuScreen implements Screen {
     public void dispose() {
         stage.dispose();
     }
-
-    private void queueAssets(){
-        app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
-    }
+    
     private void initButtons(){
 
         TextButton buttonPlay = new TextButton("Let's play", skin, "default");
