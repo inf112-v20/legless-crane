@@ -6,7 +6,7 @@ import roborally.Application;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
-public class appTest {
+public class AppTest {
     private Application app = mock(Application.class);
 
     @Test
