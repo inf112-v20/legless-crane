@@ -211,21 +211,21 @@ public class GameScreen implements Screen {
             }
         });
 
-        TextButton moveLeft = new TextButton("Rotate left", skin, "default");
-        moveLeft.setPosition(600, 200);
-        moveLeft.setSize(300, 100);
-        moveLeft.getLabel().setFontScale(3.0f);
-        moveLeft.addListener(new ClickListener() {
+        TextButton rotateLeft = new TextButton("Rotate left", skin, "default");
+        rotateLeft.setPosition(600, 200);
+        rotateLeft.setSize(300, 100);
+        rotateLeft.getLabel().setFontScale(3.0f);
+        rotateLeft.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
             	rotatePlayerLeft(playerPosition, 1);
             }
         });
-        TextButton moveRight = new TextButton("Rotate right", skin, "default");
-        moveRight.setPosition(1000, 200);
-        moveRight.setSize(300, 100);
-        moveRight.getLabel().setFontScale(3.0f);
-        moveRight.addListener(new ClickListener() {
+        TextButton rotateRight = new TextButton("Rotate right", skin, "default");
+        rotateRight.setPosition(1000, 200);
+        rotateRight.setSize(300, 100);
+        rotateRight.getLabel().setFontScale(3.0f);
+        rotateRight.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
             	rotatePlayerRight(playerPosition, 1);
@@ -234,8 +234,8 @@ public class GameScreen implements Screen {
         stage.addActor(buttonMenu);
         stage.addActor(moveUp);
         stage.addActor(moveDown);
-        stage.addActor(moveLeft);
-        stage.addActor(moveRight);
+        stage.addActor(rotateLeft);
+        stage.addActor(rotateRight);
     }
     private void rotatePlayerLeft(Vector2 currentPos, int x) {
     	if (rotation == 4) {
