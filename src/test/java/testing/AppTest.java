@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 public class AppTest {
-    private Application app = mock(Application.class);
+    private final Application app = mock(Application.class);
 
     @Test
     public void initAppNotNullTest(){

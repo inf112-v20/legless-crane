@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //venter med flere tester til vi har Player object
 public class PlayerTest {
-    private Vector2 playerPosition = new Vector2(0,0);
+    private final Vector2 playerPosition = new Vector2(0,0);
 
     @Test
     public void initialPlayerXPos(){
