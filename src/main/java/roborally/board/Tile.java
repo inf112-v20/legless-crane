@@ -21,7 +21,7 @@ public class Tile {
     private final Direction movementDirection;
     private final String name;
 
-    private Tile(TileBuilder builder) {
+    private Tile(Builder builder) {
         //booleans
         this.canBlockMovement=builder.canBlockMovement;
         this.canMergeLanes=builder.canMergeLanes;
@@ -80,10 +80,10 @@ public class Tile {
     public Direction getMovementDirection() { return movementDirection; }
 
     //Builder Class
-    public static class TileBuilder{
-        //required parameters
+    public static class Builder {
+        // no required parameters
 
-        //optional parameters
+        // optional parameters
         private boolean canBlockMovement;
         private boolean canKillPlayer;
         private Direction[] blockingDirections; // directions blocked by this tile
@@ -100,9 +100,9 @@ public class Tile {
         private boolean isSpawner;
         private int movementSpeed;
         private String name;
-        public TileBuilder() {/*Currently have no required paramaters, so this is unneeded?*/}
+        public Builder() {/*Currently have no required paramaters, so this is unneeded?*/}
 
-        public TileBuilder setBlocker(Direction[] blockingDirections) {
+        public Builder setBlocker(Direction[] blockingDirections) {
             this.canBlockMovement = true;
             this.blockingDirections = blockingDirections;
             this.name = "blocker";
@@ -110,9 +110,7 @@ public class Tile {
             return this;
         }
 
-
-
-        public TileBuilder setRotation(int rotation) {
+        public Builder setRotation(int rotation) {
             // +1, +2, +3 for clockwise rotation
             // -1, -2, -3 for counter-clockwise rotation
             this.canRotate = true;
@@ -120,33 +118,33 @@ public class Tile {
             return this;
         }
 
-        public TileBuilder setRepairAndBackup() {
+        public Builder setRepairAndBackup() {
             // might be smart to merge this and setSpawner() some how to generalize more
             this.canRepair = true;
             this.canBackup = true;
             return this;
         }
         
-        public TileBuilder setFlag(int flagNum) {
+        public Builder setFlag(int flagNum) {
             this.isFlag = true;
             this.flagNum = flagNum;
             return this;
         }
 
-        public TileBuilder setSpawner() {
+        public Builder setSpawner() {
             // might be relevant to set which player can spawn here. Depends if we use this and backup
             this.isSpawner = true;
             return this;
         }
 
-        public TileBuilder setMover(Direction movementDirection, int movementSpeed) {
+        public Builder setStraightBelt(Direction movementDirection, int movementSpeed) {
             this.movementSpeed = movementSpeed;
             this.canMovePlayer = true;
             this.movementDirection = movementDirection;
             return this;
         }
 
-        public TileBuilder setMoveAndRotation(Direction movementDirection, int movementSpeed) {
+        public Builder setCornerBelt(Direction movementDirection, int movementSpeed) {
             //TODO How to determine which direction to rotate?
             this.movementSpeed = movementSpeed;
             this.canMovePlayer = true;
@@ -155,7 +153,7 @@ public class Tile {
             return this;
         }
 
-        public TileBuilder setMergeAndMover(Direction movementDirection, int movementSpeed, Direction[] fromDirections) {
+        public Builder setMergingLanes(Direction movementDirection, int movementSpeed, Direction[] fromDirections) {
             this.canMergeLanes = true;
             this.canMovePlayer = true;
             this.movementSpeed = movementSpeed;
@@ -164,7 +162,7 @@ public class Tile {
             return this;
         }
 
-        public TileBuilder setKiller() {
+        public Builder setKiller() {
             this.canKillPlayer = true;
             return this;
         }
