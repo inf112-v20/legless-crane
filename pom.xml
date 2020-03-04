@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>inf112.legless-crane</groupId>
   <artifactId>roborally</artifactId>
-  <version>0.2</version>
+  <version>0.3</version>
   <packaging>jar</packaging>
   <!-- Project website on github -->
   <url>https://github.com/inf112-v20/legless-crane</url>
@@ -21,7 +21,7 @@
     <developer>
       <name>Hedda Roska</name>
       <roles>
-        <role>secretary?</role>
+        <role>documentation manager</role>
         <role>developer</role>
       </roles>
     </developer>
