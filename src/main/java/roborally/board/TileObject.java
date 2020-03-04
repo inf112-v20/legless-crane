@@ -110,12 +110,7 @@ public class TileObject {
             return this;
         }
 
-        public TileBuilder setMover(Direction movementDirection, int movementSpeed) {
-            this.movementSpeed = movementSpeed;
-            this.canMovePlayer = true;
-            this.movementDirection = movementDirection;
-            return this;
-        }
+
 
         public TileBuilder setRotation(int rotation) {
             // +1, +2, +3 for clockwise rotation
@@ -141,6 +136,22 @@ public class TileObject {
         public TileBuilder setSpawner() {
             // might be relevant to set which player can spawn here. Depends if we use this and backup
             this.isSpawner = true;
+            return this;
+        }
+
+        public TileBuilder setMover(Direction movementDirection, int movementSpeed) {
+            this.movementSpeed = movementSpeed;
+            this.canMovePlayer = true;
+            this.movementDirection = movementDirection;
+            return this;
+        }
+
+        public TileBuilder setMoveAndRotation(Direction movementDirection, int movementSpeed) {
+            //TODO How to determine which direction to rotate?
+            this.movementSpeed = movementSpeed;
+            this.canMovePlayer = true;
+            this.canRotate = true;
+            this.movementDirection = movementDirection;
             return this;
         }
 

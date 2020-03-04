@@ -101,299 +101,282 @@ public class Board {
 
     public TileObject get(int x, int y) { return tiles.get(x + y*boardWidth); } // no set method currently
 
+    //TODO move all these different tile reads into seperate methods for each type?
+
     private void readBoard(ArrayList<int[]> input){
         for (int i = 0; i<boardSize-1; i++) {
             // for every tile on board
+            TileObject.TileBuilder newTile = new TileObject.TileBuilder();
+            // create a new tile
             for (int j = 1; j < input.size(); j++) {
                 // read in from every layer.
-                //TODO, check if there is already a tile at the i position? can we add to that tile's functionality?
-                // might be better to have a bunch of if statements since switch-case is
-                // either or.
                 if (input.get(j)[i] != 0) {
-                    // if not "empty", check if the ID matches:
+                    // if not "empty" in layer, check if the ID matches the TileIDs
                     switch (input.get(j)[i]) {
-                        case 6:
-                            tiles.set(i, new TileObject.TileBuilder().setKiller().build());
+                        case 6: newTile.setKiller();
                             break;
-                        case 7:
-                            tiles.set(i, new TileObject.TileBuilder().setRepairAndBackup().build()); // wrench and hammer
-                            //break;
-                        case 15:
-                            tiles.set(i, new TileObject.TileBuilder().setRepairAndBackup().build()); // wrench
+                        case 7: newTile.setRepairAndBackup(); // wrench and hammer
                             break;
-                        case 53:
-                            tiles.set(i, new TileObject.TileBuilder().setRotation(-1).build()); // red, counter-clockwise cogs
+                        case 15: newTile.setRepairAndBackup(); // wrench
                             break;
-                        case 54:
-                            tiles.set(i, new TileObject.TileBuilder().setRotation(1).build()); // green, clockwise cogs
+                        case 53: newTile.setRotation(-1); // red, counter-clockwise cogs
+                            break;
+                        case 54: newTile.setRotation(1); // green, clockwise cogs
                             break;
 
-                        case 55:
-                            tiles.set(i, new TileObject.TileBuilder().setFlag(1).build()); // flag number 1
+                        case 55: newTile.setFlag(1); // flag number 1
                             break;
-                        case 63:
-                            tiles.set(i, new TileObject.TileBuilder().setFlag(2).build()); // flag number 2
+                        case 63: newTile.setFlag(2); // flag number 2
                             break;
-                        case 71:
-                            tiles.set(i, new TileObject.TileBuilder().setFlag(3).build()); // flag number 3
+                        case 71: newTile.setFlag(3); // flag number 3
                             break;
-                        case 79:
-                            tiles.set(i, new TileObject.TileBuilder().setFlag(4).build()); // flag number 4
+                        case 79: newTile.setFlag(4); // flag number 4
                             break;
 
-                        case 121:
-                            tiles.set(i, new TileObject.TileBuilder().setSpawner().build()); // spawn player 1
+                        case 121: newTile.setSpawner(); // spawn player 1
                             break;
-                        case 122:
-                            tiles.set(i, new TileObject.TileBuilder().setSpawner().build()); // spawn player 2
+                        case 122: newTile.setSpawner(); // spawn player 2
                             break;
-                        case 123:
-                            tiles.set(i, new TileObject.TileBuilder().setSpawner().build()); // spawn player 3
+                        case 123: newTile.setSpawner(); // spawn player 3
                             break;
-                        case 124:
-                            tiles.set(i, new TileObject.TileBuilder().setSpawner().build()); // spawn player 4
+                        case 124: newTile.setSpawner(); // spawn player 4
                             break;
-                        case 129:
-                            tiles.set(i, new TileObject.TileBuilder().setSpawner().build()); // spawn player 5
+                        case 129: newTile.setSpawner(); // spawn player 5
                             break;
-                        case 130:
-                            tiles.set(i, new TileObject.TileBuilder().setSpawner().build()); // spawn player 6
+                        case 130: newTile.setSpawner(); // spawn player 6
                             break;
-                        case 131:
-                            tiles.set(i, new TileObject.TileBuilder().setSpawner().build()); // spawn player 7
+                        case 131: newTile.setSpawner(); // spawn player 7
                             break;
-                        case 132:
-                            tiles.set(i, new TileObject.TileBuilder().setSpawner().build()); // spawn player 8
+                        case 132: newTile.setSpawner(); // spawn player 8
                             break;
 
                         case 8:
-                            tiles.set(i, new TileObject.TileBuilder().setBlocker(
-                                    new Direction[]{Direction.EAST, Direction.SOUTH}).build());  // southeast wall, corner
+                            newTile.setBlocker(
+                                    new Direction[]{Direction.EAST, Direction.SOUTH});  // southeast wall, corner
                             break;
                         case 16:
-                            tiles.set(i, new TileObject.TileBuilder().setBlocker(
-                                    new Direction[]{Direction.NORTH, Direction.EAST}).build()); // northeast wall, corner
+                            newTile.setBlocker(
+                                    new Direction[]{Direction.NORTH, Direction.EAST}); // northeast wall, corner
                             break;
                         case 23:
-                            tiles.set(i, new TileObject.TileBuilder().setBlocker(
-                                    new Direction[]{Direction.EAST}).build()); // eastern wall
+                            newTile.setBlocker(
+                                    new Direction[]{Direction.EAST}); // eastern wall
                             break;
                         case 24:
-                            tiles.set(i, new TileObject.TileBuilder().setBlocker(
-                                    new Direction[]{Direction.NORTH, Direction.WEST}).build()); // northwest wall, corner
+                            newTile.setBlocker(
+                                    new Direction[]{Direction.NORTH, Direction.WEST}); // northwest wall, corner
                             break;
                         case 29:
-                            tiles.set(i, new TileObject.TileBuilder().setBlocker(
-                                    new Direction[]{Direction.SOUTH}).build()); // southern wall
+                            newTile.setBlocker(
+                                    new Direction[]{Direction.SOUTH}); // southern wall
                             break;
                         case 30:
-                            tiles.set(i, new TileObject.TileBuilder().setBlocker(
-                                    new Direction[]{Direction.WEST}).build()); // western wall
+                            newTile.setBlocker(
+                                    new Direction[]{Direction.WEST}); // western wall
                             break;
                         case 31:
-                            tiles.set(i, new TileObject.TileBuilder().setBlocker(
-                                    new Direction[]{Direction.NORTH}).build()); // northern wall
+                            newTile.setBlocker(
+                                    new Direction[]{Direction.NORTH}); // northern wall
                             break;
                         case 32:
-                            tiles.set(i, new TileObject.TileBuilder().setBlocker(
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}).build()); // southwest wall, corner
+                            newTile.setBlocker(
+                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // southwest wall, corner
                             break;
 
                         // yellow belts
                         case 33:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.SOUTH,
-                                    1).build()); // east to south, bend
+                            newTile.setMover(Direction.SOUTH,
+                                    1); // east to south, bend
                             break;
                         case 34:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.WEST,
-                                    1).build()); // south to west, bend
+                            newTile.setMover(Direction.WEST,
+                                    1); // south to west, bend
                             break;
                         case 35:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.EAST,
-                                    1).build()); // south to east, bend
+                            newTile.setMover(Direction.EAST,
+                                    1); // south to east, bend
                             break;
                         case 36:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.SOUTH,
-                                    1).build()); // west to south, bend
+                            newTile.setMover(Direction.SOUTH,
+                                    1); // west to south, bend
                             break;
                         case 41:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.EAST,
-                                    1).build()); // north to east, bend
+                            newTile.setMover(Direction.EAST,
+                                    1); // north to east, bend
                             break;
                         case 42:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.NORTH,
-                                    1).build()); // west to north, bend
+                            newTile.setMover(Direction.NORTH,
+                                    1); // west to north, bend
                             break;
                         case 43:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.NORTH,
-                                    1).build()); // east to north, bend
+                            newTile.setMover(Direction.NORTH,
+                                    1); // east to north, bend
                             break;
                         case 44:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.WEST,
-                                    1).build()); // north to west, bend
+                            newTile.setMover(Direction.WEST,
+                                    1); // north to west, bend
                             break;
                         case 49:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.NORTH,
-                                    1).build()); // going north, straight
+                            newTile.setMover(Direction.NORTH,
+                                    1); // going north, straight
                             break;
                         case 50:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.SOUTH,
-                                    1).build()); // going south, straight
+                            newTile.setMover(Direction.SOUTH,
+                                    1); // going south, straight
                             break;
                         case 51:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.WEST,
-                                    1).build()); // going west, straight
+                            newTile.setMover(Direction.WEST,
+                                    1); // going west, straight
                             break;
                         case 52:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.EAST,
-                                    1).build()); // going east, straight
+                            newTile.setMover(Direction.EAST,
+                                    1); // going east, straight
                             break;
                         case 57:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.NORTH, 1,
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}).build()); // south & west to north, merge
+                            newTile.setMergeAndMover(Direction.NORTH, 1,
+                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to north, merge
                             break;
                         case 58:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.EAST, 1,
-                                    new Direction[]{Direction.NORTH, Direction.WEST}).build()); // north & west to east, merge
+                            newTile.setMergeAndMover(Direction.EAST, 1,
+                                    new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to east, merge
                             break;
                         case 59:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.SOUTH, 1,
-                                    new Direction[]{Direction.NORTH, Direction.EAST}).build()); // north & east to south, merge
+                            newTile.setMergeAndMover(Direction.SOUTH, 1,
+                                    new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to south, merge
                             break;
                         case 60:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.WEST, 1,
-                                    new Direction[]{Direction.SOUTH, Direction.EAST}).build()); // south & east to west, merge
+                            newTile.setMergeAndMover(Direction.WEST, 1,
+                                    new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to west, merge
                             break;
                         case 61:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.EAST, 1,
-                                    new Direction[]{Direction.NORTH, Direction.SOUTH}).build()); // north & south to east, merge
+                            newTile.setMergeAndMover(Direction.EAST, 1,
+                                    new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to east, merge
                             break;
                         case 62:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.SOUTH, 1,
-                                    new Direction[]{Direction.EAST, Direction.WEST}).build()); // east & west to south, merge
+                            newTile.setMergeAndMover(Direction.SOUTH, 1,
+                                    new Direction[]{Direction.EAST, Direction.WEST}); // east & west to south, merge
                             break;
                         case 65:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.NORTH, 1,
-                                    new Direction[]{Direction.SOUTH, Direction.EAST}).build()); // south & east to north, merge
+                            newTile.setMergeAndMover(Direction.NORTH, 1,
+                                    new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to north, merge
                             break;
                         case 66:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.EAST, 1,
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}).build()); // south & west to east, merge
+                            newTile.setMergeAndMover(Direction.EAST, 1,
+                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to east, merge
                             break;
                         case 67:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.SOUTH, 1,
-                                    new Direction[]{Direction.NORTH, Direction.WEST}).build()); // north & west to south, merge
+                            newTile.setMergeAndMover(Direction.SOUTH, 1,
+                                    new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to south, merge
                             break;
                         case 68:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.WEST, 1,
-                                    new Direction[]{Direction.NORTH, Direction.EAST}).build()); // north & east to west, merge
+                            newTile.setMergeAndMover(Direction.WEST, 1,
+                                    new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to west, merge
                             break;
                         case 69:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.NORTH, 1,
-                                    new Direction[]{Direction.EAST, Direction.WEST}).build()); // east & west to north, merge
+                            newTile.setMergeAndMover(Direction.NORTH, 1,
+                                    new Direction[]{Direction.EAST, Direction.WEST}); // east & west to north, merge
                             break;
                         case 70:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.WEST, 1,
-                                    new Direction[]{Direction.NORTH, Direction.SOUTH}).build()); // north & south to west, merge
-
-                            // blue belts
+                            newTile.setMergeAndMover(Direction.WEST, 1,
+                                    new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to west, merge
 
                             break;
+                        // blue belts
                         case 17:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.SOUTH,
-                                    2).build()); // east to south, bend
+                            newTile.setMover(Direction.SOUTH,
+                                    2); // east to south, bend
                             break;
                         case 18:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.WEST,
-                                    2).build()); // south to west, bend
+                            newTile.setMover(Direction.WEST,
+                                    2); // south to west, bend
                             break;
                         case 19:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.EAST,
-                                    2).build()); // south to east, bend
+                            newTile.setMover(Direction.EAST,
+                                    2); // south to east, bend
                             break;
                         case 20:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.SOUTH,
-                                    2).build()); // west to south, bend
+                            newTile.setMover(Direction.SOUTH,
+                                    2); // west to south, bend
                             break;
                         case 25:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.EAST,
-                                    2).build()); // north to east, bend
+                            newTile.setMover(Direction.EAST,
+                                    2); // north to east, bend
                             break;
                         case 26:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.NORTH,
-                                    2).build()); // west to north, bend
+                            newTile.setMover(Direction.NORTH,
+                                    2); // west to north, bend
                             break;
                         case 27:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.NORTH,
-                                    2).build()); // east to north, bend
+                            newTile.setMover(Direction.NORTH,
+                                    2); // east to north, bend
                             break;
                         case 28:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.WEST,
-                                    2).build()); // north to west, bend
+                            newTile.setMover(Direction.WEST,
+                                    2); // north to west, bend
                             break;
                         case 13:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.NORTH,
-                                    2).build()); // going north, straight
+                            newTile.setMover(Direction.NORTH,
+                                    2); // going north, straight
                             break;
                         case 21:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.SOUTH,
-                                    2).build()); // going south, straight
+                            newTile.setMover(Direction.SOUTH,
+                                    2); // going south, straight
                             break;
                         case 22:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.WEST,
-                                    2).build()); // going west, straight
+                            newTile.setMover(Direction.WEST,
+                                    2); // going west, straight
                             break;
                         case 14:
-                            tiles.set(i, new TileObject.TileBuilder().setMover(Direction.EAST,
-                                    2).build()); // going east, straight
+                            newTile.setMover(Direction.EAST,
+                                    2); // going east, straight
                             break;
                         case 73:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.NORTH, 2,
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}).build()); // south & west to north, merge
+                            newTile.setMergeAndMover(Direction.NORTH, 2,
+                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to north, merge
                             break;
                         case 74:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.EAST, 2,
-                                    new Direction[]{Direction.NORTH, Direction.WEST}).build()); // north & west to east, merge
+                            newTile.setMergeAndMover(Direction.EAST, 2,
+                                    new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to east, merge
                             break;
                         case 75:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.SOUTH, 2,
-                                    new Direction[]{Direction.NORTH, Direction.EAST}).build()); // north & east to south, merge
+                            newTile.setMergeAndMover(Direction.SOUTH, 2,
+                                    new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to south, merge
                             break;
                         case 76:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.WEST, 2,
-                                    new Direction[]{Direction.SOUTH, Direction.EAST}).build()); // south & east to west, merge
+                            newTile.setMergeAndMover(Direction.WEST, 2,
+                                    new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to west, merge
                             break;
                         case 81:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.EAST, 2,
-                                    new Direction[]{Direction.NORTH, Direction.SOUTH}).build()); // north & south to east, merge
+                            newTile.setMergeAndMover(Direction.EAST, 2,
+                                    new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to east, merge
                             break;
                         case 82:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.SOUTH, 2,
-                                    new Direction[]{Direction.EAST, Direction.WEST}).build()); // east & west to south, merge
+                            newTile.setMergeAndMover(Direction.SOUTH, 2,
+                                    new Direction[]{Direction.EAST, Direction.WEST}); // east & west to south, merge
                             break;
                         case 77:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.NORTH, 2,
-                                    new Direction[]{Direction.SOUTH, Direction.EAST}).build()); // south & east to north, merge
+                            newTile.setMergeAndMover(Direction.NORTH, 2,
+                                    new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to north, merge
                             break;
                         case 78:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.EAST, 2,
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}).build()); // south & west to east, merge
+                            newTile.setMergeAndMover(Direction.EAST, 2,
+                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to east, merge
                             break;
                         case 86:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.SOUTH, 2,
-                                    new Direction[]{Direction.NORTH, Direction.WEST}).build()); // north & west to south, merge
+                            newTile.setMergeAndMover(Direction.SOUTH, 2,
+                                    new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to south, merge
                             break;
                         case 85:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.WEST, 2,
-                                    new Direction[]{Direction.NORTH, Direction.EAST}).build()); // north & east to west, merge
+                            newTile.setMergeAndMover(Direction.WEST, 2,
+                                    new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to west, merge
                             break;
                         case 84:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.NORTH, 2,
-                                    new Direction[]{Direction.EAST, Direction.WEST}).build()); // east & west to north, merge
+                            newTile.setMergeAndMover(Direction.NORTH, 2,
+                                    new Direction[]{Direction.EAST, Direction.WEST}); // east & west to north, merge
                             break;
                         case 83:
-                            tiles.set(i, new TileObject.TileBuilder().setMergeAndMover(Direction.WEST, 2,
-                                    new Direction[]{Direction.NORTH, Direction.SOUTH}).build()); // north & south to west, merge
+                            newTile.setMergeAndMover(Direction.WEST, 2,
+                                    new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to west, merge
                             break;
                         default:
                             System.out.println("TileID not found " + input.get(j)[i]);
@@ -402,6 +385,8 @@ public class Board {
                     }
                 }
             }
+
+            tiles.set(i, newTile.build());
         }
     }
 }
