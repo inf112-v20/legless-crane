@@ -38,7 +38,7 @@ In case "Alternative #1" does not work, run main from "Application.java" in Inte
 ## Known bugs
 When executing .jar file, it crashes on some PCs.
 
-Boards with more than one element on a single tile do not read correctly in Board.java, only the last element read in the given tile is saved.
+~~Boards with more than one element on a single tile do not read correctly in Board.java, only the last element read in the given tile is saved.~~ - fixed in version 0.3
 
 Left rotate sometime prevents robot moving back and ahead, until you use right rotate.
 
