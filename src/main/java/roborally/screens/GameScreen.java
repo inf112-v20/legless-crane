@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.xml.sax.SAXException;
 import roborally.Application;
 import roborally.board.Board;
-import roborally.board.TileObject;
+import roborally.board.Tile;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -161,7 +161,7 @@ public class GameScreen implements Screen {
     check if a wall in currentPos or nextPos blocks movement between the two tiles.
     */
     private boolean willCollide(int x, int y) {
-        TileObject tile = board.get(x,y);
+        Tile tile = board.get(x,y);
         return tile.canBlockMovement();
     }
 

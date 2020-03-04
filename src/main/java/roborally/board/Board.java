@@ -34,13 +34,13 @@ import java.util.ArrayList;
 public class Board {
     private int boardWidth;
     private int boardSize;
-    private final ArrayList<TileObject> tiles = new ArrayList<>();
+    private final ArrayList<Tile> tiles = new ArrayList<>();
     private final ArrayList<int[]> boardWithLayers = new ArrayList<>();
 
     public Board(File file) throws ParserConfigurationException, IOException, SAXException {
         readBoardFromFile(file);
 
-        for (int i = 0; i < boardSize; i++) { tiles.add(new TileObject.TileBuilder().build()); } // standard empty tile
+        for (int i = 0; i < boardSize; i++) { tiles.add(new Tile.TileBuilder().build()); } // standard empty tile
 
         readBoard(boardWithLayers);
 
@@ -55,7 +55,7 @@ public class Board {
         for (int i = 0; i < tiles.size(); i += boardWidth) {
             int endOfBlock = Math.min(i + boardWidth, tiles.size());
             for (int j = i, k = endOfBlock - 1; j < k; j++, k--) {
-                TileObject temp = tiles.get(j);
+                Tile temp = tiles.get(j);
                 tiles.set(j, tiles.get(k));
                 tiles.set(k, temp);
             }
@@ -99,294 +99,337 @@ public class Board {
     }
 
 
-    public TileObject get(int x, int y) { return tiles.get(x + y*boardWidth); } // no set method currently
+    public Tile get(int x, int y) { return tiles.get(x + y*boardWidth); } // no set method currently
 
-    //TODO move all these different tile reads into seperate methods for each type?
+
+
 
     private void readBoard(ArrayList<int[]> input){
         for (int i = 0; i<boardSize-1; i++) {
             // for every tile on board
-            TileObject.TileBuilder newTile = new TileObject.TileBuilder();
+            Tile.TileBuilder newTile = new Tile.TileBuilder();
             // create a new tile
-            for (int j = 1; j < input.size(); j++) {
-                // read in from every layer.
-                if (input.get(j)[i] != 0) {
-                    // if not "empty" in layer, check if the ID matches the TileIDs
-                    switch (input.get(j)[i]) {
-                        case 6: newTile.setKiller();
-                            break;
-                        case 7: newTile.setRepairAndBackup(); // wrench and hammer
-                            break;
-                        case 15: newTile.setRepairAndBackup(); // wrench
-                            break;
-                        case 53: newTile.setRotation(-1); // red, counter-clockwise cogs
-                            break;
-                        case 54: newTile.setRotation(1); // green, clockwise cogs
-                            break;
-
-                        case 55: newTile.setFlag(1); // flag number 1
-                            break;
-                        case 63: newTile.setFlag(2); // flag number 2
-                            break;
-                        case 71: newTile.setFlag(3); // flag number 3
-                            break;
-                        case 79: newTile.setFlag(4); // flag number 4
-                            break;
-
-                        case 121: newTile.setSpawner(); // spawn player 1
-                            break;
-                        case 122: newTile.setSpawner(); // spawn player 2
-                            break;
-                        case 123: newTile.setSpawner(); // spawn player 3
-                            break;
-                        case 124: newTile.setSpawner(); // spawn player 4
-                            break;
-                        case 129: newTile.setSpawner(); // spawn player 5
-                            break;
-                        case 130: newTile.setSpawner(); // spawn player 6
-                            break;
-                        case 131: newTile.setSpawner(); // spawn player 7
-                            break;
-                        case 132: newTile.setSpawner(); // spawn player 8
-                            break;
-
-                        case 8:
-                            newTile.setBlocker(
-                                    new Direction[]{Direction.EAST, Direction.SOUTH});  // southeast wall, corner
-                            break;
-                        case 16:
-                            newTile.setBlocker(
-                                    new Direction[]{Direction.NORTH, Direction.EAST}); // northeast wall, corner
-                            break;
-                        case 23:
-                            newTile.setBlocker(
-                                    new Direction[]{Direction.EAST}); // eastern wall
-                            break;
-                        case 24:
-                            newTile.setBlocker(
-                                    new Direction[]{Direction.NORTH, Direction.WEST}); // northwest wall, corner
-                            break;
-                        case 29:
-                            newTile.setBlocker(
-                                    new Direction[]{Direction.SOUTH}); // southern wall
-                            break;
-                        case 30:
-                            newTile.setBlocker(
-                                    new Direction[]{Direction.WEST}); // western wall
-                            break;
-                        case 31:
-                            newTile.setBlocker(
-                                    new Direction[]{Direction.NORTH}); // northern wall
-                            break;
-                        case 32:
-                            newTile.setBlocker(
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // southwest wall, corner
-                            break;
-
-                        // yellow belts
-                        case 33:
-                            newTile.setMover(Direction.SOUTH,
-                                    1); // east to south, bend
-                            break;
-                        case 34:
-                            newTile.setMover(Direction.WEST,
-                                    1); // south to west, bend
-                            break;
-                        case 35:
-                            newTile.setMover(Direction.EAST,
-                                    1); // south to east, bend
-                            break;
-                        case 36:
-                            newTile.setMover(Direction.SOUTH,
-                                    1); // west to south, bend
-                            break;
-                        case 41:
-                            newTile.setMover(Direction.EAST,
-                                    1); // north to east, bend
-                            break;
-                        case 42:
-                            newTile.setMover(Direction.NORTH,
-                                    1); // west to north, bend
-                            break;
-                        case 43:
-                            newTile.setMover(Direction.NORTH,
-                                    1); // east to north, bend
-                            break;
-                        case 44:
-                            newTile.setMover(Direction.WEST,
-                                    1); // north to west, bend
-                            break;
-                        case 49:
-                            newTile.setMover(Direction.NORTH,
-                                    1); // going north, straight
-                            break;
-                        case 50:
-                            newTile.setMover(Direction.SOUTH,
-                                    1); // going south, straight
-                            break;
-                        case 51:
-                            newTile.setMover(Direction.WEST,
-                                    1); // going west, straight
-                            break;
-                        case 52:
-                            newTile.setMover(Direction.EAST,
-                                    1); // going east, straight
-                            break;
-                        case 57:
-                            newTile.setMergeAndMover(Direction.NORTH, 1,
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to north, merge
-                            break;
-                        case 58:
-                            newTile.setMergeAndMover(Direction.EAST, 1,
-                                    new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to east, merge
-                            break;
-                        case 59:
-                            newTile.setMergeAndMover(Direction.SOUTH, 1,
-                                    new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to south, merge
-                            break;
-                        case 60:
-                            newTile.setMergeAndMover(Direction.WEST, 1,
-                                    new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to west, merge
-                            break;
-                        case 61:
-                            newTile.setMergeAndMover(Direction.EAST, 1,
-                                    new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to east, merge
-                            break;
-                        case 62:
-                            newTile.setMergeAndMover(Direction.SOUTH, 1,
-                                    new Direction[]{Direction.EAST, Direction.WEST}); // east & west to south, merge
-                            break;
-                        case 65:
-                            newTile.setMergeAndMover(Direction.NORTH, 1,
-                                    new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to north, merge
-                            break;
-                        case 66:
-                            newTile.setMergeAndMover(Direction.EAST, 1,
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to east, merge
-                            break;
-                        case 67:
-                            newTile.setMergeAndMover(Direction.SOUTH, 1,
-                                    new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to south, merge
-                            break;
-                        case 68:
-                            newTile.setMergeAndMover(Direction.WEST, 1,
-                                    new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to west, merge
-                            break;
-                        case 69:
-                            newTile.setMergeAndMover(Direction.NORTH, 1,
-                                    new Direction[]{Direction.EAST, Direction.WEST}); // east & west to north, merge
-                            break;
-                        case 70:
-                            newTile.setMergeAndMover(Direction.WEST, 1,
-                                    new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to west, merge
-
-                            break;
-                        // blue belts
-                        case 17:
-                            newTile.setMover(Direction.SOUTH,
-                                    2); // east to south, bend
-                            break;
-                        case 18:
-                            newTile.setMover(Direction.WEST,
-                                    2); // south to west, bend
-                            break;
-                        case 19:
-                            newTile.setMover(Direction.EAST,
-                                    2); // south to east, bend
-                            break;
-                        case 20:
-                            newTile.setMover(Direction.SOUTH,
-                                    2); // west to south, bend
-                            break;
-                        case 25:
-                            newTile.setMover(Direction.EAST,
-                                    2); // north to east, bend
-                            break;
-                        case 26:
-                            newTile.setMover(Direction.NORTH,
-                                    2); // west to north, bend
-                            break;
-                        case 27:
-                            newTile.setMover(Direction.NORTH,
-                                    2); // east to north, bend
-                            break;
-                        case 28:
-                            newTile.setMover(Direction.WEST,
-                                    2); // north to west, bend
-                            break;
-                        case 13:
-                            newTile.setMover(Direction.NORTH,
-                                    2); // going north, straight
-                            break;
-                        case 21:
-                            newTile.setMover(Direction.SOUTH,
-                                    2); // going south, straight
-                            break;
-                        case 22:
-                            newTile.setMover(Direction.WEST,
-                                    2); // going west, straight
-                            break;
-                        case 14:
-                            newTile.setMover(Direction.EAST,
-                                    2); // going east, straight
-                            break;
-                        case 73:
-                            newTile.setMergeAndMover(Direction.NORTH, 2,
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to north, merge
-                            break;
-                        case 74:
-                            newTile.setMergeAndMover(Direction.EAST, 2,
-                                    new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to east, merge
-                            break;
-                        case 75:
-                            newTile.setMergeAndMover(Direction.SOUTH, 2,
-                                    new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to south, merge
-                            break;
-                        case 76:
-                            newTile.setMergeAndMover(Direction.WEST, 2,
-                                    new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to west, merge
-                            break;
-                        case 81:
-                            newTile.setMergeAndMover(Direction.EAST, 2,
-                                    new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to east, merge
-                            break;
-                        case 82:
-                            newTile.setMergeAndMover(Direction.SOUTH, 2,
-                                    new Direction[]{Direction.EAST, Direction.WEST}); // east & west to south, merge
-                            break;
-                        case 77:
-                            newTile.setMergeAndMover(Direction.NORTH, 2,
-                                    new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to north, merge
-                            break;
-                        case 78:
-                            newTile.setMergeAndMover(Direction.EAST, 2,
-                                    new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to east, merge
-                            break;
-                        case 86:
-                            newTile.setMergeAndMover(Direction.SOUTH, 2,
-                                    new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to south, merge
-                            break;
-                        case 85:
-                            newTile.setMergeAndMover(Direction.WEST, 2,
-                                    new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to west, merge
-                            break;
-                        case 84:
-                            newTile.setMergeAndMover(Direction.NORTH, 2,
-                                    new Direction[]{Direction.EAST, Direction.WEST}); // east & west to north, merge
-                            break;
-                        case 83:
-                            newTile.setMergeAndMover(Direction.WEST, 2,
-                                    new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to west, merge
-                            break;
-                        default:
-                            System.out.println("TileID not found " + input.get(j)[i]);
-                            // 38, 39 for laser and beam are currently not read.
-                            break;
-                    }
-                }
-            }
+            //TODO this looks a bit dumb, is there a better way for us to handle this?
+            newTile = readHole(input.get(1)[i], newTile);
+            newTile = readWrenches(input.get(2)[i], newTile);
+            newTile = readYellowBelts(input.get(3)[i], newTile);
+            newTile = readBlueBelts(input.get(4)[i], newTile);
+            newTile = readCogs(input.get(5)[i], newTile);
+            newTile = readSpawns(input.get(8)[i], newTile);
+            newTile = readFlags(input.get(9)[i], newTile);
+            newTile = readWalls(input.get(10)[i], newTile);
+            // Should check each layer and update newTile
 
             tiles.set(i, newTile.build());
         }
+    }
+    private Tile.TileBuilder readHole(int tileID, Tile.TileBuilder newTile) {
+        if (tileID == 6)
+            newTile.setKiller();
+        else if (tileID != 0)
+            System.out.println("Did not recognize TileID when checking for holes - ID: " + tileID);
+        return newTile;
+    }
+    private Tile.TileBuilder readWrenches(int tileID, Tile.TileBuilder newTile) {
+        if (tileID == 0) {
+            return newTile;
+        }
+        switch (tileID) {
+            case 7: newTile.setRepairAndBackup(); // wrench and hammer
+                break;
+            case 15: newTile.setRepairAndBackup(); // wrench
+                break;
+            default:
+                System.out.println("Did not recognize TileID when checking for wrenches - ID: " + tileID);
+        }
+        return newTile;
+    }
+    private Tile.TileBuilder readCogs(int tileID, Tile.TileBuilder newTile) {
+        if (tileID == 0) {
+            return newTile;
+        }
+        switch (tileID) {
+            case 53:
+                newTile.setRotation(-1); // red, counter-clockwise cogs
+                break;
+            case 54:
+                newTile.setRotation(1); // green, clockwise cogs
+                break;
+            default:
+                System.out.println("Did not recognize TileID when checking for cogs - ID: " + tileID);
+        }
+        return newTile;
+    }
+    private Tile.TileBuilder readFlags(int tileID, Tile.TileBuilder newTile) {
+        if (tileID == 0) {
+            return newTile;
+        }
+        switch (tileID) {
+            case 55: newTile.setFlag(1); // flag number 1
+                break;
+            case 63: newTile.setFlag(2); // flag number 2
+                break;
+            case 71: newTile.setFlag(3); // flag number 3
+                break;
+            case 79: newTile.setFlag(4); // flag number 4
+                break;
+            default:
+                System.out.println("Did not recognize TileID when checking for flags - ID: " + tileID);
+        }
+        return newTile;
+    }
+    private Tile.TileBuilder readSpawns(int tileID, Tile.TileBuilder newTile) {
+        if (tileID == 0) {
+            return newTile;
+        }
+        switch (tileID) {
+            case 121: newTile.setSpawner(); // spawn player 1
+                break;
+            case 122: newTile.setSpawner(); // spawn player 2
+                break;
+            case 123: newTile.setSpawner(); // spawn player 3
+                break;
+            case 124: newTile.setSpawner(); // spawn player 4
+                break;
+            case 129: newTile.setSpawner(); // spawn player 5
+                break;
+            case 130: newTile.setSpawner(); // spawn player 6
+                break;
+            case 131: newTile.setSpawner(); // spawn player 7
+                break;
+            case 132: newTile.setSpawner(); // spawn player 8
+                break;
+            default:
+                System.out.println("Did not recognize TileID when checking for spawnpoints - ID: " + tileID);
+        }
+        return newTile;
+    }
+
+    private Tile.TileBuilder readWalls(int tileID, Tile.TileBuilder newTile) {
+        if (tileID == 0) {
+            return newTile;
+        }
+        switch (tileID) {
+            case 8:
+                newTile.setBlocker(new Direction[]{Direction.EAST, Direction.SOUTH});  // southeast wall, corner
+                break;
+            case 16:
+                newTile.setBlocker(new Direction[]{Direction.NORTH, Direction.EAST}); // northeast wall, corner
+                break;
+            case 23:
+                newTile.setBlocker(new Direction[]{Direction.EAST}); // eastern wall
+                break;
+            case 24:
+                newTile.setBlocker(new Direction[]{Direction.NORTH, Direction.WEST}); // northwest wall, corner
+                break;
+            case 29:
+                newTile.setBlocker(new Direction[]{Direction.SOUTH}); // southern wall
+                break;
+            case 30:
+                newTile.setBlocker(new Direction[]{Direction.WEST}); // western wall
+                break;
+            case 31:
+                newTile.setBlocker(new Direction[]{Direction.NORTH}); // northern wall
+                break;
+            case 32:
+                newTile.setBlocker(new Direction[]{Direction.SOUTH, Direction.WEST}); // southwest wall, corner
+                break;
+            default:
+                System.out.println("Did not recognize TileID when checking for walls - ID: " + tileID);
+        }
+        return newTile;
+    }
+
+    private Tile.TileBuilder readYellowBelts(int tileID, Tile.TileBuilder newTile) {
+        if (tileID == 0) {
+            return newTile;
+        }
+        switch (tileID) {
+            case 33:
+                newTile.setMoveAndRotation(Direction.SOUTH,1); // east to south, bend
+                break;
+            case 34:
+                newTile.setMoveAndRotation(Direction.WEST,1); // south to west, bend
+                break;
+            case 35:
+                newTile.setMoveAndRotation(Direction.EAST,1); // south to east, bend
+                break;
+            case 36:
+                newTile.setMoveAndRotation(Direction.SOUTH,1); // west to south, bend
+                break;
+            case 41:
+                newTile.setMoveAndRotation(Direction.EAST,1); // north to east, bend
+                break;
+            case 42:
+                newTile.setMoveAndRotation(Direction.NORTH,1); // west to north, bend
+                break;
+            case 43:
+                newTile.setMoveAndRotation(Direction.NORTH,1); // east to north, bend
+                break;
+            case 44:
+                newTile.setMoveAndRotation(Direction.WEST,1); // north to west, bend
+                break;
+            case 49:
+                newTile.setMover(Direction.NORTH,1); // going north, straight
+                break;
+            case 50:
+                newTile.setMover(Direction.SOUTH,1); // going south, straight
+                break;
+            case 51:
+                newTile.setMover(Direction.WEST,1); // going west, straight
+                break;
+            case 52:
+                newTile.setMover(Direction.EAST,1); // going east, straight
+                break;
+            case 57:
+                newTile.setMergeAndMover(Direction.NORTH, 1,
+                        new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to north, merge
+                break;
+            case 58:
+                newTile.setMergeAndMover(Direction.EAST, 1,
+                        new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to east, merge
+                break;
+            case 59:
+                newTile.setMergeAndMover(Direction.SOUTH, 1,
+                        new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to south, merge
+                break;
+            case 60:
+                newTile.setMergeAndMover(Direction.WEST, 1,
+                        new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to west, merge
+                break;
+            case 61:
+                newTile.setMergeAndMover(Direction.EAST, 1,
+                        new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to east, merge
+                break;
+            case 62:
+                newTile.setMergeAndMover(Direction.SOUTH, 1,
+                        new Direction[]{Direction.EAST, Direction.WEST}); // east & west to south, merge
+                break;
+            case 65:
+                newTile.setMergeAndMover(Direction.NORTH, 1,
+                        new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to north, merge
+                break;
+            case 66:
+                newTile.setMergeAndMover(Direction.EAST, 1,
+                        new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to east, merge
+                break;
+            case 67:
+                newTile.setMergeAndMover(Direction.SOUTH, 1,
+                        new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to south, merge
+                break;
+            case 68:
+                newTile.setMergeAndMover(Direction.WEST, 1,
+                        new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to west, merge
+                break;
+            case 69:
+                newTile.setMergeAndMover(Direction.NORTH, 1,
+                        new Direction[]{Direction.EAST, Direction.WEST}); // east & west to north, merge
+                break;
+            case 70:
+                newTile.setMergeAndMover(Direction.WEST, 1,
+                        new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to west, merge
+                break;
+            default:
+                System.out.println("Did not recognize TileID when checking for yellow belts - ID: " + tileID);
+        }
+        return newTile;
+    }
+
+
+
+    private Tile.TileBuilder readBlueBelts(int tileID, Tile.TileBuilder newTile) {
+        if (tileID == 0) {
+            return newTile;
+        }
+        switch (tileID) {
+            // blue belts
+            case 17:
+                newTile.setMoveAndRotation(Direction.SOUTH,2); // east to south, bend
+                break;
+            case 18:
+                newTile.setMoveAndRotation(Direction.WEST,2); // south to west, bend
+                break;
+            case 19:
+                newTile.setMoveAndRotation(Direction.EAST,2); // south to east, bend
+                break;
+            case 20:
+                newTile.setMoveAndRotation(Direction.SOUTH,2); // west to south, bend
+                break;
+            case 25:
+                newTile.setMoveAndRotation(Direction.EAST,2); // north to east, bend
+                break;
+            case 26:
+                newTile.setMoveAndRotation(Direction.NORTH,2); // west to north, bend
+                break;
+            case 27:
+                newTile.setMoveAndRotation(Direction.NORTH,2); // east to north, bend
+                break;
+            case 28:
+                newTile.setMoveAndRotation(Direction.WEST,2); // north to west, bend
+                break;
+            case 13:
+                newTile.setMover(Direction.NORTH,2); // going north, straight
+                break;
+            case 21:
+                newTile.setMover(Direction.SOUTH,2); // going south, straight
+                break;
+            case 22:
+                newTile.setMover(Direction.WEST,2); // going west, straight
+                break;
+            case 14:
+                newTile.setMover(Direction.EAST,2); // going east, straight
+                break;
+            case 73:
+                newTile.setMergeAndMover(Direction.NORTH, 2,
+                        new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to north, merge
+                break;
+            case 74:
+                newTile.setMergeAndMover(Direction.EAST, 2,
+                        new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to east, merge
+                break;
+            case 75:
+                newTile.setMergeAndMover(Direction.SOUTH, 2,
+                        new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to south, merge
+                break;
+            case 76:
+                newTile.setMergeAndMover(Direction.WEST, 2,
+                        new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to west, merge
+                break;
+            case 81:
+                newTile.setMergeAndMover(Direction.EAST, 2,
+                        new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to east, merge
+                break;
+            case 82:
+                newTile.setMergeAndMover(Direction.SOUTH, 2,
+                        new Direction[]{Direction.EAST, Direction.WEST}); // east & west to south, merge
+                break;
+            case 77:
+                newTile.setMergeAndMover(Direction.NORTH, 2,
+                        new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to north, merge
+                break;
+            case 78:
+                newTile.setMergeAndMover(Direction.EAST, 2,
+                        new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to east, merge
+                break;
+            case 86:
+                newTile.setMergeAndMover(Direction.SOUTH, 2,
+                        new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to south, merge
+                break;
+            case 85:
+                newTile.setMergeAndMover(Direction.WEST, 2,
+                        new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to west, merge
+                break;
+            case 84:
+                newTile.setMergeAndMover(Direction.NORTH, 2,
+                        new Direction[]{Direction.EAST, Direction.WEST}); // east & west to north, merge
+                break;
+            case 83:
+                newTile.setMergeAndMover(Direction.WEST, 2,
+                        new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to west, merge
+                break;
+            default:
+                System.out.println("Did not recognize TileID when checking for blue belts - ID: " + tileID);
+        }
+        return newTile;
     }
 }

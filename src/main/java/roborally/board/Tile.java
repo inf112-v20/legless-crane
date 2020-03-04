@@ -1,6 +1,6 @@
 package roborally.board;
 
-public class TileObject {
+public class Tile {
     // No mandatory parameters for constructor yet.
 
     //optional parameters for constructor
@@ -21,7 +21,7 @@ public class TileObject {
     private final Direction movementDirection;
     private final String name;
 
-    private TileObject(TileBuilder builder) {
+    private Tile(TileBuilder builder) {
         //booleans
         this.canBlockMovement=builder.canBlockMovement;
         this.canMergeLanes=builder.canMergeLanes;
@@ -169,9 +169,9 @@ public class TileObject {
             return this;
         }
 
-        public TileObject build(){
+        public Tile build(){
             //System.out.println(this.canBlockMovement);
-            return new TileObject(this);
+            return new Tile(this);
         }
     }
 }
