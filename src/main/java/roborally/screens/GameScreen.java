@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.xml.sax.SAXException;
 import roborally.Application;
 import roborally.board.Board;
+import roborally.board.Direction;
 import roborally.board.Tile;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -71,7 +72,6 @@ public class GameScreen implements Screen {
 
 
     private void loadBoard() throws IOException, SAXException, ParserConfigurationException {
-        //TODO load in a Board here too for use in logic?
         board = new Board(new File("src/main/assets/boards/Board1.tmx"));
 
         // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
@@ -156,19 +156,48 @@ public class GameScreen implements Screen {
         boardgfx.dispose();
         renderer.dispose();
     }
-    /*
-    Can add current pos here when we get directional walls in,
-    check if a wall in currentPos or nextPos blocks movement between the two tiles.
-    */
-    private boolean willCollide(int x, int y) {
-        Tile tile = board.get(x,y);
-        return tile.canBlockMovement();
+
+    private Vector2 getDirectionalPosition(Vector2 currentPos, Direction moveDir) {
+        switch(moveDir) {
+            case NORTH:
+                return new Vector2(currentPos.x,currentPos.y+1);
+            case EAST:
+                return new Vector2(currentPos.x+1,currentPos.y);
+            case SOUTH:
+                return new Vector2(currentPos.x,currentPos.y-1);
+            case WEST:
+                return new Vector2(currentPos.x-1,currentPos.y);
+            default:
+                System.out.println("Incorrect direction given in getDirectionalPosition(), returning currentPos");
+                return currentPos;
+        }
     }
 
-    private void updatePlayerPosition(Vector2 currentPos, float newX, float newY) {
-        if (validMove(newX,newY) && !willCollide((int) newX, (int) newY)) {
-            playerPosition = new Vector2(newX, newY);
-            playerLayer.setCell((int) newX, (int) newY, playerTile);
+    private boolean willNotCollide(Vector2 currentPos, Direction moveDir) {
+        Tile currentTile = board.get(currentPos);
+        Tile nextTile = board.get(getDirectionalPosition(currentPos,moveDir));
+
+
+        //TODO Might be better to use List or ArrayList for blocking directions?
+        // easier to use .contains(dir) or something
+        if (currentTile.canBlockMovement()) {
+            for (Direction dir : currentTile.getBlockingDirections())
+                if (dir == moveDir)
+                    return false;
+        } else if (nextTile.canBlockMovement()) {
+            for (Direction dir : nextTile.getBlockingDirections())
+                if (dir == moveDir.opposite())
+                    return false;
+        }
+        return true;
+    }
+
+    private void updatePlayerPosition(Vector2 currentPos, Direction dir) {
+        Vector2 nextPos = getDirectionalPosition(currentPos, dir);
+
+        if (validMove(nextPos.x, nextPos.y) && willNotCollide(currentPos, dir)) {
+            playerPosition = nextPos;
+            playerLayer.setCell((int) nextPos.x, (int) nextPos.y, playerTile);
             playerLayer.setCell((int)currentPos.x, (int)currentPos.y, null);
         }
     }
@@ -252,31 +281,31 @@ public class GameScreen implements Screen {
     }
     private void backwardMovement() {
     	if (rotation == 0) {
-    		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y+1);
+    		updatePlayerPosition(playerPosition, Direction.SOUTH);
     	}
     	else if (rotation == 1) {
-    		updatePlayerPosition(playerPosition,playerPosition.x-1, playerPosition.y);
+    		updatePlayerPosition(playerPosition,Direction.EAST);
     	}
     	else if (rotation == 2) {
-    		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y-1);
+    		updatePlayerPosition(playerPosition,Direction.NORTH);
     	}
     	else if (rotation == 3) {
-    		updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
+    		updatePlayerPosition(playerPosition,Direction.WEST);
     	}
     }
     
     private void forwardMovement() {
     	if (rotation == 0) {
-    		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y-1);
+    		updatePlayerPosition(playerPosition,Direction.NORTH);
     	}
     	else if (rotation == 1) {
-    		updatePlayerPosition(playerPosition,playerPosition.x+1, playerPosition.y);
+    		updatePlayerPosition(playerPosition,Direction.WEST);
     	}
     	else if (rotation == 2) {
-    		updatePlayerPosition(playerPosition,playerPosition.x, playerPosition.y+1);
+    		updatePlayerPosition(playerPosition, Direction.SOUTH);
     	}
     	else if (rotation == 3) {
-    		updatePlayerPosition(playerPosition,playerPosition.x-1, playerPosition.y);
+    		updatePlayerPosition(playerPosition,Direction.EAST);
     	}
     }
 }

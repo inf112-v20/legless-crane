@@ -1,4 +1,5 @@
 package roborally.board;
+import com.badlogic.gdx.math.Vector2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -61,7 +62,7 @@ public class Board {
             }
         }
         // now the map and logic here matches what is rendered
-        //TODO this seems like a super dumb way of doing this, find something better
+        //TODO this seems like a super dumb way of doing this, find something better? use array instead of ArrayList?
     }
 
     private void readBoardFromFile(File file) throws IOException, SAXException, ParserConfigurationException {
@@ -99,9 +100,7 @@ public class Board {
     }
 
 
-    public Tile get(int x, int y) { return tiles.get(x + y*boardWidth); } // no set method currently
-
-
+    public Tile get(Vector2 pos) { return tiles.get((int) (pos.x + pos.y*boardWidth)); } // no set method currently
 
 
     private void readBoard(ArrayList<int[]> input){

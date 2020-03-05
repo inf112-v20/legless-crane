@@ -6,8 +6,8 @@ public enum Direction {
     NORTH, EAST, SOUTH, WEST;
 
 
-    public Direction opposite(Direction dir) {
-        switch (dir) {
+    public Direction opposite() {
+        switch (this) {
             case EAST: return WEST;
             case SOUTH: return NORTH;
             case WEST: return EAST;
