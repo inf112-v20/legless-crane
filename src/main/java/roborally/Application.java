@@ -1,6 +1,6 @@
 package roborally;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -12,7 +12,7 @@ import roborally.screens.GameScreen;
 import roborally.screens.MenuScreen;
 import roborally.screens.LoadingScreen;
 
-public class Application extends Game  {
+public class Application extends Game {
     // Hardcoded board size is a 7:9 ratio
     public static final int WIDTH = 2000;
     public static final int HEIGHT = 1500;

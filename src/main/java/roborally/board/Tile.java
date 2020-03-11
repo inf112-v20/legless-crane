@@ -100,7 +100,6 @@ public class Tile {
         private boolean isSpawner;
         private int movementSpeed;
         private String name;
-        public Builder() {/*Currently have no required paramaters, so this is unneeded?*/}
 
         public Builder setBlocker(Direction[] blockingDirections) {
             this.canBlockMovement = true;
