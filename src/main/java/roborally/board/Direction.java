@@ -25,7 +25,10 @@ public enum Direction {
         directions.add(SOUTH);
         directions.add(WEST);
         int index = directions.indexOf(currentDirection);
-        return directions.get((rotation + index) % directions.size());
 
+        if ((rotation + index) % directions.size() < 0)
+            return directions.get(((rotation + index) % directions.size()) + directions.size());
+        else
+            return directions.get((rotation + index) % directions.size());
     }
 }

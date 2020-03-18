@@ -34,12 +34,18 @@ import java.util.ArrayList;
 
 public class Board {
     private int boardWidth;
+    private int boardHeight;
     private int boardSize;
     private final ArrayList<Tile> tiles = new ArrayList<>();
     private final ArrayList<int[]> boardWithLayers = new ArrayList<>();
+    private Vector2[] spawnPoints = new Vector2[8];
 
-    public Board(File file) throws ParserConfigurationException, IOException, SAXException {
-        readBoardFromFile(file);
+    public Board(File file){
+        try {
+            readBoardFromFile(file);
+        } catch (Exception e) {
+            System.out.println("ISSUE LOADING BOARD");
+        } //TODO find a better way to handle this?
 
         for (int i = 0; i < boardSize; i++) { tiles.add(new Tile.Builder().build()); } // standard empty tile
 
@@ -74,7 +80,7 @@ public class Board {
         NodeList nodeList = document.getElementsByTagName("layer");
         Element el = (Element)nodeList.item(0);
         boardWidth = Integer.parseInt(el.getAttribute("width"));
-        int boardHeight = Integer.parseInt(el.getAttribute("height"));
+        boardHeight = Integer.parseInt(el.getAttribute("height"));
         boardSize = boardWidth* boardHeight;
 
         /*
@@ -114,7 +120,7 @@ public class Board {
             newTile = readYellowBelts(input.get(3)[i], newTile);
             newTile = readBlueBelts(input.get(4)[i], newTile);
             newTile = readCogs(input.get(5)[i], newTile);
-            newTile = readSpawns(input.get(8)[i], newTile);
+            newTile = readSpawns(input.get(8)[i], newTile, i);
             newTile = readFlags(input.get(9)[i], newTile);
             newTile = readWalls(input.get(10)[i], newTile);
             // Should check each layer and update newTile
@@ -177,26 +183,40 @@ public class Board {
         }
         return newTile;
     }
-    private Tile.Builder readSpawns(int tileID, Tile.Builder newTile) {
+    private Tile.Builder readSpawns(int tileID, Tile.Builder newTile, int i) {
         if (tileID == 0) {
             return newTile;
         }
         switch (tileID) {
             case 121: newTile.setSpawner(); // spawn player 1
+                // turn index in board list to x,y coordinates
+                // i = pos.x + pos.y*boardWidth
+                // i div boardWidth
+                // i mod boardWidth
+                // hvor mange ganger det går opp er y
+                // rest er x
+                spawnPoints[0] = new Vector2(i%boardWidth, i/boardWidth);
                 break;
             case 122: newTile.setSpawner(); // spawn player 2
+                spawnPoints[1] = new Vector2(i%boardWidth, i/boardWidth);
                 break;
             case 123: newTile.setSpawner(); // spawn player 3
+                spawnPoints[2] = new Vector2(i%boardWidth, i/boardWidth);
                 break;
             case 124: newTile.setSpawner(); // spawn player 4
+                spawnPoints[3] = new Vector2(i%boardWidth, i/boardWidth);
                 break;
             case 129: newTile.setSpawner(); // spawn player 5
+                spawnPoints[4] = new Vector2(i%boardWidth, i/boardWidth);
                 break;
             case 130: newTile.setSpawner(); // spawn player 6
+                spawnPoints[5] = new Vector2(i%boardWidth, i/boardWidth);
                 break;
             case 131: newTile.setSpawner(); // spawn player 7
+                spawnPoints[6] = new Vector2(i%boardWidth, i/boardWidth);
                 break;
             case 132: newTile.setSpawner(); // spawn player 8
+                spawnPoints[7] = new Vector2(i%boardWidth, i/boardWidth);
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for spawnpoints - ID: " + tileID);
@@ -430,5 +450,16 @@ public class Board {
                 System.out.println("Did not recognize TileID when checking for blue belts - ID: " + tileID);
         }
         return newTile;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
+    }
+
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+    public Vector2 getSpawnPoints(int i) {
+        return spawnPoints[i];
     }
 }

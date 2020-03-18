@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import roborally.gamelogic.GameLogic;
 import roborally.screens.GameScreen;
 import roborally.screens.MenuScreen;
 import roborally.screens.LoadingScreen;
@@ -24,6 +25,7 @@ public class Application extends Game {
     public LoadingScreen loadingScreen;
     public MenuScreen menuScreen;
     public GameScreen gameScreen;
+    public GameLogic gameLogic;
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
