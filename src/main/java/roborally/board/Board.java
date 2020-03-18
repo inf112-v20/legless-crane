@@ -38,7 +38,7 @@ public class Board {
     private int boardSize;
     private final ArrayList<Tile> tiles = new ArrayList<>();
     private final ArrayList<int[]> boardWithLayers = new ArrayList<>();
-    private Vector2[] spawnPoints = new Vector2[8];
+    private final Vector2[] spawnPoints = new Vector2[8];
 
     public Board(File file){
         try {
@@ -105,9 +105,7 @@ public class Board {
         }
     }
 
-
     public Tile get(Vector2 pos) { return tiles.get((int) (pos.x + pos.y*boardWidth)); } // no set method currently
-
 
     private void readBoard(ArrayList<int[]> input){
         for (int i = 0; i<boardSize-1; i++) {
@@ -128,6 +126,7 @@ public class Board {
             tiles.set(i, newTile.build());
         }
     }
+
     private Tile.Builder readHole(int tileID, Tile.Builder newTile) {
         if (tileID == 6)
             newTile.setKiller();
@@ -135,6 +134,7 @@ public class Board {
             System.out.println("Did not recognize TileID when checking for holes - ID: " + tileID);
         return newTile;
     }
+
     private Tile.Builder readWrenches(int tileID, Tile.Builder newTile) {
         if (tileID == 0) {
             return newTile;
@@ -149,6 +149,7 @@ public class Board {
         }
         return newTile;
     }
+
     private Tile.Builder readCogs(int tileID, Tile.Builder newTile) {
         if (tileID == 0) {
             return newTile;
@@ -165,6 +166,7 @@ public class Board {
         }
         return newTile;
     }
+
     private Tile.Builder readFlags(int tileID, Tile.Builder newTile) {
         if (tileID == 0) {
             return newTile;
@@ -183,40 +185,37 @@ public class Board {
         }
         return newTile;
     }
+
     private Tile.Builder readSpawns(int tileID, Tile.Builder newTile, int i) {
+        // due to the nature of how we read the board in and x,y coordinates are handled, we need to reverse the pos
+        // saved as spawnpoint
         if (tileID == 0) {
             return newTile;
         }
         switch (tileID) {
             case 121: newTile.setSpawner(); // spawn player 1
-                // turn index in board list to x,y coordinates
-                // i = pos.x + pos.y*boardWidth
-                // i div boardWidth
-                // i mod boardWidth
-                // hvor mange ganger det går opp er y
-                // rest er x
-                spawnPoints[0] = new Vector2(i%boardWidth, i/boardWidth);
+                spawnPoints[0] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 122: newTile.setSpawner(); // spawn player 2
-                spawnPoints[1] = new Vector2(i%boardWidth, i/boardWidth);
+                spawnPoints[1] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 123: newTile.setSpawner(); // spawn player 3
-                spawnPoints[2] = new Vector2(i%boardWidth, i/boardWidth);
+                spawnPoints[2] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 124: newTile.setSpawner(); // spawn player 4
-                spawnPoints[3] = new Vector2(i%boardWidth, i/boardWidth);
+                spawnPoints[3] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 129: newTile.setSpawner(); // spawn player 5
-                spawnPoints[4] = new Vector2(i%boardWidth, i/boardWidth);
+                spawnPoints[4] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 130: newTile.setSpawner(); // spawn player 6
-                spawnPoints[5] = new Vector2(i%boardWidth, i/boardWidth);
+                spawnPoints[5] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 131: newTile.setSpawner(); // spawn player 7
-                spawnPoints[6] = new Vector2(i%boardWidth, i/boardWidth);
+                spawnPoints[6] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 132: newTile.setSpawner(); // spawn player 8
-                spawnPoints[7] = new Vector2(i%boardWidth, i/boardWidth);
+                spawnPoints[7] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for spawnpoints - ID: " + tileID);
@@ -354,8 +353,6 @@ public class Board {
         return newTile;
     }
 
-
-
     private Tile.Builder readBlueBelts(int tileID, Tile.Builder newTile) {
         if (tileID == 0) {
             return newTile;
@@ -459,6 +456,7 @@ public class Board {
     public int getBoardWidth() {
         return boardWidth;
     }
+
     public Vector2 getSpawnPoints(int i) {
         return spawnPoints[i];
     }

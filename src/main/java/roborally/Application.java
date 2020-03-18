@@ -25,7 +25,6 @@ public class Application extends Game {
     public LoadingScreen loadingScreen;
     public MenuScreen menuScreen;
     public GameScreen gameScreen;
-    public GameLogic gameLogic;
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -55,12 +54,6 @@ public class Application extends Game {
 
     @Override
     public void resize(int width, int height) {/*intentionally empty method*/}
-
-    @Override
-    public void render() {
-        // While having multiple screens: super.render() calls the render of the current screen
-        super.render();
-    }
 
     @Override
     public void pause() {/*intentionally empty method*/}

@@ -33,7 +33,7 @@ public class GameScreen implements Screen {
     private TiledMap boardgfx;
     private TiledMapTileLayer playerLayer;
     private OrthogonalTiledMapRenderer renderer;
-    private ArrayList<TiledMapTileLayer.Cell> playerTiles = new ArrayList<>();
+    private final ArrayList<TiledMapTileLayer.Cell> playerTiles = new ArrayList<>();
 
     private final Application app;
     private final Stage stage;

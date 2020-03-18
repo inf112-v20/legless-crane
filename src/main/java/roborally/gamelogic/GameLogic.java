@@ -11,11 +11,19 @@ import java.util.ArrayList;
 
 public class GameLogic {
     public Player currentPlayer;
-    private ArrayList<Player> players = new ArrayList<>();
+    // Part of event-driven gameloop, will allow us to update which player's movement we should execute.
+    // might not be strictly necessary before programmingcards are implemented
+    private final ArrayList<Player> players = new ArrayList<>();
     private Board board;
-    private GameScreen gameScreen;
+    private final GameScreen gameScreen;
     public int boardWidth;
     public int boardHeight;
+
+    private void updateCurrentPlayer(Player player) {
+        // the current player should be set as the next according to priority on cards and other gamerules
+        // see event driven game-loop.
+        currentPlayer = player;
+    }
 
     public GameLogic(GameScreen gameScreen, int numPlayers){
         this.gameScreen = gameScreen;
@@ -27,9 +35,9 @@ public class GameLogic {
             System.out.println("ISSUE LOADING BOARD FROM FILE");
         }
         for(int i = 0; i <numPlayers; i++) {
-            players.add(new Player(i+1, board.getSpawnPoints(i), this));
+            players.add(new Player(i+1, board.getSpawnPoints(i)));
         }
-        currentPlayer = players.get(0);
+        currentPlayer = players.get(0); // so far only used by GameScreen
     }
 
     private void loadBoard(){
@@ -46,7 +54,7 @@ public class GameLogic {
         if (validMove(nextPos) && willNotCollide(player, dir)) {
             // important that we do not update the player's position first here, as it's used in gameScreen to remove
             // the player gfx from the previous tile.
-            gameScreen.setPlayerPosition(currentPlayer, nextPos);
+            gameScreen.setPlayerPosition(player, nextPos);
             player.setPosition(nextPos);
         }
     }
@@ -80,7 +88,6 @@ public class GameLogic {
     public void forwardMovement(Player player) {
         updatePlayerPosition(player, player.getRotation());
     }
-
 
     // can add other logic here to check if there are walls etc blocking movement
     public boolean validMove(Vector2 move) {

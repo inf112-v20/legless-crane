@@ -4,28 +4,35 @@ import com.badlogic.gdx.math.Vector2;
 import roborally.board.Direction;
 
 public class Player {
-    private final GameLogic gameLogic;
-    private int health;
     private int lives;
+    private int health;
     private Vector2 position;
-    private Vector2 backupPoint;
-    private int playerNumber;
     private Direction rotation;
+    private Vector2 backupPoint;
+    private final int playerNumber;
 
-    public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
-        this.playerNumber = playerNumber;
-        this.gameLogic = gameLogic;
-        this.position = spawnPoint;
-        this.health = 9;
+    public Player(int playerNumber, Vector2 spawnPoint) {
         this.lives = 3;
+        this.health = 9;
+        this.position = spawnPoint;
         this.backupPoint = spawnPoint;
+        this.playerNumber = playerNumber;
         this.rotation = Direction.NORTH;
-
-        //gameLogic.updateRenderingPlayer(position,Direction.NORTH);
     }
 
-    public int handleDamage(int damage) {
-        return 0;
+    public void setBackupPoint(Vector2 newBackupPoint) {
+        backupPoint = newBackupPoint;
+    }
+
+
+    public void handleDamage(int damage) {
+        // this method should be called by GameLogic every "tick" to check if any players are on lasers or holes.
+        // if they're on such a tile, call this method for that player.
+        lives -= 1;
+
+        health = health-damage;
+        // if health below 0, lose life
+        // when player dies, respawn at backup
     }
 
     public int getHealth() {
