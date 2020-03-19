@@ -122,6 +122,7 @@ public class GameScreen implements Screen {
         // render buttons:
         update(v);
         stage.draw();
+        gameLogic.updateGameState();
     }
 
     @Override
