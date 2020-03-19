@@ -6,7 +6,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TempTileObjectTests {
 
-    private Board board;
+    private final Board board;
 
-    public TempTileObjectTests() throws IOException, SAXException, ParserConfigurationException {
+    public TempTileObjectTests() {
         board = new Board(new File("src/test/testingResources/testBoard0.tmx"));
     }
 

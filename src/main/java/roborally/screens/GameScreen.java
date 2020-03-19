@@ -21,35 +21,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import org.xml.sax.SAXException;
 import roborally.Application;
-import roborally.board.Board;
 import roborally.board.Direction;
-import roborally.board.Tile;
+import roborally.gamelogic.GameLogic;
+import roborally.gamelogic.Player;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameScreen implements Screen {
     // Originally from the Renderer-class:
     private TiledMap boardgfx;
-    private Board board;
     private TiledMapTileLayer playerLayer;
     private OrthogonalTiledMapRenderer renderer;
-    private TiledMapTileLayer.Cell playerTile; // regular player texture.
-    public Vector2 playerPosition;
-    private int boardWidth;
-    private int boardHeight;
-    private int rotation = 0;
+    private final ArrayList<TiledMapTileLayer.Cell> playerTiles = new ArrayList<>();
 
     private final Application app;
     private final Stage stage;
     private Skin skin;
+    private final GameLogic gameLogic;
 
     public GameScreen(final Application app) {
         this.app = app;
+        this.gameLogic = new GameLogic(this,1);
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
+
     }
 
     // Calls the Actor.act(float) method on each actor in the stage.
@@ -62,38 +57,36 @@ public class GameScreen implements Screen {
         // creating a new camera and 2D/Orthogonal renderer
         renderer = new OrthogonalTiledMapRenderer(boardgfx, 1 / 400f);
         OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(false, boardWidth, boardHeight);
+        camera.setToOrtho(false, gameLogic.boardWidth, gameLogic.boardHeight);
         camera.position.set(camera.viewportWidth / 4f, camera.viewportHeight / 4f, 0); // centering camera
 
         camera.update();
         renderer.setView(camera);
     }
 
-
-
-    private void loadBoard() throws IOException, SAXException, ParserConfigurationException {
-        board = new Board(new File("src/main/assets/boards/Board1.tmx"));
-
+    private void loadBoard() {
         // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
         TmxMapLoader loader = new TmxMapLoader();
         boardgfx = loader.load("src/main/assets/boards/Board1.tmx");
-        TiledMapTileLayer background = (TiledMapTileLayer) boardgfx.getLayers().get("background");
-
-        boardWidth = background.getWidth();
-        boardHeight = background.getHeight();
     }
 
-    private void placePlayer() {
+    public void placePlayers() {
         // getting texture for player piece
-        playerTile = new Cell().setTile(new StaticTiledMapTile
-                (new TextureRegion(new Texture("img/Tower.png"))));
+        playerTiles.add(new Cell().setTile(new StaticTiledMapTile
+                (new TextureRegion(new Texture("img/Tower.png")))));
+
+        // Will have multiple players, put these in an array?
 
         // creating a layer to hold the player, setting the player's position and
-        playerLayer = new TiledMapTileLayer(boardWidth, boardHeight, 300, 300);
+        playerLayer = new TiledMapTileLayer(gameLogic.boardWidth, gameLogic.boardHeight, 300, 300);
         // starting position for the player
-        playerPosition = new Vector2(6, 2);
-        playerLayer.setCell((int)playerPosition.x,(int)playerPosition.y,playerTile);
 
+        for (int i = 0; i < gameLogic.getPlayers().size(); i++) {
+            playerLayer.setCell(
+                    (int)gameLogic.getPlayers().get(i).getPosition().x,
+                    (int)gameLogic.getPlayers().get(i).getPosition().y,
+                    playerTiles.get(i));
+        }
     }
 
     @Override
@@ -102,14 +95,9 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(stage); // keep track of how actors interact/influence/are being influenced on stage
         stage.clear(); // reload site
 
-        try {
-            loadBoard();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } //TODO find a better way to handle this?
-
+        loadBoard();
         createCam();
-        placePlayer();
+        placePlayers();
 
         // Additional UI on the stage: graphical representation of buttons
         this.skin = new Skin();
@@ -157,55 +145,31 @@ public class GameScreen implements Screen {
         renderer.dispose();
     }
 
-    private Vector2 getDirectionalPosition(Vector2 currentPos, Direction moveDir) {
-        switch(moveDir) {
+    public void updatePlayerRotation(int playerIndex, Direction rotation) {
+        //TODO can we iterate through enum as a list or something to get index of direction? Any other way to do this better
+        switch(rotation) {
             case NORTH:
-                return new Vector2(currentPos.x,currentPos.y+1);
+                playerTiles.get(playerIndex).setRotation(0);
+                break;
             case EAST:
-                return new Vector2(currentPos.x+1,currentPos.y);
+                playerTiles.get(playerIndex).setRotation(3);
+                break;
             case SOUTH:
-                return new Vector2(currentPos.x,currentPos.y-1);
+                playerTiles.get(playerIndex).setRotation(2);
+                break;
             case WEST:
-                return new Vector2(currentPos.x-1,currentPos.y);
-            default:
-                System.out.println("Incorrect direction given in getDirectionalPosition(), returning currentPos");
-                return currentPos;
+                playerTiles.get(playerIndex).setRotation(1);
+                break;
         }
     }
 
-    private boolean willNotCollide(Vector2 currentPos, Direction moveDir) {
-        Tile currentTile = board.get(currentPos);
-        Tile nextTile = board.get(getDirectionalPosition(currentPos,moveDir));
-
-
-        //TODO Might be better to use List or ArrayList for blocking directions?
-        // easier to use .contains(dir) or something
-        if (currentTile.canBlockMovement()) {
-            for (Direction dir : currentTile.getBlockingDirections())
-                if (dir == moveDir)
-                    return false;
-        } else if (nextTile.canBlockMovement()) {
-            for (Direction dir : nextTile.getBlockingDirections())
-                if (dir == moveDir.opposite())
-                    return false;
-        }
-        return true;
+    public void setPlayerPosition(Player player, Vector2 newPosition) {
+        // Should only be called from GameLogic if the move is considered valid, updates rendering of player
+        playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, null);
+        playerLayer.setCell((int) newPosition.x, (int) newPosition.y, playerTiles.get(player.getPlayerNumber()-1));
     }
 
-    private void updatePlayerPosition(Vector2 currentPos, Direction dir) {
-        Vector2 nextPos = getDirectionalPosition(currentPos, dir);
 
-        if (validMove(nextPos.x, nextPos.y) && willNotCollide(currentPos, dir)) {
-            playerPosition = nextPos;
-            playerLayer.setCell((int) nextPos.x, (int) nextPos.y, playerTile);
-            playerLayer.setCell((int)currentPos.x, (int)currentPos.y, null);
-        }
-    }
-
-    // can add other logic here to check if there are walls etc blocking movement
-    private boolean validMove(float x, float y) {
-        return (x < boardWidth && x >= 0) && (y < boardHeight && y >= 0);
-    }
 
     private void initButtons() {
         TextButton buttonMenu = new TextButton("Main menu", skin, "default");
@@ -225,7 +189,7 @@ public class GameScreen implements Screen {
         moveUp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	backwardMovement();
+                gameLogic.backwardMovement(gameLogic.currentPlayer);
 
             }
         });
@@ -236,7 +200,7 @@ public class GameScreen implements Screen {
         moveDown.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	forwardMovement();
+            	gameLogic.forwardMovement(gameLogic.currentPlayer);
             }
         });
 
@@ -247,7 +211,7 @@ public class GameScreen implements Screen {
         rotateLeft.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	rotatePlayerLeft();
+            	gameLogic.rotatePlayer(gameLogic.currentPlayer,-1);
             }
         });
         TextButton rotateRight = new TextButton("Rotate right", skin, "default");
@@ -257,7 +221,7 @@ public class GameScreen implements Screen {
         rotateRight.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	rotatePlayerRight();
+                gameLogic.rotatePlayer(gameLogic.currentPlayer,+1);
             }
         });
         stage.addActor(buttonMenu);
@@ -266,47 +230,6 @@ public class GameScreen implements Screen {
         stage.addActor(rotateLeft);
         stage.addActor(rotateRight);
     }
-    private void rotatePlayerLeft() {
-    	if (rotation == 4) {
-			rotation = 0;
-		}	
-    	playerTile.setRotation(rotation+= 1);
-    	}
-    	
-    private void rotatePlayerRight() {
-    	if (rotation == 0) {
-			rotation = 4;
-		}	
-    	playerTile.setRotation(rotation-= 1);
-    }
-    private void backwardMovement() {
-    	if (rotation == 0) {
-    		updatePlayerPosition(playerPosition, Direction.SOUTH);
-    	}
-    	else if (rotation == 1) {
-    		updatePlayerPosition(playerPosition,Direction.EAST);
-    	}
-    	else if (rotation == 2) {
-    		updatePlayerPosition(playerPosition,Direction.NORTH);
-    	}
-    	else if (rotation == 3) {
-    		updatePlayerPosition(playerPosition,Direction.WEST);
-    	}
-    }
-    
-    private void forwardMovement() {
-    	if (rotation == 0) {
-    		updatePlayerPosition(playerPosition,Direction.NORTH);
-    	}
-    	else if (rotation == 1) {
-    		updatePlayerPosition(playerPosition,Direction.WEST);
-    	}
-    	else if (rotation == 2) {
-    		updatePlayerPosition(playerPosition, Direction.SOUTH);
-    	}
-    	else if (rotation == 3) {
-    		updatePlayerPosition(playerPosition,Direction.EAST);
-    	}
-    }
+
 }
 

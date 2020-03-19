@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import roborally.gamelogic.GameLogic;
 import roborally.screens.GameScreen;
 import roborally.screens.MenuScreen;
 import roborally.screens.LoadingScreen;
@@ -53,12 +54,6 @@ public class Application extends Game {
 
     @Override
     public void resize(int width, int height) {/*intentionally empty method*/}
-
-    @Override
-    public void render() {
-        // While having multiple screens: super.render() calls the render of the current screen
-        super.render();
-    }
 
     @Override
     public void pause() {/*intentionally empty method*/}
