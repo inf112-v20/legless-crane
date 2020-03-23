@@ -11,54 +11,53 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
- * Currently this works by first initializing the board with open tiles, then reading in the different
- * elements to be placed on the board.
+ * We are aware that there is functionality in TiledMapLoader, and Tiled which allows us to do this a different way.
  *
- * Might keep this separate in the future for each type of element or group types of elements if it
- * looks like it would be easier.
+ * While we'll likely switch to that way of reading in the game board, we are not prioritizing it currently as this
+ * implementation works well for our purposes (if a bit bloated with switch-cases). We will likely focus more on
+ * adding other criteria for the MVP than cleaning up this code for the foreseeable future
  *
- * First iteration utilizes an Enum to keep track of the elements on the board-
- *
- * Known BUG: as lasers and beams can share a position with other objects, the last read element will be the
- * only element stored in our board. This should be addressed when we create Tile objects (see UML for planned
- * implementation)
- *
- * It's for that same reason that we have a lot of repeated code in the readXYZ() methods in this class,
- * to better be able to create different objects with different properties to be used for game-logic     *
- *
- * something like: new Belt("Yellow", Direction.NORTH) or: new Wall ([North, West]) or w/e
- *
- */
+ * In short, Board contains all tiles on the map, methods to read the map from a xml/tmx file, and other relevant
+ * data like boardHeight, boardWidth, boardSize and a list of spawnpoints
+ **/
 
 public class Board {
     private int boardWidth;
     private int boardHeight;
     private int boardSize;
     private final ArrayList<Tile> tiles = new ArrayList<>();
-    private final ArrayList<int[]> boardWithLayers = new ArrayList<>();
     private final Vector2[] spawnPoints = new Vector2[8];
+    private Vector2[] flags = new Vector2[4];
 
-    public Board(File file){
-        try {
-            readBoardFromFile(file);
-        } catch (Exception e) {
-            System.out.println("ISSUE LOADING BOARD");
-        } //TODO find a better way to handle this?
+    /**
+     * TODO Check wording here
+     * The constructor first reads the board from file using readBoard()
+     *
+     * following this it populates our ArrayList which will contain all tiles, with empty tiles.
+     *
+     * once tiles is filled, the elements which are not empty tiles are placed in their proper position in tiles.
+     *
+     * Finally, due to how we populate this list (0,0 is at the top left corner instead of bottom left), we move the
+     * tiles in our List after reading in all tiles to their correct x,y position so rendered tiles match tiles used in
+     * game logic.
+     *
+     * @param filePath the path to the file we are reading the board from.
+     *
+     */
+    public Board(String filePath) {
+        ArrayList<int[]> boardWithLayers = readBoard(filePath);
 
-        for (int i = 0; i < boardSize; i++) { tiles.add(new Tile.Builder().build()); } // standard empty tile
+        for (int i = 0; i < boardSize; i++)
+            tiles.add(new Tile.Builder().build());
 
-        readBoard(boardWithLayers);
+        fillBoard(boardWithLayers);
 
-
-        for(int i = 0, j = tiles.size() - 1; i < j; i++) {
+        for(int i = 0, j = tiles.size() - 1; i < j; i++)
             tiles.add(i, tiles.remove(j));
-        } // reverse arraylist, This makes the map mirrored
-        // columns are in the wrong order
-        // rows in the right
 
-        // reverses column order
         for (int i = 0; i < tiles.size(); i += boardWidth) {
             int endOfBlock = Math.min(i + boardWidth, tiles.size());
             for (int j = i, k = endOfBlock - 1; j < k; j++, k--) {
@@ -67,70 +66,133 @@ public class Board {
                 tiles.set(k, temp);
             }
         }
-        // now the map and logic here matches what is rendered
-        //TODO this seems like a super dumb way of doing this, find something better? use array instead of ArrayList?
     }
 
-    private void readBoardFromFile(File file) throws IOException, SAXException, ParserConfigurationException {
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
+    public Tile getTile(Vector2 pos) {
+        return tiles.get((int) (pos.x + pos.y*boardWidth));
+    }
+    public int getBoardHeight() {
+        return boardHeight;
+    }
 
-        // reading inn the board width and height and storing it
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+    public Vector2 getSpawnPoints(int i) {
+        return spawnPoints[i];
+    }
+
+    /**
+     * parses the .tmx file (xml) and gets relevant data about the board like boardHeight, boardWidth etc.
+     *
+     * We then get each layer of the board, which is essentially a String representing a list of numbers, by removing
+     * spaces and utilizing .split() we can get a String array of each layer on the board
+     *
+     * We then turn this into an int array to make it easier to read from later. The ArrayList of these int arrays
+     * which represent the board are then returned.
+     *
+     * @param filePath the path of the file we're reading the board from
+     * @return the ArrayList representing the board and every layer on it.
+     */
+    private ArrayList<int[]> readBoard(String filePath) {
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+        Document document = null;
+
+        try {
+            builder = factory.newDocumentBuilder();
+            document = builder.parse(new File(filePath));
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+            System.out.println("Issue reading in board, check the method readBoard() in Board.java");
+        }
+
         NodeList nodeList = document.getElementsByTagName("layer");
         Element el = (Element)nodeList.item(0);
         boardWidth = Integer.parseInt(el.getAttribute("width"));
         boardHeight = Integer.parseInt(el.getAttribute("height"));
         boardSize = boardWidth* boardHeight;
 
-        /*
-        Getting each layer from the .tmx (xml) file, .getTextContent() gives us a String with spaces before and after
-        and separating each line for the y axis.
 
-        Removing all spaces and splitting the string into an array by utilizing .split()
-         */
-        ArrayList<String[]> rawBoard = new ArrayList<>();
+        ArrayList<String[]> stringLayers = new ArrayList<>();
 
+        //for every layer, split the layer into a list of strings without spaces (each element in list is a TileID)
         for (int i = 0; i<11;i++)
-            rawBoard.add(document.getElementsByTagName("layer").item(i).getTextContent()
+            stringLayers.add(document.getElementsByTagName("layer").item(i).getTextContent()
                     .replaceAll("\\s","").split(","));
 
-        // parsing for ints on that list, and adding to boardWithLayers which is an ArrayList of int arrays containing
-        // the ID for each element on each layer.
-        for (String[] layer : rawBoard) {
+
+        ArrayList<int[]> listOfLayers = new ArrayList<>();
+        // turning layer into list of ints instead of list of strings, and putting each layer into ArrayList
+        for (String[] layer : stringLayers) {
             int[] tempArray = new int[layer.length];
             for (int i = 0; i < layer.length; i++)
                 tempArray[i] = Integer.parseInt(layer[i]);
-            boardWithLayers.add(tempArray);
+            listOfLayers.add(tempArray);
         }
+        // returning ArrayList of layers.
+        return listOfLayers;
     }
 
-    public Tile get(Vector2 pos) { return tiles.get((int) (pos.x + pos.y*boardWidth)); } // no set method currently
-
-    private void readBoard(ArrayList<int[]> input){
+    /**
+     * method that loops through every tile on the board and checks if a property should be added to the tile in that
+     * position on the board.
+     *
+     * Each TileID (number in listOfLayers.get(i)[j]) represents an element on the board, an appropriate attribute is
+     * assigned the newTile which is being built by the Tile.Builder.
+     *
+     * If no relevant tileID is found, a basic "empty" Tile is made, if several are found, the Tile will contain all
+     * these properties (intended) i.e. a Tile which has both a wall and a cog, will be able to both block movement and
+     * rotate the player in it's designated directions.
+     *
+     * For easier readability the reading of each layer has been split into it's own method. This is a temporary measure
+     * which might be replaced by enums or the replacement of Board in it's entirety.
+     *
+     * @param listOfLayers the ArrayList of integer arrays containing all tileIDs
+     */
+    private void fillBoard(ArrayList<int[]> listOfLayers){
         for (int i = 0; i<boardSize-1; i++) {
             // for every tile on board
             Tile.Builder newTile = new Tile.Builder();
-            // create a new tile
-            //TODO this looks a bit dumb, is there a better way for us to handle this?
-            newTile = readHole(input.get(1)[i], newTile);
-            newTile = readWrenches(input.get(2)[i], newTile);
-            newTile = readYellowBelts(input.get(3)[i], newTile);
-            newTile = readBlueBelts(input.get(4)[i], newTile);
-            newTile = readCogs(input.get(5)[i], newTile);
-            newTile = readSpawns(input.get(8)[i], newTile, i);
-            newTile = readFlags(input.get(9)[i], newTile);
-            newTile = readWalls(input.get(10)[i], newTile);
-            // Should check each layer and update newTile
 
+            // check if there are any elements on this tile for each layer
+            newTile = readHole(listOfLayers.get(1)[i], newTile);
+            newTile = readWrenches(listOfLayers.get(2)[i], newTile);
+            newTile = readYellowBelts(listOfLayers.get(3)[i], newTile);
+            newTile = readBlueBelts(listOfLayers.get(4)[i], newTile);
+            newTile = readCogs(listOfLayers.get(5)[i], newTile);
+            //TODO Add lasers and beam for layer 6 & 7.
+            newTile = readSpawns(listOfLayers.get(8)[i], newTile, i);
+            newTile = readFlags(listOfLayers.get(9)[i], newTile, i);
+            newTile = readWalls(listOfLayers.get(10)[i], newTile);
+
+            // add the built Tile object to the board
             tiles.set(i, newTile.build());
         }
     }
 
+    /**
+     * The readXYZ() methods in this class follow the same structure:
+     *
+     * Check if the tileID is 0 ( no extra properties to be added from this layer ) if not, check which properties
+     * to add if any
+     *
+     * Finally return the Tile with or without modifications, so it can be checked against future layers before being
+     * built.
+     *
+     * @param tileID the ID each tile has in the .tmx file
+     * @param newTile the Tile we are currently building
+     * @return the tile we either have or have not added properties to.
+     */
     private Tile.Builder readHole(int tileID, Tile.Builder newTile) {
+        // if bigger holes will get implemented, this method will likely be expanded
+        if (tileID == 0)
+            return newTile;
         if (tileID == 6)
             newTile.setKiller();
-        else if (tileID != 0)
+        else
             System.out.println("Did not recognize TileID when checking for holes - ID: " + tileID);
         return newTile;
     }
@@ -140,6 +202,7 @@ public class Board {
             return newTile;
         }
         switch (tileID) {
+            // pretty sure there is some distinction here between the two, which we have yet to implement.
             case 7: newTile.setRepairAndBackup(); // wrench and hammer
                 break;
             case 15: newTile.setRepairAndBackup(); // wrench
@@ -167,18 +230,34 @@ public class Board {
         return newTile;
     }
 
-    private Tile.Builder readFlags(int tileID, Tile.Builder newTile) {
+    /**
+     * readFlags and readSpawns deviate from the structure of other readXYZ methods
+     * this is mostly due to having to register the position of each flag or spawn point.
+     *
+     * We might change how this is handled in the future
+     *
+     * @param tileID the ID each tile has in the .tmx file
+     * @param newTile the Tile we are currently building
+     * @param i the position in list of this tile
+     * @return the tile we either have or have not added properties to.
+     */
+    private Tile.Builder readFlags(int tileID, Tile.Builder newTile, int i) {
+
         if (tileID == 0) {
             return newTile;
         }
         switch (tileID) {
             case 55: newTile.setFlag(1); // flag number 1
+                flags[0] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 63: newTile.setFlag(2); // flag number 2
+                flags[1] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 71: newTile.setFlag(3); // flag number 3
+                flags[2] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 79: newTile.setFlag(4); // flag number 4
+                flags[3] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for flags - ID: " + tileID);
@@ -187,8 +266,6 @@ public class Board {
     }
 
     private Tile.Builder readSpawns(int tileID, Tile.Builder newTile, int i) {
-        // due to the nature of how we read the board in and x,y coordinates are handled, we need to reverse the pos
-        // saved as spawnpoint
         if (tileID == 0) {
             return newTile;
         }
@@ -447,17 +524,5 @@ public class Board {
                 System.out.println("Did not recognize TileID when checking for blue belts - ID: " + tileID);
         }
         return newTile;
-    }
-
-    public int getBoardHeight() {
-        return boardHeight;
-    }
-
-    public int getBoardWidth() {
-        return boardWidth;
-    }
-
-    public Vector2 getSpawnPoints(int i) {
-        return spawnPoints[i];
     }
 }
