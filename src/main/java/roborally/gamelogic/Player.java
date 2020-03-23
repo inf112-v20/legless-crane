@@ -2,9 +2,10 @@ package roborally.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
 import roborally.board.Direction;
-import roborally.gamelogic.GameLogic;
 
-
+/**
+ * An object which contains the relevant data of a Player, health, lives etc.
+ */
 public class Player {
     private int lives;
     private int health;
@@ -24,45 +25,28 @@ public class Player {
         this.gameLogic = gameLogic;
     }
 
-    public void setBackupPoint(Vector2 newBackupPoint) {
-        backupPoint = newBackupPoint;
+    public void setBackupPoint(Vector2 backupPoint) {
+        this.backupPoint = backupPoint;
     }
 
-
-
+    /**
+     * handleDamage updates the player's health and checks if it falls below 0,
+     * If the player's health goes below 0, the player should respawn or lose the game.
+     * @param damage the damage the player should take
+     */
     public void handleDamage(int damage) {
-        // this method should be called by GameLogic every "tick" to check if any players are on lasers or holes.
-        // if they're on such a tile, call this method for that player.
-
-    health = health-damage;
-       if (health < 0){
-           doRespawn();
-       }
-        // if health below 0, lose life
-        // when player dies, respawn at backup
-    }
-
-    private boolean lifeStatusIsOk() {
-        if (lives < 1){
-            // game over
-            return false;
-        } return true;
-    }
-
-    private void doRespawn() {
-        if (lifeStatusIsOk()) {
-            lives -= 1;
-            gameLogic.updatePlayerPosition(this, null, backupPoint);
-        } else {
-            //TODO: game over
-        }
+        health -= damage;
+        if (health < 0)
+            respawn();
     }
 
     public int getHealth() {
+        // not needed?
         return health;
     }
 
     public int getLives() {
+        // not needed?
         return lives;
     }
 
@@ -75,6 +59,7 @@ public class Player {
     }
 
     public Vector2 getBackupPoint() {
+        // not needed?
         return backupPoint;
     }
 
@@ -88,5 +73,20 @@ public class Player {
 
     public void setRotation(Direction rotation) {
         this.rotation = rotation;
+    }
+
+    /**
+     * checks if the player has lives left, if it does, it respawns with full health at it's backupPoint
+     *
+     * if not, nothing currently happens to it. This will change once we implement a game over screen or something.
+     */
+    private void respawn() {
+        if (lives > 1) {
+            lives -= 1;
+            health = 9;
+            gameLogic.respawnPlayer(this);
+        } else {
+            //TODO: game over
+        }
     }
 }
