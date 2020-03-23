@@ -6,13 +6,11 @@ import roborally.board.Direction;
 import roborally.board.Tile;
 import roborally.screens.GameScreen;
 
-import java.io.File;
 import java.util.ArrayList;
+
 
 public class GameLogic {
     public Player currentPlayer;
-    // Part of event-driven gameloop, will allow us to update which player's movement we should execute.
-    // might not be strictly necessary before programmingcards are implemented
     private final ArrayList<Player> players = new ArrayList<>();
     private Board board;
     private final GameScreen gameScreen;
@@ -20,112 +18,170 @@ public class GameLogic {
     public int boardHeight;
     private int count = 0;
 
-    private void updateCurrentPlayer(Player player) {
-        // the current player should be set as the next according to priority on cards and other gamerules
-        // see event driven game-loop.
-        currentPlayer = player;
-    }
-
-    public void updateGameState(){ // gets called in the renderer in GameScreen
-        if (count<10) {
-            count++;
-            return;
-        }
-        for (Player player : players){  // register interaction on playboard
-            if (board.get(player.getPosition()).canKillPlayer()){
-                player.handleDamage(10);
-            } if (player.getPosition().x<0 || player.getPosition().y<0 || player.getPosition().x >= boardWidth || player.getPosition().y >= boardHeight ){
-                player.handleDamage(10);
-            }
-        }
-        count = 0;
-    }
-
+    /**
+     * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
+     * instance of GameLogic and GameScreen.
+     *
+     * loads the board from file
+     *
+     * Adds players to the game and places them on their spawnpoint, also ensuring they only have one GameLogic to
+     * think about.
+     *
+     * sets the first player as the currentPlayer (only relevant once multiple players are in and they take turns)
+     *
+     * @param gameScreen the screen which calls GameLogic, should be called using new GameLogic(this, numPlayers) so
+     *                   we don't get more than one instance of GameLogic or GameScreen
+     * @param numPlayers the number of players this game (how many Player objects to create in this constructor)
+     */
     public GameLogic(GameScreen gameScreen, int numPlayers){
         this.gameScreen = gameScreen;
-
-        try {
-            loadBoard();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ISSUE LOADING BOARD FROM FILE");
-        }
+        loadBoard();
         for(int i = 0; i <numPlayers; i++) {
             players.add(new Player(i+1, board.getSpawnPoints(i),this));
         }
         currentPlayer = players.get(0); // so far only used by GameScreen
     }
 
-    private void loadBoard(){
-        board = new Board(new File("src/main/assets/boards/Board1.tmx"));
-        boardWidth = board.getBoardWidth();
-        boardHeight = board.getBoardHeight();
+    /**
+     * TODO might move away from having a parameter here if we calculate instead of assign the next player
+     *
+     * This method should calculate which player is next in line for executing moves, temp method for now remove if
+     * we do not implement multiple players before end of sprint
+     *
+     * Should check which player has the highest priority card (or just who's next in line) and update the currentPlayer
+     * variable to that player.
+     *
+     * @param player player which should become the current one
+     */
+    private void updateCurrentPlayer(Player player) {
+        // the current player should be set as the next according to priority on cards and other gamerules
+        // see event driven game-loop.
+        currentPlayer = player;
     }
 
-    public void updatePlayerPosition(Player player, Direction dir, Vector2 pos) {
-        //Vector2 nextPos = getDirectionalPosition(player, dir);
-        if (dir == null){
-            gameScreen.setPlayerPosition(player, pos);
-            player.setPosition(pos);
-            // Skal helst kalles kun når spiller dør
+    /**
+     * Gets called by GameScreen every frame, checks the state of the game and updates it accordingly
+     *
+     * This is where the majority of the game logic / game loop will take place, might rely on it's own methods for
+     * logic blocks to maintain readability in the code.
+     *
+     * Currently only checks if the player goes outside the board or into a hole.
+     *
+     * For testing purposes we have added a "timer" so for instance a cog does not continuously rotate the player,
+     * should only do so every 10 frames.
+     */
+    public void updateGameState(){
+        if (count<10) {
+            count++;
+            return;
         }
 
-        if (validMove(pos) && willNotCollide(player, pos, dir)) {
-            // important that we do not update the player's position first here, as it's used in gameScreen to remove
-            // the player gfx from the previous tile.
-            gameScreen.setPlayerPosition(player, pos);
-            player.setPosition(pos);
+        for (Player player : players){
+            // loop through players and check for interactions between that player and elements on the board.
+            if (board.getTile(player.getPosition()).isHole()) {
+                player.handleDamage(10);
+            } else if (player.getPosition().x<0 || player.getPosition().y<0
+                    || player.getPosition().x >= boardWidth || player.getPosition().y >= boardHeight ){
+                // if player is outside of board.
+                player.handleDamage(10);
+            }
+        }
+        count = 0; // reset timer if we have interacted with player
+    }
 
+    /**
+     * Method for moving a player in a specific direction
+     *
+     * Checks if this goes off the board or if it collides with a wall, these cases currently do not allow movement in
+     * that direction.
+     *
+     * @param player the player who's position we should update
+     * @param dir the direction which the player should move (used for checking against walls
+     */
+    private void movePlayerInDirection(Player player, Direction dir) {
+        Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir);
+
+        if (withinBoard(nextPos) && validMove(player, dir)) {
+            gameScreen.setPlayerPosition(player, nextPos);
+            player.setPosition(nextPos);
         }
     }
 
-    public Vector2 getDirectionalPosition(Player player, Direction moveDir) {
-        switch(moveDir) {
-            case NORTH:
-                return new Vector2(player.getPosition().x,player.getPosition().y+1);
-            case EAST:
-                return new Vector2(player.getPosition().x+1,player.getPosition().y);
-            case SOUTH:
-                return new Vector2(player.getPosition().x,player.getPosition().y-1);
-            case WEST:
-                return new Vector2(player.getPosition().x-1,player.getPosition().y);
-            default:
-                System.out.println("Incorrect direction given in getDirectionalPosition(), returning currentPos");
-                return player.getPosition();
-        }
+    /**
+     * Player uses this method when dying, moving the player back to their backup point on both gameScreen and in
+     * gameLogic
+     *
+     * @param player the player which should respawn.
+     */
+    public void respawnPlayer(Player player) {
+        gameScreen.setPlayerPosition(player, player.getBackupPoint());
+        player.setPosition(player.getBackupPoint());
     }
 
+    /**
+     * Method which calculates the direction the player will be facing using the rotate method in the Direction enum
+     *
+     * Updates the player rotation in game logic and in the renderer.
+     *
+     * @param player the player which should be rotated.
+     * @param direction an integer which either negative or positive indicates which direction the player should rotate
+     *                  the value is how much it should be rotated.
+     */
     public void rotatePlayer(Player player, int direction) {
         // direction can be +1 (clocwise) or -1 (counter clockwise) (or more) for rotation
-        player.setRotation(player.getRotation().rotate(direction,player.getRotation()));
+        player.setRotation(player.getRotation().rotate(direction));
         gameScreen.updatePlayerRotation(player.getPlayerNumber()-1, player.getRotation());
     }
 
     public void backwardMovement(Player player) {
-        updatePlayerPosition(player, player.getRotation().opposite(), getDirectionalPosition(player, player.getRotation().opposite()));
+        movePlayerInDirection(player, player.getRotation().opposite());
     }
 
     public void forwardMovement(Player player) {
-        updatePlayerPosition(player, player.getRotation(), getDirectionalPosition(player, player.getRotation()));
-    }
-    // Player player, Direction dir, Vector2 pos)
-    // updatePlayerPosition(player, getDirectionalPosition(player, player.getRotation()), player.getrotation())
-
-    // can add other logic here to check if there are walls etc blocking movement
-    public boolean validMove(Vector2 move) {
-       // return ((move.x < boardWidth && move.x >= 0) && (move.y < boardHeight) && move.y >= 0);
-        return true;
+        movePlayerInDirection(player, player.getRotation());
     }
 
-    public boolean willNotCollide(Player player, Vector2 pos, Direction direction) {
-        Tile currentTile = board.get(player.getPosition());
-        Tile nextTile = board.get(pos);
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 
+    /**
+     * loads the board and gets the dimensions of it for future use within GameLogic.
+     *
+     * Currently uses a hardcoded board, future implementations might accept a parameter which determines which of the
+     * boards to load.
+     */
+    private void loadBoard(){
+        board = new Board("src/main/assets/boards/Board1.tmx");
+        boardWidth = board.getBoardWidth();
+        boardHeight = board.getBoardHeight();
+    }
 
-        //TODO Might be better to use List or ArrayList for blocking directions?
-        // easier to use .contains(dir) or something
+    /**
+     * Checks if the desired position is within the board
+     * @param move the desired position
+     * @return whether or not the desired position's x,y coordinates are within the board.
+     */
+    private boolean withinBoard(Vector2 move) {
+        return ((move.x < boardWidth && move.x >= 0) && (move.y < boardHeight) && move.y >= 0);
+    }
 
-        //TODO this might be where the bug is for wall movement currently, check this logic
+    /**
+     * Checks if the tile the player is currently on or the tile the player wishes to move in the direction of blocks
+     * movement between the two.
+     *
+     * Checks each tile's blocking directions (if any), movement is blocked if one of these directions on the tile
+     * the player moves from is the same as the direction the player wishes to move. Or if the tile the player wishes
+     * to move to blocks movement from the direction the player is coming from.
+     *
+     * @param player the player which wishes to move
+     * @param direction the direction the player wishes to move
+     * @return whether or not the player can move in that direction without being blocked
+     */
+    private boolean validMove(Player player, Direction direction) {
+        Tile currentTile = board.getTile(player.getPosition());
+        Tile nextTile = board.getTile(getDirectionalPosition(player.getPosition(), direction));
+
         if (currentTile.canBlockMovement()) {
             for (Direction dir : currentTile.getBlockingDirections())
                 if (dir == direction)
@@ -137,8 +193,27 @@ public class GameLogic {
         }
         return true;
     }
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
 
+    /**
+     * returns the Vector2 x,y coordinate of a position in the moveDir direction
+     *
+     * @param position the position we're starting from
+     * @param moveDir the direction we're moving to
+     * @return the position one step in that direction
+     */
+    private Vector2 getDirectionalPosition(Vector2 position, Direction moveDir) {
+        switch(moveDir) {
+            case NORTH:
+                return new Vector2(position.x,position.y+1);
+            case EAST:
+                return new Vector2(position.x+1,position.y);
+            case SOUTH:
+                return new Vector2(position.x,position.y-1);
+            case WEST:
+                return new Vector2(position.x-1,position.y);
+            default:
+                System.out.println("Incorrect direction given in getDirectionalPosition(), returning currentPos");
+                return position;
+        }
+    }
 }
