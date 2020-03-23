@@ -1,16 +1,13 @@
 package roborally.board;
 
 public class Tile {
-    // No mandatory parameters for constructor yet.
-
-    //optional parameters for constructor
     private final boolean canBlockMovement;
-    private final boolean canKillPlayer;
+    private final boolean isHole;
     private final boolean canMergeLanes;
-    private final boolean canMovePlayer;
-    private final boolean canRotate;
+    private final boolean isBelt;
+    private final boolean isCog;
     private final boolean canBackup;
-    private final boolean canRepair;
+    private final boolean isWrench;
     private final boolean isSpawner;
     private final boolean isFlag;
     private final int rotation;
@@ -21,15 +18,23 @@ public class Tile {
     private final Direction movementDirection;
     private final String name;
 
+    /**
+     * Private constructor which allows us to utilize a builder design pattern to add customized functionality to each
+     * Tile object which represents every tile on the game board.
+     *
+     * Utilize any of the canXYZ methods to check the properties of this Tile Object
+     *
+     * @param builder The Builder object being built in this constructor
+     */
     private Tile(Builder builder) {
         //booleans
         this.canBlockMovement=builder.canBlockMovement;
         this.canMergeLanes=builder.canMergeLanes;
-        this.canKillPlayer=builder.canKillPlayer;
-        this.canMovePlayer=builder.canMovePlayer;
-        this.canRotate=builder.canRotate;
+        this.isHole = builder.isHole;
+        this.isBelt = builder.isBelt;
+        this.isCog =builder.canRotate;
         this.canBackup=builder.canBackup;
-        this.canRepair=builder.canRepair;
+        this.isWrench = builder.isWrench;
         this.isSpawner=builder.isSpawner;
         this.isFlag=builder.isFlag;
 
@@ -51,17 +56,17 @@ public class Tile {
         return name;
     }
 
-    public boolean canKillPlayer() { return canKillPlayer; }
+    public boolean isHole() { return isHole; }
 
-    public boolean canMergeLanes() { return canMergeLanes; }
+    public boolean canMergeLanes() { return canMergeLanes; } //TODO Remove if not used
 
-    public boolean canMovePlayer() { return canMovePlayer; }
+    public boolean isBelt() { return isBelt; }
 
-    public boolean canRotate() { return canRotate; }
+    public boolean isCog() { return isCog; }
 
-    public boolean canBackup() { return canBackup; }
+    public boolean canBackup() { return canBackup; } //TODO Remove if not used
 
-    public boolean canRepair() { return canRepair; }
+    public boolean isWrench() { return isWrench; }
 
     public boolean isSpawner() { return isSpawner; }
 
@@ -69,32 +74,37 @@ public class Tile {
 
     public int getMovementSpeed() { return movementSpeed; }
 
-    public int getRotation() { return rotation; }
+    public int getRotation() { return rotation; } //TODO Remove if not used
 
-    public int getFlagNum() { return flagNum; }
+    public int getFlagNum() { return flagNum; } //TODO Remove if not used
 
     public Direction[] getBlockingDirections() { return blockingDirections; }
 
-    public Direction[] getFromDirections() { return fromDirections; }
+    public Direction[] getFromDirections() { return fromDirections; } //TODO Remove if not used
 
-    public Direction getMovementDirection() { return movementDirection; }
+    public Direction getMovementDirection() { return movementDirection; } //TODO Remove if not used
 
-    //Builder Class
+    /**
+     * By calling this class using Tile.Builder() we can add functionality to it using the different set methods
+     * this way we allow for tiles with different properties where elements on the board overlap. Meaning we do not
+     * need a hybrid WallAndBelt Tile Object for each case where they would overlap (this would not be feasible)
+     *
+     * To create a Tile Object, call "new Tile.Builder()" to get the builder class
+     * add to it using any of the set methods like .setBlocker() .setRotation() and so on
+     * finally call the .build() method to call the private constructor of the Tile Class.
+     */
     public static class Builder {
-        // no required parameters
-
-        // optional parameters
         private boolean canBlockMovement;
-        private boolean canKillPlayer;
+        private boolean isHole;
         private Direction[] blockingDirections; // directions blocked by this tile
         private Direction movementDirection;
         private boolean canMergeLanes;
         private Direction[] fromDirections;
-        private boolean canMovePlayer;
+        private boolean isBelt;
         private int rotation;
         private boolean canRotate;
         private boolean canBackup;
-        private boolean canRepair;
+        private boolean isWrench;
         private boolean isFlag;
         private int flagNum;
         private boolean isSpawner;
@@ -105,7 +115,6 @@ public class Tile {
             this.canBlockMovement = true;
             this.blockingDirections = blockingDirections;
             this.name = "blocker";
-            //System.out.println("Blocker made");
             return this;
         }
 
@@ -118,8 +127,8 @@ public class Tile {
         }
 
         public Builder setRepairAndBackup() {
-            // might be smart to merge this and setSpawner() some how to generalize more
-            this.canRepair = true;
+            // might be smart to merge this and setSpawner() ? are these always the same?
+            this.isWrench = true;
             this.canBackup = true;
             return this;
         }
@@ -138,7 +147,7 @@ public class Tile {
 
         public Builder setStraightBelt(Direction movementDirection, int movementSpeed) {
             this.movementSpeed = movementSpeed;
-            this.canMovePlayer = true;
+            this.isBelt = true;
             this.movementDirection = movementDirection;
             return this;
         }
@@ -146,7 +155,7 @@ public class Tile {
         public Builder setCornerBelt(Direction movementDirection, int movementSpeed) {
             //TODO How to determine which direction to rotate?
             this.movementSpeed = movementSpeed;
-            this.canMovePlayer = true;
+            this.isBelt = true;
             this.canRotate = true;
             this.movementDirection = movementDirection;
             return this;
@@ -154,7 +163,7 @@ public class Tile {
 
         public Builder setMergingLanes(Direction movementDirection, int movementSpeed, Direction[] fromDirections) {
             this.canMergeLanes = true;
-            this.canMovePlayer = true;
+            this.isBelt = true;
             this.movementSpeed = movementSpeed;
             this.fromDirections = fromDirections;
             this.movementDirection = movementDirection;
@@ -162,12 +171,11 @@ public class Tile {
         }
 
         public Builder setKiller() {
-            this.canKillPlayer = true;
+            this.isHole = true;
             return this;
         }
 
         public Tile build(){
-            //System.out.println(this.canBlockMovement);
             return new Tile(this);
         }
     }
