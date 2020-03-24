@@ -19,6 +19,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -28,6 +29,9 @@ import roborally.Application;
 import roborally.board.Direction;
 import roborally.gamelogic.GameLogic;
 import roborally.gamelogic.Player;
+import roborally.programcards.DeckOfProgramCards;
+import roborally.programcards.Phase;
+import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
 
@@ -41,6 +45,11 @@ public class GameScreen implements Screen {
     private final Application app;
     private final Stage stage;
     private final GameLogic gameLogic;
+    private ArrayList<Phase> phases;
+    private DeckOfProgramCards deckOfProgramCards;
+    private boolean phasesAreProgrammed;
+    private int AVAIABLEPROGCARDS = 9;
+    private int PHASES = 5;
 
     private Skin skin;
     private BitmapFont font = new BitmapFont();
@@ -116,6 +125,8 @@ public class GameScreen implements Screen {
         this.skin.add("default-font", app.font);
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
 
+        initPlacementOfChosenProgramCards();
+        initChooseProgCards();
         initButtons();
     }
 
@@ -135,8 +146,8 @@ public class GameScreen implements Screen {
 
         //TODO: better solution regarding showing an updated HUD?
         app.batch.begin();
-        app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-650,Application.HEIGHT/40);
-        app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-450,Application.HEIGHT/40);
+        app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-450,Application.HEIGHT/40);
+        app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-350,Application.HEIGHT/40);
         app.font.draw(app.batch, "Flags conquered: " + gameLogic.currentPlayer.numberOfFlags(),Application.WIDTH-200,Application.HEIGHT/40);
         app.batch.end();
 
@@ -166,6 +177,8 @@ public class GameScreen implements Screen {
         app.batch.dispose();
     }
 
+
+
     public void updatePlayerRotation(int playerIndex, Direction rotation) {
         //TODO can we iterate through enum as a list or something to get index of direction? Any other way to do this better
         switch(rotation) {
@@ -190,8 +203,116 @@ public class GameScreen implements Screen {
         playerLayer.setCell((int) newPosition.x, (int) newPosition.y, playerTiles.get(player.getPlayerNumber()-1));
     }
 
+    public void initPlacementOfChosenProgramCards() {
+        phases = new ArrayList<Phase>();
+        Texture img = new Texture("cards/background.jpg");
+        for (int i = 0; i < PHASES; i++) {
+            Phase placement = new Phase();
+            placement.setTexture(img);
+            placement.setWidth(170);
+            placement.setHeight(200);
+            placement.setOriginCenter();
+            placement.setPosition(Application.WIDTH / 3 + 250 * i, Application.HEIGHT / 10);
+            placement.setRectangleBoundary();
+            phases.add(placement);
+            stage.addActor(placement);
+        }
+    }
+
+    public void initChooseProgCards() {
+        deckOfProgramCards = new DeckOfProgramCards();
+        for (int i = 0; i < AVAIABLEPROGCARDS; i ++) {
+            int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());         // Choose randomly program cards
+            final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index));
+            String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index) + ".jpg";
+            card.setTexture(new Texture(fileName));
+            card.setWidth(170);
+            card.setHeight(200);
+            card.setOriginCenter();
+            card.setPosition(Application.WIDTH / 15, Application.HEIGHT / 20 + 120*i );
+            card.setRectangleBoundary();
+
+            card.addListener(new ClickListener() {    // "Program robot"
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    for (int i = 0; i < PHASES; i++) {
+                        if (phases.get(i).getTopCard() == null) { // If program card is chosen, move to available phase
+                            card.addAction(Actions.moveTo(phases.get(i).getX(), phases.get(i).getY(), 0.2f));
+                            phases.get(i).addCard(card);
+                            if (i==PHASES-1) {
+                                phasesAreProgrammed = true;
+                            } return;
+                        }
+                    }
+                }
+            });
+            stage.addActor(card);
+            card.setZIndex(5);                 // cards created later should render earlier (on bottom)
+        }
+    }
+
+    private void initButtons() {
+        TextButton menuButton = new TextButton("Main menu", skin, "default");
+        menuButton.setPosition(Application.WIDTH / 20, Application.HEIGHT - 150);
+        menuButton.setSize(250, 100);
+        menuButton.getLabel().setFontScale(3.0f);
+        menuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                app.setScreen(app.menuScreen);
+            }
+        });
+        TextButton goButton = new TextButton("Let's go!", skin, "default");
+        goButton.setPosition(Application.WIDTH / 3 + 450, Application.HEIGHT / 50);
+        goButton.setSize(250, 100);
+        goButton.getLabel().setFontScale(3.0f);
+        goButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {  // gå gjennom phase for phase, remove card
+                if (phasesAreProgrammed) {
+                    for (Phase phas : phases) {
+                        if (!phas.getTopCard().equals(null)) {
+                            String movement = phas.getTopCard().getMovement();
+                            switch (movement) {
+                                case "1":
+                                    gameLogic.forwardOneMovement(gameLogic.currentPlayer);
+                                    break;
+                                case "2":
+                                    gameLogic.forwardTwoMovement(gameLogic.currentPlayer);
+                                    break;
+                                case "3":
+                                    gameLogic.forwardThreeMovement(gameLogic.currentPlayer);
+                                    break;
+                                case "u":
+                                    gameLogic.rotatePlayer(gameLogic.currentPlayer, 2);
+                                    break;
+                                case "back":
+                                    gameLogic.backwardMovement(gameLogic.currentPlayer);
+                                    break;
+                                case "rotateleft":
+                                    gameLogic.rotatePlayer(gameLogic.currentPlayer, -1);
+                                    break;
+                                case "rotateright":
+                                    gameLogic.rotatePlayer(gameLogic.currentPlayer, +1);
+                                    break;
+                            }
+                            phases.remove(phas);
+                            if (phases.isEmpty()){                // When all movements are done
+                                phasesAreProgrammed = false;
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+        });
+        stage.addActor(menuButton);
+        stage.addActor(goButton);
+    }
 
 
+
+/*
     private void initButtons() {
         TextButton buttonMenu = new TextButton("Main menu", skin, "default");
         buttonMenu.setPosition(1400, 125);
@@ -250,7 +371,7 @@ public class GameScreen implements Screen {
         stage.addActor(moveDown);
         stage.addActor(rotateLeft);
         stage.addActor(rotateRight);
-    }
+    }*/
 
 }
 
