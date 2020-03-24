@@ -39,9 +39,9 @@ public class GameScreen implements Screen {
     private final Stage stage;
     private Skin skin;
     private final GameLogic gameLogic;
-    private static final String FILE_PATH_0 = "src/main/assets/boards/board_template.tmx"; // empty board
-    private static final String FILE_PATH_1 = "src/main/assets/boards/Risky_Exchange.tmx";
-    private static final String FILE_PATH_2 = "src/main/assets/boards/Checkmate.tmx";
+    private static final String FILE_PATH_0 = "boards/board_template.tmx";
+    private static final String FILE_PATH_1 = "boards/Risky_Exchange.tmx";
+    private static final String FILE_PATH_2 = "boards/Checkmate.tmx";
     //TODO Allow for player to choose between these from menu?
 
     public GameScreen(final Application app) {

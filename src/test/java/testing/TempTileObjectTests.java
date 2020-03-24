@@ -11,14 +11,16 @@ public class TempTileObjectTests {
 
     private final Board board;
 
+
     public TempTileObjectTests() {
-        board = new Board("src/test/testingResources/testBoard0.tmx");
+        // I'm not quite sure where Testing resources go when compiled and ran, so placed resource in main for now to
+        // avoid error. Ideally it wouldn't be in the final .jar  file?
+        board = new Board("boards/testing/testBoard0.tmx");
     }
 
     @Test
     public void boardCorrectlyReadsHoles() {
         assertEquals(true, board.getTile(new Vector2(1,3)).doesDamage());
-
     }
 
     @Test
