@@ -2,7 +2,7 @@ package roborally.board;
 
 public class Tile {
     private final boolean canBlockMovement;
-    private final boolean isHole;
+    private final boolean doesDamage;
     private final boolean canMergeLanes;
     private final boolean isBelt;
     private final boolean isCog;
@@ -17,6 +17,7 @@ public class Tile {
     private final Direction[] fromDirections;
     private final Direction movementDirection;
     private final String name;
+    private final int healthChange;
 
     /**
      * Private constructor which allows us to utilize a builder design pattern to add customized functionality to each
@@ -30,7 +31,8 @@ public class Tile {
         //booleans
         this.canBlockMovement=builder.canBlockMovement;
         this.canMergeLanes=builder.canMergeLanes;
-        this.isHole = builder.isHole;
+        this.doesDamage = builder.doesDamage;
+        this.healthChange = builder.healthChange;
         this.isBelt = builder.isBelt;
         this.isCog =builder.canRotate;
         this.canBackup=builder.canBackup;
@@ -56,7 +58,7 @@ public class Tile {
         return name;
     }
 
-    public boolean isHole() { return isHole; }
+    public boolean doesDamage() { return doesDamage; }
 
     public boolean canMergeLanes() { return canMergeLanes; } //TODO Remove if not used
 
@@ -84,6 +86,8 @@ public class Tile {
 
     public Direction getMovementDirection() { return movementDirection; } //TODO Remove if not used
 
+    public int getHealthChange() { return healthChange; }
+
     /**
      * By calling this class using Tile.Builder() we can add functionality to it using the different set methods
      * this way we allow for tiles with different properties where elements on the board overlap. Meaning we do not
@@ -95,7 +99,7 @@ public class Tile {
      */
     public static class Builder {
         private boolean canBlockMovement;
-        private boolean isHole;
+        private boolean doesDamage;
         private Direction[] blockingDirections; // directions blocked by this tile
         private Direction movementDirection;
         private boolean canMergeLanes;
@@ -110,6 +114,7 @@ public class Tile {
         private boolean isSpawner;
         private int movementSpeed;
         private String name;
+        private int healthChange;
 
         public Builder setBlocker(Direction[] blockingDirections) {
             this.canBlockMovement = true;
@@ -118,7 +123,7 @@ public class Tile {
             return this;
         }
 
-        public Builder setRotation(int rotation) {
+        public Builder setCog(int rotation) {
             // +1, +2, +3 for clockwise rotation
             // -1, -2, -3 for counter-clockwise rotation
             this.canRotate = true;
@@ -126,10 +131,11 @@ public class Tile {
             return this;
         }
 
-        public Builder setRepairAndBackup() {
+        public Builder setWrench() {
             // might be smart to merge this and setSpawner() ? are these always the same?
             this.isWrench = true;
             this.canBackup = true;
+            this.healthChange = 1;
             return this;
         }
         
@@ -161,7 +167,7 @@ public class Tile {
             return this;
         }
 
-        public Builder setMergingLanes(Direction movementDirection, int movementSpeed, Direction[] fromDirections) {
+        public Builder setMergingBelt(Direction movementDirection, int movementSpeed, Direction[] fromDirections) {
             this.canMergeLanes = true;
             this.isBelt = true;
             this.movementSpeed = movementSpeed;
@@ -170,13 +176,16 @@ public class Tile {
             return this;
         }
 
-        public Builder setKiller() {
-            this.isHole = true;
+        public Builder damagePlayer(int healthChange) {
+            this.doesDamage = true;
+            this.healthChange = healthChange;
             return this;
         }
 
         public Tile build(){
             return new Tile(this);
         }
+
+
     }
 }

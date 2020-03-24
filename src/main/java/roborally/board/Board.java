@@ -1,17 +1,16 @@
 package roborally.board;
+
 import com.badlogic.gdx.math.Vector2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * We are aware that there is functionality in TiledMapLoader, and Tiled which allows us to do this a different way.
@@ -33,7 +32,6 @@ public class Board {
     private Vector2[] flags = new Vector2[4];
 
     /**
-     * TODO Check wording here
      * The constructor first reads the board from file using readBoard()
      *
      * following this it populates our ArrayList which will contain all tiles, with empty tiles.
@@ -71,6 +69,7 @@ public class Board {
     public Tile getTile(Vector2 pos) {
         return tiles.get((int) (pos.x + pos.y*boardWidth));
     }
+
     public int getBoardHeight() {
         return boardHeight;
     }
@@ -163,7 +162,8 @@ public class Board {
             newTile = readYellowBelts(listOfLayers.get(3)[i], newTile);
             newTile = readBlueBelts(listOfLayers.get(4)[i], newTile);
             newTile = readCogs(listOfLayers.get(5)[i], newTile);
-            //TODO Add lasers and beam for layer 6 & 7.
+            newTile = readStaticLasers(listOfLayers.get(6)[i], newTile);
+            //TODO Get laser origin points from listOfLayers.get(7) (and handle beams dynamically instead)
             newTile = readSpawns(listOfLayers.get(8)[i], newTile, i);
             newTile = readFlags(listOfLayers.get(9)[i], newTile, i);
             newTile = readWalls(listOfLayers.get(10)[i], newTile);
@@ -171,6 +171,20 @@ public class Board {
             // add the built Tile object to the board
             tiles.set(i, newTile.build());
         }
+    }
+
+    // TODO handle lasers differently than static board elements as they change dynamically.
+    private Tile.Builder readStaticLasers(int tileID, Tile.Builder newTile) {
+        if (tileID == 0)
+            return newTile;
+        else if(tileID == 39 || tileID == 47 || tileID == 40) {
+            newTile.damagePlayer(-1); // single laser
+        } else if (tileID == 101 ||tileID == 102 || tileID == 103) {
+            newTile.damagePlayer(-2); // double laser
+        } else {
+            System.out.println("Did not recognize TileID when checking for static laser beams - ID: " + tileID);
+        }
+        return newTile;
     }
 
     /**
@@ -191,7 +205,7 @@ public class Board {
         if (tileID == 0)
             return newTile;
         if (tileID == 6)
-            newTile.setKiller();
+            newTile.damagePlayer(-10);
         else
             System.out.println("Did not recognize TileID when checking for holes - ID: " + tileID);
         return newTile;
@@ -202,10 +216,10 @@ public class Board {
             return newTile;
         }
         switch (tileID) {
-            // pretty sure there is some distinction here between the two, which we have yet to implement.
-            case 7: newTile.setRepairAndBackup(); // wrench and hammer
+            case 7: newTile.setWrench(); // wrench and hammer
+                // NICE-TO-HAVE the player should draw one Option card on this tile
                 break;
-            case 15: newTile.setRepairAndBackup(); // wrench
+            case 15: newTile.setWrench(); // wrench
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for wrenches - ID: " + tileID);
@@ -219,10 +233,10 @@ public class Board {
         }
         switch (tileID) {
             case 53:
-                newTile.setRotation(-1); // red, counter-clockwise cogs
+                newTile.setCog(-1); // red, counter-clockwise cogs
                 break;
             case 54:
-                newTile.setRotation(1); // green, clockwise cogs
+                newTile.setCog(1); // green, clockwise cogs
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for cogs - ID: " + tileID);
@@ -377,51 +391,51 @@ public class Board {
                 newTile.setStraightBelt(Direction.EAST,1); // going east, straight
                 break;
             case 57:
-                newTile.setMergingLanes(Direction.NORTH, 1,
+                newTile.setMergingBelt(Direction.NORTH, 1,
                         new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to north, merge
                 break;
             case 58:
-                newTile.setMergingLanes(Direction.EAST, 1,
+                newTile.setMergingBelt(Direction.EAST, 1,
                         new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to east, merge
                 break;
             case 59:
-                newTile.setMergingLanes(Direction.SOUTH, 1,
+                newTile.setMergingBelt(Direction.SOUTH, 1,
                         new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to south, merge
                 break;
             case 60:
-                newTile.setMergingLanes(Direction.WEST, 1,
+                newTile.setMergingBelt(Direction.WEST, 1,
                         new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to west, merge
                 break;
             case 61:
-                newTile.setMergingLanes(Direction.EAST, 1,
+                newTile.setMergingBelt(Direction.EAST, 1,
                         new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to east, merge
                 break;
             case 62:
-                newTile.setMergingLanes(Direction.SOUTH, 1,
+                newTile.setMergingBelt(Direction.SOUTH, 1,
                         new Direction[]{Direction.EAST, Direction.WEST}); // east & west to south, merge
                 break;
             case 65:
-                newTile.setMergingLanes(Direction.NORTH, 1,
+                newTile.setMergingBelt(Direction.NORTH, 1,
                         new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to north, merge
                 break;
             case 66:
-                newTile.setMergingLanes(Direction.EAST, 1,
+                newTile.setMergingBelt(Direction.EAST, 1,
                         new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to east, merge
                 break;
             case 67:
-                newTile.setMergingLanes(Direction.SOUTH, 1,
+                newTile.setMergingBelt(Direction.SOUTH, 1,
                         new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to south, merge
                 break;
             case 68:
-                newTile.setMergingLanes(Direction.WEST, 1,
+                newTile.setMergingBelt(Direction.WEST, 1,
                         new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to west, merge
                 break;
             case 69:
-                newTile.setMergingLanes(Direction.NORTH, 1,
+                newTile.setMergingBelt(Direction.NORTH, 1,
                         new Direction[]{Direction.EAST, Direction.WEST}); // east & west to north, merge
                 break;
             case 70:
-                newTile.setMergingLanes(Direction.WEST, 1,
+                newTile.setMergingBelt(Direction.WEST, 1,
                         new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to west, merge
                 break;
             default:
@@ -473,51 +487,51 @@ public class Board {
                 newTile.setStraightBelt(Direction.EAST,2); // going east, straight
                 break;
             case 73:
-                newTile.setMergingLanes(Direction.NORTH, 2,
+                newTile.setMergingBelt(Direction.NORTH, 2,
                         new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to north, merge
                 break;
             case 74:
-                newTile.setMergingLanes(Direction.EAST, 2,
+                newTile.setMergingBelt(Direction.EAST, 2,
                         new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to east, merge
                 break;
             case 75:
-                newTile.setMergingLanes(Direction.SOUTH, 2,
+                newTile.setMergingBelt(Direction.SOUTH, 2,
                         new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to south, merge
                 break;
             case 76:
-                newTile.setMergingLanes(Direction.WEST, 2,
+                newTile.setMergingBelt(Direction.WEST, 2,
                         new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to west, merge
                 break;
             case 81:
-                newTile.setMergingLanes(Direction.EAST, 2,
+                newTile.setMergingBelt(Direction.EAST, 2,
                         new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to east, merge
                 break;
             case 82:
-                newTile.setMergingLanes(Direction.SOUTH, 2,
+                newTile.setMergingBelt(Direction.SOUTH, 2,
                         new Direction[]{Direction.EAST, Direction.WEST}); // east & west to south, merge
                 break;
             case 77:
-                newTile.setMergingLanes(Direction.NORTH, 2,
+                newTile.setMergingBelt(Direction.NORTH, 2,
                         new Direction[]{Direction.SOUTH, Direction.EAST}); // south & east to north, merge
                 break;
             case 78:
-                newTile.setMergingLanes(Direction.EAST, 2,
+                newTile.setMergingBelt(Direction.EAST, 2,
                         new Direction[]{Direction.SOUTH, Direction.WEST}); // south & west to east, merge
                 break;
             case 86:
-                newTile.setMergingLanes(Direction.SOUTH, 2,
+                newTile.setMergingBelt(Direction.SOUTH, 2,
                         new Direction[]{Direction.NORTH, Direction.WEST}); // north & west to south, merge
                 break;
             case 85:
-                newTile.setMergingLanes(Direction.WEST, 2,
+                newTile.setMergingBelt(Direction.WEST, 2,
                         new Direction[]{Direction.NORTH, Direction.EAST}); // north & east to west, merge
                 break;
             case 84:
-                newTile.setMergingLanes(Direction.NORTH, 2,
+                newTile.setMergingBelt(Direction.NORTH, 2,
                         new Direction[]{Direction.EAST, Direction.WEST}); // east & west to north, merge
                 break;
             case 83:
-                newTile.setMergingLanes(Direction.WEST, 2,
+                newTile.setMergingBelt(Direction.WEST, 2,
                         new Direction[]{Direction.NORTH, Direction.SOUTH}); // north & south to west, merge
                 break;
             default:

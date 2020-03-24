@@ -2,10 +2,6 @@ package testing;
 
 import com.badlogic.gdx.math.Vector2;
 import roborally.board.Board;
-import org.xml.sax.SAXException;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +17,7 @@ public class TempTileObjectTests {
 
     @Test
     public void boardCorrectlyReadsHoles() {
-        assertEquals(true, board.getTile(new Vector2(1,3)).isHole());
+        assertEquals(true, board.getTile(new Vector2(1,3)).doesDamage());
 
     }
 

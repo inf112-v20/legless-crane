@@ -39,10 +39,14 @@ public class GameScreen implements Screen {
     private final Stage stage;
     private Skin skin;
     private final GameLogic gameLogic;
+    private static final String FILE_PATH_0 = "src/main/assets/boards/board_template.tmx"; // empty board
+    private static final String FILE_PATH_1 = "src/main/assets/boards/Risky_Exchange.tmx";
+    private static final String FILE_PATH_2 = "src/main/assets/boards/Checkmate.tmx";
+    //TODO Allow for player to choose between these from menu?
 
     public GameScreen(final Application app) {
         this.app = app;
-        this.gameLogic = new GameLogic(this,1);
+        this.gameLogic = new GameLogic(this,1, FILE_PATH_1);
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
 
     }
@@ -67,7 +71,7 @@ public class GameScreen implements Screen {
     private void loadBoard() {
         // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
         TmxMapLoader loader = new TmxMapLoader();
-        boardgfx = loader.load("src/main/assets/boards/Board1.tmx");
+        boardgfx = loader.load(FILE_PATH_1);
     }
 
     public void placePlayers() {

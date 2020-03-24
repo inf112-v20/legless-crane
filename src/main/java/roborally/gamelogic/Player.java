@@ -12,6 +12,7 @@ import static java.lang.Math.min;
 public class Player {
     private int lives;
     private int health;
+    private static final int MAX_HEALTH = 9;
     private Vector2 position;
     private Direction rotation;
     private Vector2 backupPoint;
@@ -20,7 +21,7 @@ public class Player {
 
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
         this.lives = 3;
-        this.health = 9;
+        this.health = MAX_HEALTH;
         this.position = spawnPoint;
         this.backupPoint = spawnPoint;
         this.playerNumber = playerNumber;
@@ -40,7 +41,10 @@ public class Player {
      */
     public void updateHealth(int changeInHealth) {
         // health is updated to somewhere between 9-0 according to changeInHealth
-        health = max(min(health+changeInHealth,9),0);
+        health = max( min( health + changeInHealth , MAX_HEALTH) , 0);
+
+        System.out.println("Health has been updated, current health is: " + health);
+        //TODO Show this information to the player on GameScreen and not in console
         if (health <= 0)
             respawn();
     }
@@ -86,12 +90,15 @@ public class Player {
      * if not, nothing currently happens to it. This will change once we implement a game over screen or something.
      */
     private void respawn() {
-        if (lives > 1) {
+        if (lives > 0) {
             lives -= 1;
-            health = 9;
+            health = MAX_HEALTH;
             gameLogic.respawnPlayer(this);
+            System.out.println("Your robot died, current lives: " + lives + " current health: " + health);
+            //TODO Show this information to the player on GameScreen and not in console
         } else {
-            //TODO: game over
+            System.out.println("Game over");
+            //TODO Show this information to the player on GameScreen and not in console
         }
     }
 }

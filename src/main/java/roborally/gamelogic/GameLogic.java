@@ -33,9 +33,9 @@ public class GameLogic {
      *                   we don't get more than one instance of GameLogic or GameScreen
      * @param numPlayers the number of players this game (how many Player objects to create in this constructor)
      */
-    public GameLogic(GameScreen gameScreen, int numPlayers){
+    public GameLogic(GameScreen gameScreen, int numPlayers, String filePath){
         this.gameScreen = gameScreen;
-        loadBoard();
+        loadBoard(filePath);
         for(int i = 0; i <numPlayers; i++) {
             players.add(new Player(i+1, board.getSpawnPoints(i),this));
         }
@@ -82,20 +82,19 @@ public class GameLogic {
             Tile playerTile = board.getTile(playerPosition);
 
             // loop through players and check for interactions between that player and elements on the board.
-            if (!withinBoard(playerPosition)) {
+            if (!onBoard(playerPosition)) {
                 player.updateHealth(-10); // negative int == taking damage
             }
 
-            else if (playerTile.isHole()){
-                player.updateHealth(-10);// negative int == taking damage
+            else if (playerTile.doesDamage()){
+                // holes and static laser beams are handled here.
+                player.updateHealth(playerTile.getHealthChange());
             }
 
             else if (playerTile.isWrench()) {
                 player.updateHealth(1); // positive int == repairing
                 player.setBackupPoint(playerPosition);
             }
-            // if laser, do damage
-
 
         }
         count = 0; // reset timer if we have interacted with player
@@ -113,7 +112,7 @@ public class GameLogic {
     private void movePlayerInDirection(Player player, Direction dir) {
         Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir);
 
-        if (withinBoard(nextPos) && validMove(player, dir)) {
+        if (validMove(player, dir)) {
             gameScreen.setPlayerPosition(player, nextPos);
             player.setPosition(nextPos);
         }
@@ -163,8 +162,8 @@ public class GameLogic {
      * Currently uses a hardcoded board, future implementations might accept a parameter which determines which of the
      * boards to load.
      */
-    private void loadBoard(){
-        board = new Board("src/main/assets/boards/Board1.tmx");
+    private void loadBoard(String filePath){
+        board = new Board(filePath);
         boardWidth = board.getBoardWidth();
         boardHeight = board.getBoardHeight();
     }
@@ -174,8 +173,8 @@ public class GameLogic {
      * @param move the desired position
      * @return whether or not the desired position's x,y coordinates are within the board.
      */
-    private boolean withinBoard(Vector2 move) {
-        return ((move.x < boardWidth && move.x >= 0) && (move.y < boardHeight) && move.y >= 0);
+    private boolean onBoard(Vector2 move) {
+        return (move.x < boardWidth-1 && move.x >= 1) && (move.y < boardHeight-1 && move.y >= 1);
     }
 
     /**
@@ -191,8 +190,15 @@ public class GameLogic {
      * @return whether or not the player can move in that direction without being blocked
      */
     private boolean validMove(Player player, Direction direction) {
+        Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
         Tile currentTile = board.getTile(player.getPosition());
-        Tile nextTile = board.getTile(getDirectionalPosition(player.getPosition(), direction));
+        Tile nextTile = board.getTile(nextPosition);
+
+        if (!((nextPosition.x < boardWidth && nextPosition.x >= 0)&&
+                (nextPosition.y < boardHeight && nextPosition.y >= 0))) {
+           // check to avoid  moving off the screen
+            return false;
+        }
 
         if (currentTile.canBlockMovement()) {
             for (Direction dir : currentTile.getBlockingDirections())
