@@ -3,6 +3,9 @@ package roborally.gamelogic;
 import com.badlogic.gdx.math.Vector2;
 import roborally.board.Direction;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 /**
  * An object which contains the relevant data of a Player, health, lives etc.
  */
@@ -30,13 +33,15 @@ public class Player {
     }
 
     /**
-     * handleDamage updates the player's health and checks if it falls below 0,
-     * If the player's health goes below 0, the player should respawn or lose the game.
-     * @param damage the damage the player should take
+     * updates the player's health and checks if it reaches 0,
+     * If this happens, the player should respawn or lose the game.
+     *
+     * @param changeInHealth the difference (negative for damage, positive for repairing)
      */
-    public void handleDamage(int damage) {
-        health -= damage;
-        if (health < 0)
+    public void updateHealth(int changeInHealth) {
+        // health is updated to somewhere between 9-0 according to changeInHealth
+        health = max(min(health+changeInHealth,9),0);
+        if (health <= 0)
             respawn();
     }
 

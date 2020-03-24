@@ -76,15 +76,27 @@ public class GameLogic {
             return;
         }
 
-        for (Player player : players){
+        for (Player player : players) {
+            // variables to improve readability
+            Vector2 playerPosition = player.getPosition();
+            Tile playerTile = board.getTile(playerPosition);
+
             // loop through players and check for interactions between that player and elements on the board.
-            if (board.getTile(player.getPosition()).isHole()) {
-                player.handleDamage(10);
-            } else if (player.getPosition().x<0 || player.getPosition().y<0
-                    || player.getPosition().x >= boardWidth || player.getPosition().y >= boardHeight ){
-                // if player is outside of board.
-                player.handleDamage(10);
+            if (!withinBoard(playerPosition)) {
+                player.updateHealth(-10); // negative int == taking damage
             }
+
+            else if (playerTile.isHole()){
+                player.updateHealth(-10);// negative int == taking damage
+            }
+
+            else if (playerTile.isWrench()) {
+                player.updateHealth(1); // positive int == repairing
+                player.setBackupPoint(playerPosition);
+            }
+            // if laser, do damage
+
+
         }
         count = 0; // reset timer if we have interacted with player
     }
