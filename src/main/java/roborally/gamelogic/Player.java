@@ -3,6 +3,8 @@ package roborally.gamelogic;
 import com.badlogic.gdx.math.Vector2;
 import roborally.board.Direction;
 
+import java.util.ArrayList;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -12,7 +14,8 @@ import static java.lang.Math.min;
 public class Player {
     private int lives;
     private int health;
-    private static final int MAX_HEALTH = 9;
+    private static final int MAX_HEALTH = 10;
+    private ArrayList<Integer> flag;
     private Vector2 position;
     private Direction rotation;
     private Vector2 backupPoint;
@@ -22,6 +25,7 @@ public class Player {
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
         this.lives = 3;
         this.health = MAX_HEALTH;
+        this.flag = new ArrayList<>();
         this.position = spawnPoint;
         this.backupPoint = spawnPoint;
         this.playerNumber = playerNumber;
@@ -50,13 +54,23 @@ public class Player {
     }
 
     public int getHealth() {
-        // not needed?
         return health;
     }
 
     public int getLives() {
-        // not needed?
         return lives;
+    }
+
+    public void addFlag(int flagNo){
+        if (flag.size()==2) {
+            // TODO: app.setScreen(WinScreen); in GameScreen?
+        } flag.add(flagNo);
+    }
+
+    public int numberOfFlags() {
+        if (flag.isEmpty()){
+            return 0;
+        } return flag.size();
     }
 
     public Vector2 getPosition() {
@@ -98,7 +112,7 @@ public class Player {
             //TODO Show this information to the player on GameScreen and not in console
         } else {
             System.out.println("Game over");
-            //TODO Show this information to the player on GameScreen and not in console
+            //TODO Show this information to the player on GameScreen and not in console (app.setScreen(LoseScreen))
         }
     }
 }

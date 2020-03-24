@@ -3,9 +3,11 @@ package roborally.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -37,8 +40,12 @@ public class GameScreen implements Screen {
 
     private final Application app;
     private final Stage stage;
-    private Skin skin;
     private final GameLogic gameLogic;
+
+    private Skin skin;
+    private BitmapFont font = new BitmapFont();
+    private Label.LabelStyle style = new Label.LabelStyle( font, Color.BLACK );
+
     private static final String FILE_PATH_0 = "src/main/assets/boards/board_template.tmx"; // empty board
     private static final String FILE_PATH_1 = "src/main/assets/boards/Risky_Exchange.tmx";
     private static final String FILE_PATH_2 = "src/main/assets/boards/Checkmate.tmx";
@@ -125,6 +132,14 @@ public class GameScreen implements Screen {
         renderer.getBatch().end();
         // render buttons:
         update(v);
+
+        //TODO: better solution regarding showing an updated HUD?
+        app.batch.begin();
+        app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-650,Application.HEIGHT/40);
+        app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-450,Application.HEIGHT/40);
+        app.font.draw(app.batch, "Flags conquered: " + gameLogic.currentPlayer.numberOfFlags(),Application.WIDTH-200,Application.HEIGHT/40);
+        app.batch.end();
+
         stage.draw();
         gameLogic.updateGameState();
     }
@@ -148,6 +163,7 @@ public class GameScreen implements Screen {
         stage.dispose();
         boardgfx.dispose();
         renderer.dispose();
+        app.batch.dispose();
     }
 
     public void updatePlayerRotation(int playerIndex, Direction rotation) {
