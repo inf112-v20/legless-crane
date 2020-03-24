@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
     private ArrayList<Phase> phases;
     private DeckOfProgramCards deckOfProgramCards;
     private boolean phasesAreProgrammed;
-    private int AVAIABLEPROGCARDS = 9;
+    private int AVAILABLEPROGCARDS = 9;
     private int PHASES = 5;
 
     private Skin skin;
@@ -221,7 +221,7 @@ public class GameScreen implements Screen {
 
     public void initChooseProgCards() {
         deckOfProgramCards = new DeckOfProgramCards();
-        for (int i = 0; i < AVAIABLEPROGCARDS; i ++) {
+        for (int i = 0; i < AVAILABLEPROGCARDS; i ++) {
             int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());         // Choose randomly program cards
             final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index));
             String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index) + ".jpg";
@@ -275,13 +275,13 @@ public class GameScreen implements Screen {
                             String movement = phas.getTopCard().getMovement();
                             switch (movement) {
                                 case "1":
-                                    gameLogic.forwardOneMovement(gameLogic.currentPlayer);
+                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
                                     break;
                                 case "2":
-                                    gameLogic.forwardTwoMovement(gameLogic.currentPlayer);
+                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
                                     break;
                                 case "3":
-                                    gameLogic.forwardThreeMovement(gameLogic.currentPlayer);
+                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
                                     break;
                                 case "u":
                                     gameLogic.rotatePlayer(gameLogic.currentPlayer, 2);

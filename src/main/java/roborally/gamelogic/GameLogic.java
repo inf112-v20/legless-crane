@@ -110,10 +110,10 @@ public class GameLogic {
      * @param player the player who's position we should update
      * @param dir the direction which the player should move (used for checking against walls
      */
-    private void movePlayerInDirection(Player player, Direction dir, int times) {
-        Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir, times);
+    private void movePlayerInDirection(Player player, Direction dir) {
+        Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir);
 
-        if (validMove(player, dir,times)) {
+        if (validMove(player, dir)) {
             gameScreen.setPlayerPosition(player, nextPos);
             player.setPosition(nextPos);
         }
@@ -152,16 +152,16 @@ public class GameLogic {
         if (board.getTile(player.getPosition()).isBelt()) {
             Direction dir = currentTile.getMovementDirection();
             if (dir == Direction.NORTH) {
-                movePlayerInDirection(player, dir,1);
+                movePlayerInDirection(player, dir);
             }
             else if (dir == Direction.SOUTH) {
-                movePlayerInDirection(player, dir,1);
+                movePlayerInDirection(player, dir);
             }
             else if (dir == Direction.WEST) {
-                movePlayerInDirection(player, dir,1);
+                movePlayerInDirection(player, dir);
             }
             else if (dir == Direction.EAST) {
-                movePlayerInDirection(player, dir,1);
+                movePlayerInDirection(player, dir);
             }
         }
     }
@@ -208,16 +208,12 @@ public class GameLogic {
     }
 
     public void backwardMovement(Player player) {
-        movePlayerInDirection(player, player.getRotation().opposite(),1);
+        movePlayerInDirection(player, player.getRotation().opposite());
     }
 
-    public void forwardOneMovement(Player player) {
-        movePlayerInDirection(player, player.getRotation(),1);
+    public void forwardMovement(Player player) {
+        movePlayerInDirection(player, player.getRotation());
     }
-
-    public void forwardTwoMovement(Player player) { movePlayerInDirection(player, player.getRotation(),2); }
-
-    public void forwardThreeMovement(Player player) { movePlayerInDirection(player, player.getRotation(),3); }
 
     public ArrayList<Player> getPlayers() {
         return players;
@@ -256,8 +252,8 @@ public class GameLogic {
      * @param direction the direction the player wishes to move
      * @return whether or not the player can move in that direction without being blocked
      */
-    private boolean validMove(Player player, Direction direction, int times) {
-        Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction, times);
+    private boolean validMove(Player player, Direction direction) {
+        Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
         Tile currentTile = board.getTile(player.getPosition());
         Tile nextTile = board.getTile(nextPosition);
 
@@ -286,16 +282,16 @@ public class GameLogic {
      * @param moveDir the direction we're moving to
      * @return the position one step in that direction
      */
-    private Vector2 getDirectionalPosition(Vector2 position, Direction moveDir, int times) {
+    private Vector2 getDirectionalPosition(Vector2 position, Direction moveDir) {
         switch(moveDir) {
             case NORTH:
-                return new Vector2(position.x,position.y+times);
+                return new Vector2(position.x,position.y+1);
             case EAST:
-                return new Vector2(position.x+times,position.y);
+                return new Vector2(position.x+1,position.y);
             case SOUTH:
-                return new Vector2(position.x,position.y-times);
+                return new Vector2(position.x,position.y-1);
             case WEST:
-                return new Vector2(position.x-times,position.y);
+                return new Vector2(position.x-1,position.y);
             default:
                 System.out.println("Incorrect direction given in getDirectionalPosition(), returning currentPos");
                 return position;
