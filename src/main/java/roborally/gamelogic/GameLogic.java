@@ -144,6 +144,9 @@ public class GameLogic {
         player.setRotation(player.getRotation().rotate(direction));
         gameScreen.updatePlayerRotation(player.getPlayerNumber()-1, player.getRotation());
     }
+    /**
+     * TODO: add documentation
+     */
     private void straightBelt(Player player) {
         Tile currentTile = board.getTile(player.getPosition());
         if (board.getTile(player.getPosition()).isBelt()) {
@@ -162,6 +165,9 @@ public class GameLogic {
             }
         }
     }
+    /**
+     * TODO: add documentation
+     */
     private void rotationCogs(Player player) {
         Tile currentTile = board.getTile(player.getPosition());
         if (board.getTile(player.getPosition()).isCog()) {
@@ -171,8 +177,33 @@ public class GameLogic {
             } else if (rotation == -1) {
                 rotatePlayer(player, -1);
             }
-
-
+        }
+    }
+    /**
+     * Method which reads which flag number the current player is visiting
+     *
+     * Updates the number of flags the player has conquered if visited in the correct order.
+     * The "HUD" in GameScreen keeps track of the progress of the current player
+     *
+     * @param player the current player standing on the current tile (with flag)
+     *
+     */
+    private void checkOutFlag(Player player) {
+        Tile currentTile = board.getTile(player.getPosition());
+        int flagNo = currentTile.getFlagNum();
+        if (flagNo == 1) {
+            if (player.numberOfFlags() == 0) {
+                player.addFlag(1);
+            } return;
+        } else if (flagNo == 2) {
+            if (player.numberOfFlags() == 1) {
+                player.addFlag(2);
+            } return;
+        }
+        if (flagNo == 3) {
+            if (player.numberOfFlags() == 2) {
+                player.addFlag(3);
+            } return;
         }
     }
 
