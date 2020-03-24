@@ -77,22 +77,23 @@ public class GameLogic {
         }
 
         for (Player player : players) {
-            // variables to improve readability
             Vector2 playerPosition = player.getPosition();
             Tile playerTile = board.getTile(playerPosition);
 
-            // loop through players and check for interactions between that player and elements on the board.
-            if (!onBoard(playerPosition)) {
-                player.updateHealth(-10); // negative int == taking damage
-            }
+            if (!onBoard(playerPosition))
+                player.updateHealth(-10);
 
-            else if (playerTile.doesDamage()){
-                // holes and static laser beams are handled here.
+            else if (playerTile.doesDamage())
                 player.updateHealth(playerTile.getHealthChange());
-            }
+
+            else if (board.getTile(player.getPosition()).isBelt())
+                straightBelt(player);
+
+            else if (board.getTile(player.getPosition()).isCog())
+                rotationCogs(player);
 
             else if (playerTile.isWrench()) {
-                player.updateHealth(1); // positive int == repairing
+                player.updateHealth(playerTile.getHealthChange());
                 player.setBackupPoint(playerPosition);
             }
 
@@ -142,6 +143,37 @@ public class GameLogic {
         // direction can be +1 (clocwise) or -1 (counter clockwise) (or more) for rotation
         player.setRotation(player.getRotation().rotate(direction));
         gameScreen.updatePlayerRotation(player.getPlayerNumber()-1, player.getRotation());
+    }
+    private void straightBelt(Player player) {
+        Tile currentTile = board.getTile(player.getPosition());
+        if (board.getTile(player.getPosition()).isBelt()) {
+            Direction dir = currentTile.getMovementDirection();
+            if (dir == Direction.NORTH) {
+                movePlayerInDirection(player, dir);
+            }
+            else if (dir == Direction.SOUTH) {
+                movePlayerInDirection(player, dir);
+            }
+            else if (dir == Direction.WEST) {
+                movePlayerInDirection(player, dir);
+            }
+            else if (dir == Direction.EAST) {
+                movePlayerInDirection(player, dir);
+            }
+        }
+    }
+    private void rotationCogs(Player player) {
+        Tile currentTile = board.getTile(player.getPosition());
+        if (board.getTile(player.getPosition()).isCog()) {
+            int rotation = currentTile.getRotation();
+            if (rotation == 1) {
+                rotatePlayer(player, 1);
+            } else if (rotation == -1) {
+                rotatePlayer(player, -1);
+            }
+
+
+        }
     }
 
     public void backwardMovement(Player player) {
