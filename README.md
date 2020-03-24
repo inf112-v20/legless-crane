@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/inf112-v20/legless-crane.svg?branch=master)](https://travis-ci.com/inf112-v20/legless-crane) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a90f767e283a4cf7b88e8bb3c344fded)](https://www.codacy.com/gh/inf112-v20/legless-crane?utm_source=github.com&utm_medium=referral&utm_content=inf112-v20/staring-horse&utm_campaign=Badge_Grade) 
 ## How to build and run the game
 This guide assumes that you have Maven, Java and Git installed
-### Commandline:
+### From Commandline:
 #### Get Sourcecode
 ```
 git clone https://github.com/inf112-v20/legless-crane/
@@ -17,10 +17,10 @@ mvn clean install
 #### Run with commandline
 ```
 cd C:\..\legless-crane\target
-java -jar roborally-0.2.jar
+java -jar roborally-0.3.jar
 ```
 
-### Alternative #1:
+### From IDE:
 
 Download [latest release](https://github.com/inf112-v20/legless-crane/releases) of source code (zip/tar.gz) from github
 
@@ -30,13 +30,13 @@ Download [latest release](https://github.com/inf112-v20/legless-crane/releases) 
 
 #### Run
 1.  Locate target directory in `..\legless-crane\target`
-2.  Run `roborally-0.2.jar`
+2.  Run `roborally-0.3.jar`
 
-### Alternative #2
-In case "Alternative #1" does not work, run main from "Application.java" in IntelliJ.
+### If all else fails
+Run main in "Application.java" with your IDE of choice
 
 ## Known bugs
-When executing .jar file, it crashes on some PCs.
+~~When executing .jar file, it crashes on some PCs.~~ - fixed in version 0.3
 
 ~~Boards with more than one element on a single tile do not read correctly in Board.java, only the last element read in the given tile is saved.~~ - fixed in version 0.3
 
