@@ -279,8 +279,11 @@ public class GameScreen implements Screen {
                                     break;
                                 case "2":
                                     gameLogic.forwardMovement(gameLogic.currentPlayer);
+                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
                                     break;
                                 case "3":
+                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
+                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
                                     gameLogic.forwardMovement(gameLogic.currentPlayer);
                                     break;
                                 case "u":
