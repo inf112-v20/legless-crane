@@ -84,8 +84,10 @@ public class GameLogic {
                     || player.getPosition().x >= boardWidth || player.getPosition().y >= boardHeight ){
                 // if player is outside of board.
                 player.handleDamage(10);
-            }  else if (board.getTile(player.getPosition()).isBelt()) {
+            } else if (board.getTile(player.getPosition()).isBelt()) {
                     straightBelt(player);
+            } else if (board.getTile(player.getPosition()).isCog()) {
+                    rotationCogs(player);
             }
         }
         count = 0; // reset timer if we have interacted with player
@@ -150,6 +152,19 @@ public class GameLogic {
             else if (dir == Direction.EAST) {
                 movePlayerInDirection(player, dir);
             }
+        }
+    }
+    private void rotationCogs(Player player) {
+        Tile currentTile = board.getTile(player.getPosition());
+        if (board.getTile(player.getPosition()).isCog()) {
+            int rotation = currentTile.getRotation();
+            if (rotation == 1) {
+                rotatePlayer(player, 1);
+            } else if (rotation == -1) {
+                rotatePlayer(player, -1);
+            }
+
+
         }
     }
 
