@@ -36,16 +36,7 @@ public class MenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         stage.clear();
 
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font",app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-
-        Texture splashTex = new Texture(Gdx.files.internal("img/logo.png"));
-        Image logo = new Image(splashTex);
-        logo.setPosition(stage.getWidth()/2-300,stage.getHeight()/2-16);
-        stage.addActor(logo);
-
+        queueAssets();
         initButtons();
     }
 
@@ -78,6 +69,18 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    private void queueAssets(){
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font",app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+
+        Texture splashTex = new Texture(Gdx.files.internal("img/logo.png"));
+        Image logo = new Image(splashTex);
+        logo.setPosition(stage.getWidth()/2-300,stage.getHeight()/2-16);
+        stage.addActor(logo);
     }
     
     private void initButtons(){
