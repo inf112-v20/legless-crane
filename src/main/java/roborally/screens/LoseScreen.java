@@ -3,9 +3,11 @@ package roborally.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -34,11 +36,7 @@ public class LoseScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         stage.clear();
 
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font",app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-
+        queueAssets();
         initButtons();
     }
 
@@ -73,8 +71,14 @@ public class LoseScreen implements Screen {
         stage.dispose();
     }
 
-    private void initButtons() {
+    private void queueAssets(){
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font",app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+    }
 
+    private void initButtons() {
         TextButton exitButton = new TextButton("Exit", skin, "default");
         exitButton.setPosition(850, 300);
         exitButton.setSize(300, 100);

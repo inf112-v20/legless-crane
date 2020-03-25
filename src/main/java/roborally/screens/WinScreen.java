@@ -34,11 +34,7 @@ public class WinScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         stage.clear();
 
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font",app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-
+        queueAssets();
         initButtons();
     }
 
@@ -73,8 +69,14 @@ public class WinScreen implements Screen {
         stage.dispose();
     }
 
-    private void initButtons() {
+    private void queueAssets(){
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font",app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+    }
 
+    private void initButtons() {
         TextButton exitButton = new TextButton("Exit", skin, "default");
         exitButton.setPosition(850, 300);
         exitButton.setSize(300, 100);
