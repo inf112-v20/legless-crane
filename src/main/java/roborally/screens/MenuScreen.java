@@ -14,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import roborally.Application;
 
+/**
+ * Refers to GameScreen for complementary documentation.
+ */
 public class MenuScreen implements Screen {
     private final Application app;
     private final Stage stage;

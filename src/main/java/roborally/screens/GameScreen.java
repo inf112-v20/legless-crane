@@ -119,12 +119,7 @@ public class GameScreen implements Screen {
         createCam();
         placePlayers();
 
-        // Additional UI on the stage: graphical representation of buttons
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font", app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-
+        queueAssets();
         initPlacementOfChosenProgramCards();
         initChooseProgCards();
         initButtons();
@@ -201,6 +196,14 @@ public class GameScreen implements Screen {
         // Should only be called from GameLogic if the move is considered valid, updates rendering of player
         playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, null);
         playerLayer.setCell((int) newPosition.x, (int) newPosition.y, playerTiles.get(player.getPlayerNumber()-1));
+    }
+
+    private void queueAssets(){
+        // Additional UI on the stage: graphical representation of buttons
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font", app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
     }
 
     public void initPlacementOfChosenProgramCards() {
@@ -312,69 +315,5 @@ public class GameScreen implements Screen {
         stage.addActor(menuButton);
         stage.addActor(goButton);
     }
-
-
-
-/*
-    private void initButtons() {
-        TextButton buttonMenu = new TextButton("Main menu", skin, "default");
-        buttonMenu.setPosition(1400, 125);
-        buttonMenu.setSize(300, 100);
-        buttonMenu.getLabel().setFontScale(3.0f);
-        buttonMenu.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                app.setScreen(app.menuScreen);
-            }
-        });
-        TextButton moveUp = new TextButton("Move Back", skin, "default");
-        moveUp.setPosition(1000, 50);
-        moveUp.setSize(300, 100);
-        moveUp.getLabel().setFontScale(3.0f);
-        moveUp.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gameLogic.backwardMovement(gameLogic.currentPlayer);
-
-            }
-        });
-        TextButton moveDown = new TextButton("Move Ahead", skin, "default");
-        moveDown.setPosition(600, 50);
-        moveDown.setSize(300, 100);
-        moveDown.getLabel().setFontScale(3.0f);
-        moveDown.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            	gameLogic.forwardMovement(gameLogic.currentPlayer);
-            }
-        });
-
-        TextButton rotateLeft = new TextButton("Rotate left", skin, "default");
-        rotateLeft.setPosition(600, 200);
-        rotateLeft.setSize(300, 100);
-        rotateLeft.getLabel().setFontScale(3.0f);
-        rotateLeft.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            	gameLogic.rotatePlayer(gameLogic.currentPlayer,-1);
-            }
-        });
-        TextButton rotateRight = new TextButton("Rotate right", skin, "default");
-        rotateRight.setPosition(1000, 200);
-        rotateRight.setSize(300, 100);
-        rotateRight.getLabel().setFontScale(3.0f);
-        rotateRight.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gameLogic.rotatePlayer(gameLogic.currentPlayer,+1);
-            }
-        });
-        stage.addActor(buttonMenu);
-        stage.addActor(moveUp);
-        stage.addActor(moveDown);
-        stage.addActor(rotateLeft);
-        stage.addActor(rotateRight);
-    }*/
-
 }
 

@@ -61,12 +61,21 @@ public class Player {
         return lives;
     }
 
-    public void addFlag(int flagNo){
+    /**
+     * Adds a particular flag number if correctly visited by the current player.
+     *
+     * @param flagNumber the flag number on the tile (w/flag) being visited.
+     *
+     */
+    public void addFlag(int flagNumber){
         if (flag.size()==2) {
             // TODO: app.setScreen(WinScreen); in GameScreen?
-        } flag.add(flagNo);
+        } flag.add(flagNumber);
     }
 
+    /**
+     * Keeps track of how many flags which the current player has visited.
+     */
     public int numberOfFlags() {
         if (flag.isEmpty()){
             return 0;

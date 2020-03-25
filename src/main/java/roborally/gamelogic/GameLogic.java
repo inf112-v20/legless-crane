@@ -214,27 +214,28 @@ public class GameLogic {
         }
     }
     /**
-     * Method which reads which flag number the current player is visiting
+     * Reads which "flag number" the current player is visiting.
      *
      * Updates the number of flags the player has conquered if visited in the correct order.
-     * The "HUD" in GameScreen keeps track of the progress of the current player
+     * If correctly visited (depends on the method numberOfFlags(); in the Player-class), addFlag(flagNumber) gets called in the Player-class.
+     * The "HUD" in GameScreen represents visually the progress of the current player.
      *
-     * @param player the current player standing on the current tile (with flag)
+     * @param player the player standing on the current tile (with flag).
      *
      */
     private void checkOutFlag(Player player) {
         Tile currentTile = board.getTile(player.getPosition());
-        int flagNo = currentTile.getFlagNum();
-        if (flagNo == 1) {
+        int flagNumber = currentTile.getFlagNum();
+        if (flagNumber == 1) {
             if (player.numberOfFlags() == 0) {
                 player.addFlag(1);
             } return;
-        } else if (flagNo == 2) {
+        } else if (flagNumber == 2) {
             if (player.numberOfFlags() == 1) {
                 player.addFlag(2);
             } return;
         }
-        if (flagNo == 3) {
+        if (flagNumber == 3) {
             if (player.numberOfFlags() == 2) {
                 player.addFlag(3);
             } return;

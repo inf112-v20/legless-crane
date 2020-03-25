@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import roborally.Application;
 
+/**
+ * Refers to GameScreen for complementary documentation.
+ */
 public class LoadingScreen implements Screen {
     // Constructors in the "screen-classses" are equal to Create() in the Renderer-class
     private final Application app;
@@ -74,7 +77,6 @@ public class LoadingScreen implements Screen {
     }
 
     private void queueAssets(){
-            // Everything that has to be in order before next screen transfer
             app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
     }
 }
