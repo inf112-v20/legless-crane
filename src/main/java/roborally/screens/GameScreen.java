@@ -35,6 +35,11 @@ import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
 
+/**
+ * GameScreen
+ *
+ */
+
 public class GameScreen implements Screen {
     // Originally from the Renderer-class:
     private TiledMap boardgfx;
@@ -45,11 +50,11 @@ public class GameScreen implements Screen {
     private final Application app;
     private final Stage stage;
     private final GameLogic gameLogic;
-    private ArrayList<Phase> phases;
+    private ArrayList<Phase> placementOfPhases;
     private DeckOfProgramCards deckOfProgramCards;
     private boolean phasesAreProgrammed;
-    private int AVAILABLEPROGCARDS = 9;
-    private int PHASES = 5;
+    private int availableCards = 9;
+    private int numberOfPhases = 5;
 
     private Skin skin;
     private BitmapFont font = new BitmapFont();
@@ -67,12 +72,94 @@ public class GameScreen implements Screen {
 
     }
 
-    // Calls the Actor.act(float) method on each actor in the stage.
-    // Updates the actor based on time. Typically this is called each frame by Stage.act(float)
+    /**
+     * Calls the Actor.act(float) method on each actor in the stage.
+     *  Updates the actor based on time. Typically this is called each frame by Stage.act(float)
+     *
+     * @param f
+     */
     private void update(float f){
         stage.act(f);
     }
 
+    /**
+     * show() gets called every time the screen-object is being called i.e. switching to this screen
+     * keep track of how actors interact/influence/are being influenced on stage
+     * reload site
+     */
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+        stage.clear();
+
+        loadBoard();
+        createCam();
+        placePlayers();
+
+        queueAssets();
+        phases();
+        deckOfProgramCards();
+        buttons();
+    }
+
+    /**
+     *  render is called when the screen should render itself, which happens all the time
+     *
+     * @param v
+     */
+    @Override
+    public void render(float v) {
+        Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        renderer.render();
+        renderer.getBatch().begin();
+        renderer.renderTileLayer(playerLayer);
+        renderer.getBatch().end();
+        update(v);
+
+        app.batch.begin();
+        app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-450,Application.HEIGHT/40);
+        app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-350,Application.HEIGHT/40);
+        app.font.draw(app.batch, "Flags conquered: " + gameLogic.currentPlayer.numberOfFlags(),Application.WIDTH-200,Application.HEIGHT/40);
+        app.batch.end();
+
+        stage.draw();
+        gameLogic.updateGameState();
+    }
+
+    /**
+     * @param width
+     * @param height
+     */
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width,height, false);
+    }
+
+    @Override
+    public void pause() {/*intentionally empty method*/}
+
+    @Override
+    public void resume() {/*intentionally empty method*/}
+
+    @Override
+    public void hide() {/*intentionally empty method*/}
+
+    /**
+     *
+     */
+    @Override
+    public void dispose() {
+        stage.dispose();
+        boardgfx.dispose();
+        renderer.dispose();
+        app.batch.dispose();
+    }
+
+    /**
+     *
+     */
     private void createCam() {
         // creating a new camera and 2D/Orthogonal renderer
         renderer = new OrthogonalTiledMapRenderer(boardgfx, 1 / 400f);
@@ -84,12 +171,18 @@ public class GameScreen implements Screen {
         renderer.setView(camera);
     }
 
+    /**
+     *
+     */
     private void loadBoard() {
         // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
         TmxMapLoader loader = new TmxMapLoader();
         boardgfx = loader.load(FILE_PATH_1);
     }
 
+    /**
+     *
+     */
     public void placePlayers() {
         // getting texture for player piece
         playerTiles.add(new Cell().setTile(new StaticTiledMapTile
@@ -109,71 +202,10 @@ public class GameScreen implements Screen {
         }
     }
 
-    @Override
-    public void show() {
-        // show() gets called every time the screen-object is being called i.e. switching to this screen
-        Gdx.input.setInputProcessor(stage); // keep track of how actors interact/influence/are being influenced on stage
-        stage.clear(); // reload site
-
-        loadBoard();
-        createCam();
-        placePlayers();
-
-        queueAssets();
-        initPlacementOfChosenProgramCards();
-        initChooseProgCards();
-        initButtons();
-    }
-
-    @Override
-    public void render(float v) {
-        // render is called when the screen should render itself, which happens all the time
-        Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // render the game map
-        renderer.render();
-        // render the player
-        renderer.getBatch().begin();
-        renderer.renderTileLayer(playerLayer);
-        renderer.getBatch().end();
-        // render buttons:
-        update(v);
-
-        //TODO: better solution regarding showing an updated HUD?
-        app.batch.begin();
-        app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-450,Application.HEIGHT/40);
-        app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-350,Application.HEIGHT/40);
-        app.font.draw(app.batch, "Flags conquered: " + gameLogic.currentPlayer.numberOfFlags(),Application.WIDTH-200,Application.HEIGHT/40);
-        app.batch.end();
-
-        stage.draw();
-        gameLogic.updateGameState();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width,height, false); // check this one as getting more stages?
-    }
-
-    @Override
-    public void pause() {/*intentionally empty method*/}
-
-    @Override
-    public void resume() {/*intentionally empty method*/}
-
-    @Override
-    public void hide() {/*intentionally empty method*/}
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-        boardgfx.dispose();
-        renderer.dispose();
-        app.batch.dispose();
-    }
-
-
-
+    /**
+     * @param playerIndex
+     * @param rotation
+     */
     public void updatePlayerRotation(int playerIndex, Direction rotation) {
         //TODO can we iterate through enum as a list or something to get index of direction? Any other way to do this better
         switch(rotation) {
@@ -192,57 +224,72 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Should only be called from GameLogic if the move is considered valid, updates rendering of player
+     * @param player
+     * @param newPosition
+     */
     public void setPlayerPosition(Player player, Vector2 newPosition) {
-        // Should only be called from GameLogic if the move is considered valid, updates rendering of player
         playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, null);
         playerLayer.setCell((int) newPosition.x, (int) newPosition.y, playerTiles.get(player.getPlayerNumber()-1));
     }
 
+    /**
+     * To keep assets (UI) separated
+     */
     private void queueAssets(){
-        // Additional UI on the stage: graphical representation of buttons
         this.skin = new Skin();
         this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
         this.skin.add("default-font", app.font);
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
     }
 
-    public void initPlacementOfChosenProgramCards() {
-        phases = new ArrayList<Phase>();
+    /**
+     * Phases.
+     * Program cards (chosen as phases) will be stored in the indices of the array "placementOfPhases".
+     */
+    public void phases() {
+        placementOfPhases = new ArrayList<Phase>();
         Texture img = new Texture("cards/background.jpg");
-        for (int i = 0; i < PHASES; i++) {
-            Phase placement = new Phase();
-            placement.setTexture(img);
-            placement.setWidth(170);
-            placement.setHeight(200);
-            placement.setOriginCenter();
-            placement.setPosition(Application.WIDTH / 3 + 250 * i, Application.HEIGHT / 10);
-            placement.setRectangleBoundary();
-            phases.add(placement);
-            stage.addActor(placement);
+        for (int i = 0; i < numberOfPhases; i++) {
+            Phase phase = new Phase();
+            phase.setTexture(img);
+            phase.setWidth(170);
+            phase.setHeight(200);
+            phase.setOriginCenter();
+            phase.setPosition(Application.WIDTH / 3 + 250 * i, Application.HEIGHT / 10);
+            phase.setRectangleBoundary();
+            placementOfPhases.add(phase);
+            stage.addActor(phase);
         }
     }
 
-    public void initChooseProgCards() {
+    /**
+     * "Deck of program cards" which deals 9 randomly chosen cards.
+     * Reads each of the 9 movements according to the program cards dealt from "the DeckOfCards-object".
+     * ClickListener (a program card being chosen) adds the chosen program card to a phase.
+     */
+    public void deckOfProgramCards() {
         deckOfProgramCards = new DeckOfProgramCards();
-        for (int i = 0; i < AVAILABLEPROGCARDS; i ++) {
-            int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());         // Choose randomly program cards
+        for (int i = 0; i < availableCards; i ++) {
+            int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());
             final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index));
             String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index) + ".jpg";
             card.setTexture(new Texture(fileName));
             card.setWidth(170);
             card.setHeight(200);
             card.setOriginCenter();
-            card.setPosition(Application.WIDTH / 15, Application.HEIGHT / 20 + 120*i );
+            card.setPosition(Application.WIDTH / 15, Application.HEIGHT / 20 + 120 * i );
             card.setRectangleBoundary();
 
-            card.addListener(new ClickListener() {    // "Program robot"
+            card.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    for (int i = 0; i < PHASES; i++) {
-                        if (phases.get(i).getTopCard() == null) { // If program card is chosen, move to available phase
-                            card.addAction(Actions.moveTo(phases.get(i).getX(), phases.get(i).getY(), 0.2f));
-                            phases.get(i).addCard(card);
-                            if (i==PHASES-1) {
+                    for (int i = 0; i < numberOfPhases; i++) {
+                        if (placementOfPhases.get(i).getTopCard() == null) {
+                            card.addAction(Actions.moveTo(placementOfPhases.get(i).getX(), placementOfPhases.get(i).getY(), 0.2f));
+                            placementOfPhases.get(i).addCard(card);
+                            if (i==numberOfPhases-1) {
                                 phasesAreProgrammed = true;
                             } return;
                         }
@@ -250,11 +297,16 @@ public class GameScreen implements Screen {
                 }
             });
             stage.addActor(card);
-            card.setZIndex(5);                 // cards created later should render earlier (on bottom)
+            card.setZIndex(5);             // Bottom of cards get hidden (beneficial while overlap)
         }
     }
 
-    private void initButtons() {
+    /**
+     * Buttons as click listeners.
+     * The button "Main menu" transfers from GameScreen to MenuScreen.
+     * The button "Let's go!" reads the current player's phases "click by click".
+     */
+    private void buttons() {
         TextButton menuButton = new TextButton("Main menu", skin, "default");
         menuButton.setPosition(Application.WIDTH / 20, Application.HEIGHT - 150);
         menuButton.setSize(250, 100);
@@ -271,11 +323,11 @@ public class GameScreen implements Screen {
         goButton.getLabel().setFontScale(3.0f);
         goButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {  // gå gjennom phase for phase, remove card
+            public void clicked(InputEvent event, float x, float y) {
                 if (phasesAreProgrammed) {
-                    for (Phase phas : phases) {
-                        if (!phas.getTopCard().equals(null)) {
-                            String movement = phas.getTopCard().getMovement();
+                    for (Phase phase : placementOfPhases) {
+                        if (!phase.getTopCard().equals(null)) {
+                            String movement = phase.getTopCard().getMovement();
                             switch (movement) {
                                 case "1":
                                     gameLogic.forwardMovement(gameLogic.currentPlayer);
@@ -302,8 +354,8 @@ public class GameScreen implements Screen {
                                     gameLogic.rotatePlayer(gameLogic.currentPlayer, +1);
                                     break;
                             }
-                            phases.remove(phas);
-                            if (phases.isEmpty()){                // When all movements are done
+                            placementOfPhases.remove(phase);
+                            if (placementOfPhases.isEmpty()){      // When all movements are done
                                 phasesAreProgrammed = false;
                             }
                             return;
