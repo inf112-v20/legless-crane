@@ -10,6 +10,7 @@ public class Tile {
     private final boolean isWrench;
     private final boolean isSpawner;
     private final boolean isFlag;
+    private final int bendDirection;
     private final int rotation;
     private final int flagNum;
     private final int movementSpeed;
@@ -41,6 +42,7 @@ public class Tile {
         this.isFlag=builder.isFlag;
 
         //ints
+        this.bendDirection=builder.bendDirection;
         this.rotation=builder.rotation;
         this.flagNum=builder.flagNum;
         this.movementSpeed=builder.movementSpeed;
@@ -75,6 +77,8 @@ public class Tile {
     public boolean isFlag() { return isFlag; }
 
     public int getMovementSpeed() { return movementSpeed; }
+
+    public int getBendDirection() { return bendDirection; }
 
     public int getRotation() { return rotation; } //TODO Remove if not used
 
@@ -112,6 +116,7 @@ public class Tile {
         private boolean isFlag;
         private int flagNum;
         private boolean isSpawner;
+        private int bendDirection;
         private int movementSpeed;
         private String name;
         private int healthChange;
@@ -158,9 +163,10 @@ public class Tile {
             return this;
         }
 
-        public Builder setCornerBelt(Direction movementDirection, int movementSpeed) {
+        public Builder setCornerBelt(Direction movementDirection, int movementSpeed, int bendDirection) {
             //TODO How to determine which direction to rotate?
             this.movementSpeed = movementSpeed;
+            this.bendDirection = bendDirection;
             this.isBelt = true;
             this.canRotate = true;
             this.movementDirection = movementDirection;

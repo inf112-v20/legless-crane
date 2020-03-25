@@ -355,28 +355,28 @@ public class Board {
         }
         switch (tileID) {
             case 33:
-                newTile.setCornerBelt(Direction.SOUTH,1); // east to south, bend
+                newTile.setCornerBelt(Direction.SOUTH,1, 1); // east to south, bend
                 break;
             case 34:
-                newTile.setCornerBelt(Direction.WEST,1); // south to west, bend
+                newTile.setCornerBelt(Direction.WEST,1, 1); // south to west, bend
                 break;
             case 35:
-                newTile.setCornerBelt(Direction.EAST,1); // south to east, bend
+                newTile.setCornerBelt(Direction.EAST,1, 2); // south to east, bend
                 break;
             case 36:
-                newTile.setCornerBelt(Direction.SOUTH,1); // west to south, bend
+                newTile.setCornerBelt(Direction.SOUTH,1, 2); // west to south, bend
                 break;
             case 41:
-                newTile.setCornerBelt(Direction.EAST,1); // north to east, bend
+                newTile.setCornerBelt(Direction.EAST,1, 1); // north to east, bend
                 break;
             case 42:
-                newTile.setCornerBelt(Direction.NORTH,1); // west to north, bend
+                newTile.setCornerBelt(Direction.NORTH,1, 1); // west to north, bend
                 break;
             case 43:
-                newTile.setCornerBelt(Direction.NORTH,1); // east to north, bend
+                newTile.setCornerBelt(Direction.NORTH,1, 2); // east to north, bend
                 break;
             case 44:
-                newTile.setCornerBelt(Direction.WEST,1); // north to west, bend
+                newTile.setCornerBelt(Direction.WEST,1, 2); // north to west, bend
                 break;
             case 49:
                 newTile.setStraightBelt(Direction.NORTH,1); // going north, straight
@@ -451,28 +451,28 @@ public class Board {
         switch (tileID) {
             // blue belts
             case 17:
-                newTile.setCornerBelt(Direction.SOUTH,2); // east to south, bend
+                newTile.setCornerBelt(Direction.SOUTH,2, 1); // east to south, bend
                 break;
             case 18:
-                newTile.setCornerBelt(Direction.WEST,2); // south to west, bend
+                newTile.setCornerBelt(Direction.WEST,2, 1); // south to west, bend
                 break;
             case 19:
-                newTile.setCornerBelt(Direction.EAST,2); // south to east, bend
+                newTile.setCornerBelt(Direction.EAST,2, 2); // south to east, bend
                 break;
             case 20:
-                newTile.setCornerBelt(Direction.SOUTH,2); // west to south, bend
+                newTile.setCornerBelt(Direction.SOUTH,2, 2); // west to south, bend
                 break;
             case 25:
-                newTile.setCornerBelt(Direction.EAST,2); // north to east, bend
+                newTile.setCornerBelt(Direction.EAST,2, 1); // north to east, bend
                 break;
             case 26:
-                newTile.setCornerBelt(Direction.NORTH,2); // west to north, bend
+                newTile.setCornerBelt(Direction.NORTH,2, 1); // west to north, bend
                 break;
             case 27:
-                newTile.setCornerBelt(Direction.NORTH,2); // east to north, bend
+                newTile.setCornerBelt(Direction.NORTH,2, 2); // east to north, bend
                 break;
             case 28:
-                newTile.setCornerBelt(Direction.WEST,2); // north to west, bend
+                newTile.setCornerBelt(Direction.WEST,2, 2); // north to west, bend
                 break;
             case 13:
                 newTile.setStraightBelt(Direction.NORTH,2); // going north, straight

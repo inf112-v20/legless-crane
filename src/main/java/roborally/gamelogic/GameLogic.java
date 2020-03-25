@@ -149,19 +149,53 @@ public class GameLogic {
      */
     private void straightBelt(Player player) {
         Tile currentTile = board.getTile(player.getPosition());
+        int bend = currentTile.getBendDirection();
+        Direction dir = currentTile.getMovementDirection();
         if (board.getTile(player.getPosition()).isBelt()) {
-            Direction dir = currentTile.getMovementDirection();
             if (dir == Direction.NORTH) {
-                movePlayerInDirection(player, dir);
+                if (bend == 1) {
+                    rotatePlayer(player, -1);
+                    movePlayerInDirection(player, dir);
+                }
+                else if (bend == 2) {
+                    rotatePlayer(player, 1);
+                    movePlayerInDirection(player, dir);
+                }
+                else movePlayerInDirection(player, dir);
             }
             else if (dir == Direction.SOUTH) {
-                movePlayerInDirection(player, dir);
+                if (bend == 1) {
+                    rotatePlayer(player, -1);
+                    movePlayerInDirection(player, dir);
+                }
+                else if (bend == 2) {
+                    rotatePlayer(player, 1);
+                    movePlayerInDirection(player, dir);
+                }
+                else movePlayerInDirection(player, dir);
             }
             else if (dir == Direction.WEST) {
-                movePlayerInDirection(player, dir);
+                if (bend == 1) {
+                    rotatePlayer(player, -1);
+                    movePlayerInDirection(player, dir);
+                }
+                else if (bend == 2) {
+                    rotatePlayer(player, 1);
+                    movePlayerInDirection(player, dir);
+                }
+                else movePlayerInDirection(player, dir);
+
             }
             else if (dir == Direction.EAST) {
-                movePlayerInDirection(player, dir);
+                if (bend == 1) {
+                    rotatePlayer(player, -1);
+                    movePlayerInDirection(player, dir);
+                }
+                else if (bend == 2) {
+                    rotatePlayer(player, 1);
+                    movePlayerInDirection(player, dir);
+                }
+                else movePlayerInDirection(player, dir);
             }
         }
     }
