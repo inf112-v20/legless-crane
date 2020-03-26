@@ -223,7 +223,8 @@ public class GameScreen implements Screen {
         deckOfProgramCards = new DeckOfProgramCards();
         for (int i = 0; i < AVAILABLEPROGCARDS; i ++) {
             int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());         // Choose randomly program cards
-            final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index));
+            final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
+                    deckOfProgramCards.getProgramCardPriority(index));
             String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index) + ".jpg";
             card.setTexture(new Texture(fileName));
             card.setWidth(170);
