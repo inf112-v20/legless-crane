@@ -79,6 +79,7 @@ public class GameLogic {
         for (Player player : players) {
             Vector2 playerPosition = player.getPosition();
             Tile playerTile = board.getTile(playerPosition);
+            int speed = playerTile.getMovementSpeed();
 
             if (!onBoard(playerPosition))
                 player.updateHealth(-10);
@@ -86,10 +87,15 @@ public class GameLogic {
             else if (playerTile.doesDamage())
                 player.updateHealth(playerTile.getHealthChange());
 
-            else if (board.getTile(player.getPosition()).isBelt())
-                straightBelt(player);
-
-            else if (board.getTile(player.getPosition()).isCog())
+            else if (playerTile.isBelt()) {
+                if (speed == 1) {
+                    beltsMovePlayer(player);
+                } else {
+                    beltsMovePlayer(player);
+                    beltsMovePlayer(player);
+                }
+            }
+            else if (playerTile.isCog())
                 rotationCogs(player);
 
             else if (playerTile.isWrench()) {
@@ -147,9 +153,9 @@ public class GameLogic {
         gameScreen.updatePlayerRotation(player.getPlayerNumber()-1, player.getRotation());
     }
     /**
-     * TODO: add documentation
+     *
      */
-    private void straightBelt(Player player) {
+    private void beltsMovePlayer(Player player) {
         Tile currentTile = board.getTile(player.getPosition());
         int bend = currentTile.getBendDirection();
         Direction dir = currentTile.getMovementDirection();
@@ -199,6 +205,14 @@ public class GameLogic {
                 }
                 else movePlayerInDirection(player, dir);
             }
+        }
+    }
+    /**private void blueGay(Player player) {
+        Tile currentTile = board.getTile(player.getPosition());
+        int bend = currentTile.getBendDirection();
+        Direction dir = currentTile.getMovementDirection();
+        if (board.getTile(player.getPosition()).isBelt() && speed == 2) {
+
         }
     }
     /**
