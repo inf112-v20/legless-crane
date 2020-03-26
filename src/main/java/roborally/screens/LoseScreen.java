@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import roborally.Application;
 
+// Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
+
 public class LoseScreen implements Screen {
     private final Application app;
     private final Stage stage;
@@ -31,12 +33,8 @@ public class LoseScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         stage.clear();
 
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font",app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-
-        initButtons();
+        queueAssets();
+        buttons();
     }
 
     @Override
@@ -70,8 +68,14 @@ public class LoseScreen implements Screen {
         stage.dispose();
     }
 
-    private void initButtons() {
+    private void queueAssets(){
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font",app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+    }
 
+    private void buttons() {
         TextButton exitButton = new TextButton("Exit", skin, "default");
         exitButton.setPosition(850, 300);
         exitButton.setSize(300, 100);

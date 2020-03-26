@@ -2,8 +2,11 @@ package roborally.programcards;
 
 import java.util.ArrayList;
 
+/**
+ * Deck of program cards, collection of the particular distribution of program cards (according to movements).
+ */
 public class DeckOfProgramCards {
-    private ArrayList<ProgramCard> deckOfProgramCards;
+    private final ArrayList<ProgramCard> deckOfProgramCards;
 
     /**
      * Constructing the deck of program cards that dictate player movement

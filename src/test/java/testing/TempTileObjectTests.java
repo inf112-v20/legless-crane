@@ -12,13 +12,12 @@ public class TempTileObjectTests {
     private final Board board;
 
     public TempTileObjectTests() {
-        board = new Board("src/test/testingResources/testBoard0.tmx");
+        board = new Board("boards/testBoard0.tmx");
     }
 
     @Test
     public void boardCorrectlyReadsHoles() {
         assertEquals(true, board.getTile(new Vector2(1,3)).doesDamage());
-
     }
 
     @Test

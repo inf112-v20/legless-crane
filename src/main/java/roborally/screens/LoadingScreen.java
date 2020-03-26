@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import roborally.Application;
 
+// Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
+
 public class LoadingScreen implements Screen {
-    // Constructors in the "screen-classses" are equal to Create() in the Renderer-class
     private final Application app;
     private final ShapeRenderer shapeRenderer;
     private float progress;
@@ -53,7 +54,6 @@ public class LoadingScreen implements Screen {
         app.batch.begin();
         app.font.draw(app.batch, "Screen is loading",650,650);
         app.batch.end();
-
     }
 
     @Override
@@ -74,7 +74,6 @@ public class LoadingScreen implements Screen {
     }
 
     private void queueAssets(){
-            // Everything that has to be in order before next screen transfer
             app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
     }
 }

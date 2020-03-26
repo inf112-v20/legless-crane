@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import roborally.Application;
 
+// Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
+
 public class MenuScreen implements Screen {
     private final Application app;
     private final Stage stage;
@@ -33,17 +35,8 @@ public class MenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         stage.clear();
 
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font",app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-
-        Texture splashTex = new Texture(Gdx.files.internal("img/logo.png"));
-        Image logo = new Image(splashTex);
-        logo.setPosition(stage.getWidth()/2-300,stage.getHeight()/2-16);
-        stage.addActor(logo);
-
-        initButtons();
+        queueAssets();
+        buttons();
     }
 
     @Override
@@ -76,9 +69,20 @@ public class MenuScreen implements Screen {
     public void dispose() {
         stage.dispose();
     }
-    
-    private void initButtons(){
 
+    private void queueAssets(){
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font",app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+
+        Texture splashTex = new Texture(Gdx.files.internal("img/logo.png"));
+        Image logo = new Image(splashTex);
+        logo.setPosition(stage.getWidth()/2-300,stage.getHeight()/2-16);
+        stage.addActor(logo);
+    }
+    
+    private void buttons(){
         TextButton buttonPlay = new TextButton("Let's play", skin, "default");
         buttonPlay.setPosition(850,300);
         buttonPlay.setSize(300,100);
