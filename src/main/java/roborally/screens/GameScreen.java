@@ -236,9 +236,9 @@ public class GameScreen implements Screen {
      * Reads each of the 9 movements according to the program cards.
      * ClickListener (a program card being chosen) adds the chosen program card to a phase.
      */
-    public void initChooseProgCards() {
-        deckOfProgramCards = new DeckOfProgramCards();
-        for (int i = 0; i < AVAILABLEPROGCARDS; i ++) {
+    public void deckOfProgramCards() {
+        DeckOfProgramCards deckOfProgramCards = new DeckOfProgramCards();
+        for (int i = 0; i < 9; i ++) {
             int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());         // Choose randomly program cards
             final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
                     deckOfProgramCards.getProgramCardPriority(index));
