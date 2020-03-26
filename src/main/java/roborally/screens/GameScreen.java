@@ -3,11 +3,9 @@ package roborally.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -51,8 +49,6 @@ public class GameScreen implements Screen {
 
     private final Stage stage;
     private Skin skin;
-    private final BitmapFont font = new BitmapFont();
-    private Label.LabelStyle style = new Label.LabelStyle( font, Color.BLACK );
 
     private static final String FILE_PATH_0 = "boards/board_template.tmx"; // empty board
     private static final String FILE_PATH_1 = "boards/Risky_Exchange.tmx";
@@ -65,20 +61,12 @@ public class GameScreen implements Screen {
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
 
-    /**
-     * Calls the Actor.act(float) method on each actor in the stage.
-     *  Updates the actor based on time. Typically this is called each frame by Stage.act(float)
-     *
-     * @param f
-     */
     private void update(float f){
         stage.act(f);
     }
 
     /**
-     * show() gets called every time the screen-object is being called i.e. switching to this screen
-     * keep track of how actors interact/influence/are being influenced on stage
-     * reload site
+     * The methods which are added separates out UI from show(). Graphics represented visually to the lucky one playing the game.
      */
     @Override
     public void show() {
@@ -95,11 +83,6 @@ public class GameScreen implements Screen {
         buttons();
     }
 
-    /**
-     *  render is called when the screen should render itself, which happens all the time
-     *
-     * @param v
-     */
     @Override
     public void render(float v) {
         Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
@@ -121,10 +104,6 @@ public class GameScreen implements Screen {
         gameLogic.updateGameState();
     }
 
-    /**
-     * @param width
-     * @param height
-     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width,height, false);
@@ -139,9 +118,6 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {/*intentionally empty method*/}
 
-    /**
-     *
-     */
     @Override
     public void dispose() {
         stage.dispose();
@@ -151,10 +127,18 @@ public class GameScreen implements Screen {
     }
 
     /**
-     *
+     * Loads the board from a ".tmx-file".
+     * Gets a given layer of the board through getLayers().
+     */
+    private void loadBoard() {
+        TmxMapLoader loader = new TmxMapLoader();
+        boardgfx = loader.load(FILE_PATH_1);
+    }
+
+    /**
+     * Camera settings regarding the map.
      */
     private void createCam() {
-        // creating a new camera and 2D/Orthogonal renderer
         renderer = new OrthogonalTiledMapRenderer(boardgfx, 1 / 400f);
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false, gameLogic.boardWidth, gameLogic.boardHeight);
@@ -165,27 +149,15 @@ public class GameScreen implements Screen {
     }
 
     /**
-     *
-     */
-    private void loadBoard() {
-        // loading in the board from our tmx file, gets a given layer of that board with getLayers() use this for
-        TmxMapLoader loader = new TmxMapLoader();
-        boardgfx = loader.load(FILE_PATH_1);
-    }
-
-    /**
-     *
+     * Visual representation of a player placed on the map.
+     * Loads texture (.png-file), creates layer to hold the player and sets the position.
+     * Will change as transition to multiplayer-mode happens.
      */
     public void placePlayers() {
-        // getting texture for player piece
         playerTiles.add(new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png")))));
 
-        // Will have multiple players, put these in an array?
-
-        // creating a layer to hold the player, setting the player's position and
         playerLayer = new TiledMapTileLayer(gameLogic.boardWidth, gameLogic.boardHeight, 300, 300);
-        // starting position for the player
 
         for (int i = 0; i < gameLogic.getPlayers().size(); i++) {
             playerLayer.setCell(
@@ -196,11 +168,12 @@ public class GameScreen implements Screen {
     }
 
     /**
+     * Visual representation of player rotation, gets updated by renderer.
+     *
      * @param playerIndex
      * @param rotation
      */
     public void updatePlayerRotation(int playerIndex, Direction rotation) {
-        //TODO can we iterate through enum as a list or something to get index of direction? Any other way to do this better
         switch(rotation) {
             case NORTH:
                 playerTiles.get(playerIndex).setRotation(0);
@@ -218,9 +191,12 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Should only be called from GameLogic if the move is considered valid, updates rendering of player
-     * @param player
-     * @param newPosition
+     * Places player on a new position on the map (visually).
+     * Should only be called from GameLogic if the move is considered valid.
+     * Updates rendering of the current player.
+     *
+     * @param player current player
+     * @param newPosition new position
      */
     public void setPlayerPosition(Player player, Vector2 newPosition) {
         playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, null);
@@ -228,7 +204,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * To keep assets (UI) separated
+     * Assets (visual representation of the current buttons).
      */
     private void queueAssets(){
         this.skin = new Skin();
@@ -238,8 +214,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Phases.
-     * Program cards (chosen as phases) will be stored in the indices of the array "placementOfPhases".
+     * Phases. Program cards (chosen as phases) will be stored as the indices in the array "placementOfPhases".
      */
     public void phases() {
         placementOfPhases = new ArrayList<Phase>();

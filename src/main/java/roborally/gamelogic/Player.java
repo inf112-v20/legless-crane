@@ -47,8 +47,6 @@ public class Player {
         // health is updated to somewhere between 9-0 according to changeInHealth
         health = max( min( health + changeInHealth , MAX_HEALTH) , 0);
 
-        System.out.println("Health has been updated, current health is: " + health);
-        //TODO Show this information to the player on GameScreen and not in console
         if (health <= 0)
             respawn();
     }
@@ -117,8 +115,6 @@ public class Player {
             lives -= 1;
             health = MAX_HEALTH;
             gameLogic.respawnPlayer(this);
-            System.out.println("Your robot died, current lives: " + lives + " current health: " + health);
-            //TODO Show this information to the player on GameScreen and not in console
         } else {
             System.out.println("Game over");
             //TODO Show this information to the player on GameScreen and not in console (app.setScreen(LoseScreen))
