@@ -7,7 +7,7 @@ import roborally.ui.BaseActor;
  * TODO: add values? (make program cards have priority)
  */
 public class ProgramCard extends BaseActor {
-    private String movement;
+    private final String movement;
 
     public ProgramCard(String movement) {
         this.movement = movement;

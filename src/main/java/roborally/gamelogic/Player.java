@@ -15,12 +15,12 @@ public class Player {
     private int lives;
     private int health;
     private static final int MAX_HEALTH = 10;
-    private ArrayList<Integer> flag;
+    private final ArrayList<Integer> flag;
     private Vector2 position;
     private Direction rotation;
     private Vector2 backupPoint;
     private final int playerNumber;
-    private GameLogic gameLogic;
+    private final GameLogic gameLogic;
 
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
         this.lives = 3;

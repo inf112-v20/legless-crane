@@ -16,6 +16,7 @@ import roborally.Application;
 
 /**
  * Refers to GameScreen for complementary documentation.
+ * Button (as click listener) transfers to GameScreen.
  */
 public class MenuScreen implements Screen {
     private final Application app;
@@ -37,7 +38,7 @@ public class MenuScreen implements Screen {
         stage.clear();
 
         queueAssets();
-        initButtons();
+        buttons();
     }
 
     @Override
@@ -83,7 +84,7 @@ public class MenuScreen implements Screen {
         stage.addActor(logo);
     }
     
-    private void initButtons(){
+    private void buttons(){
 
         TextButton buttonPlay = new TextButton("Let's play", skin, "default");
         buttonPlay.setPosition(850,300);

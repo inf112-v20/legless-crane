@@ -5,13 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
         import com.badlogic.gdx.graphics.Texture;
         import com.badlogic.gdx.graphics.g2d.TextureRegion;
         import com.badlogic.gdx.graphics.Color;
-        import com.badlogic.gdx.math.Rectangle;
-        import com.badlogic.gdx.math.Polygon;
-        import com.badlogic.gdx.math.MathUtils;
-        import com.badlogic.gdx.math.Intersector;
-        import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
-
-        import java.awt.*;
+import com.badlogic.gdx.math.Polygon;
 
 /**
  * This class is borrowed from "Beginning Java Game Development with LibGDX" (2015). @Author: Lee Stemkoski.
@@ -20,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class BaseActor extends Actor {
 
-    public TextureRegion region;
+    public final TextureRegion region;
     public Polygon boundingPolygon;
     public BaseActor() {
         region = new TextureRegion();

@@ -8,11 +8,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import roborally.gamelogic.GameLogic;
-import roborally.screens.GameScreen;
-import roborally.screens.MenuScreen;
-import roborally.screens.LoadingScreen;
+import roborally.screens.*;
 
+/**
+ * Application runs main.
+ *
+ * Extends Game, which implements ApplicationListener.
+ * ApplicationListener delegates to a Screen ("a game state").
+ *
+ */
 public class Application extends Game {
     // Hardcoded board size is a 7:9 ratio
     public static final int WIDTH = 2000;
@@ -25,6 +29,8 @@ public class Application extends Game {
     public LoadingScreen loadingScreen;
     public MenuScreen menuScreen;
     public GameScreen gameScreen;
+    public WinScreen winScreen;
+    public LoseScreen loseScreen;
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -34,9 +40,11 @@ public class Application extends Game {
         new LwjglApplication(new Application(), config);
     }
 
+    /**
+     * Called as the application is first created. "Start-state".
+     */
     @Override
     public void create() {
-        // "Start-state"
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WIDTH, HEIGHT);
         assets = new AssetManager();
@@ -44,12 +52,14 @@ public class Application extends Game {
         font = new BitmapFont();
         font.setColor(Color.BLACK);
 
+
         loadingScreen = new LoadingScreen(this);
         menuScreen = new MenuScreen(this);
         gameScreen = new GameScreen(this);
+        winScreen = new WinScreen(this);
+        loseScreen = new LoseScreen(this);
 
-        // Start-screen:
-        this.setScreen(new LoadingScreen(this));
+        this.setScreen(new LoadingScreen(this));            // First screen that is being set.
     }
 
     @Override
@@ -61,6 +71,10 @@ public class Application extends Game {
     @Override
     public void resume() {/*intentionally empty method*/}
 
+    /**
+     * As the application gets "destroyed", dispose() removes what was created in the create()-method.
+     * In purpose of memory resource management.
+     */
     @Override
     public void dispose(){
         batch.dispose();
@@ -69,5 +83,7 @@ public class Application extends Game {
         loadingScreen.dispose();
         menuScreen.dispose();
         gameScreen.dispose();
+        winScreen.dispose();
+        loseScreen.dispose();
     }
 }

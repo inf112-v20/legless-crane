@@ -36,28 +36,27 @@ import roborally.programcards.ProgramCard;
 import java.util.ArrayList;
 
 /**
- * GameScreen
+ * A game state.
+ *
+ * Constructors in the "screen-classes" are equal to Create() in "Application".
  *
  */
 
 public class GameScreen implements Screen {
-    // Originally from the Renderer-class:
     private TiledMap boardgfx;
     private TiledMapTileLayer playerLayer;
     private OrthogonalTiledMapRenderer renderer;
     private final ArrayList<TiledMapTileLayer.Cell> playerTiles = new ArrayList<>();
 
     private final Application app;
-    private final Stage stage;
     private final GameLogic gameLogic;
     private ArrayList<Phase> placementOfPhases;
-    private DeckOfProgramCards deckOfProgramCards;
     private boolean phasesAreProgrammed;
-    private int availableCards = 9;
-    private int numberOfPhases = 5;
+    private final int numberOfPhases = 5;
 
+    private final Stage stage;
     private Skin skin;
-    private BitmapFont font = new BitmapFont();
+    private final BitmapFont font = new BitmapFont();
     private Label.LabelStyle style = new Label.LabelStyle( font, Color.BLACK );
 
     private static final String FILE_PATH_0 = "src/main/assets/boards/board_template.tmx"; // empty board
@@ -265,12 +264,13 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * "Deck of program cards" which deals 9 randomly chosen cards.
-     * Reads each of the 9 movements according to the program cards dealt from "the DeckOfCards-object".
+     * "Deck of program cards" which deals 9 randomly chosen program cards.
+     * Reads each of the 9 movements according to the program cards.
      * ClickListener (a program card being chosen) adds the chosen program card to a phase.
      */
     public void deckOfProgramCards() {
-        deckOfProgramCards = new DeckOfProgramCards();
+        DeckOfProgramCards deckOfProgramCards = new DeckOfProgramCards();
+        int availableCards = 9;
         for (int i = 0; i < availableCards; i ++) {
             int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());
             final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index));
@@ -326,7 +326,7 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (phasesAreProgrammed) {
                     for (Phase phase : placementOfPhases) {
-                        if (!phase.getTopCard().equals(null)) {
+                        if (phase.getTopCard() != null) {
                             String movement = phase.getTopCard().getMovement();
                             switch (movement) {
                                 case "1":

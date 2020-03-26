@@ -11,9 +11,9 @@ import roborally.Application;
 
 /**
  * Refers to GameScreen for complementary documentation.
+ * Transfers to MenuScreen ("loading process").
  */
 public class LoadingScreen implements Screen {
-    // Constructors in the "screen-classses" are equal to Create() in the Renderer-class
     private final Application app;
     private final ShapeRenderer shapeRenderer;
     private float progress;

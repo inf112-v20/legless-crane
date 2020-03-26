@@ -95,8 +95,10 @@ public class GameLogic {
             else if (playerTile.isWrench()) {
                 player.updateHealth(playerTile.getHealthChange());
                 player.setBackupPoint(playerPosition);
-            }
 
+            } else if (playerTile.isFlag()) {
+                checkOutFlag(currentPlayer);
+            }
         }
         count = 0; // reset timer if we have interacted with player
     }

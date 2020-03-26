@@ -35,7 +35,7 @@ public class WinScreen implements Screen {
         stage.clear();
 
         queueAssets();
-        initButtons();
+        buttons();
     }
 
     @Override
@@ -76,7 +76,7 @@ public class WinScreen implements Screen {
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
     }
 
-    private void initButtons() {
+    private void buttons() {
         TextButton exitButton = new TextButton("Exit", skin, "default");
         exitButton.setPosition(850, 300);
         exitButton.setSize(300, 100);

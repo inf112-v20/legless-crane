@@ -29,7 +29,7 @@ public class Board {
     private int boardSize;
     private final ArrayList<Tile> tiles = new ArrayList<>();
     private final Vector2[] spawnPoints = new Vector2[8];
-    private Vector2[] flags = new Vector2[4];
+    private final Vector2[] flags = new Vector2[4];
 
     /**
      * The constructor first reads the board from file using readBoard()

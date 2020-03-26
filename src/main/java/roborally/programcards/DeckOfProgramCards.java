@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Deck of program cards, collection of the particular distribution of program cards (according to movements).
  */
 public class DeckOfProgramCards {
-    private ArrayList<ProgramCard> deckOfProgramCards;
+    private final ArrayList<ProgramCard> deckOfProgramCards;
 
     public DeckOfProgramCards() {
         deckOfProgramCards = new ArrayList<ProgramCard>();
