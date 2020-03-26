@@ -231,18 +231,18 @@ public class GameScreen implements Screen {
             stage.addActor(phase);
         }
     }
-
     /**
      * "Deck of program cards" which deals 9 randomly chosen program cards.
      * Reads each of the 9 movements according to the program cards.
      * ClickListener (a program card being chosen) adds the chosen program card to a phase.
      */
-    public void deckOfProgramCards() {
-        DeckOfProgramCards deckOfProgramCards = new DeckOfProgramCards();
-        int availableCards = 9;
-        for (int i = 0; i < availableCards; i ++) {
-            int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());
-            final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index));
+    public void initChooseProgCards() {
+        deckOfProgramCards = new DeckOfProgramCards();
+        for (int i = 0; i < AVAILABLEPROGCARDS; i ++) {
+            int index = (int) (Math.random() * deckOfProgramCards.getDeckSize());         // Choose randomly program cards
+            final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
+                    deckOfProgramCards.getProgramCardPriority(index));
+          
             String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index) + ".jpg";
             card.setTexture(new Texture(fileName));
             card.setWidth(170);
