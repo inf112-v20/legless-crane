@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -96,13 +97,14 @@ public class Board {
      */
     private ArrayList<int[]> readBoard(String filePath) {
 
+        InputStream input = getClass().getClassLoader().getResourceAsStream(filePath);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
         Document document = null;
 
         try {
             builder = factory.newDocumentBuilder();
-            document = builder.parse(new File(filePath));
+            document = builder.parse(input);
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
             System.out.println("Issue reading in board, check the method readBoard() in Board.java");
