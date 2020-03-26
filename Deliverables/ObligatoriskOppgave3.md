@@ -31,5 +31,27 @@ Gruppedynamikke og kommunikasjon:
 
 
 ## Deloppgave 2
+Krav vi har prioritert:
+- I denne perioden, som nå er over, har vi etter samtale med gruppeleder prioritert alt som var utestående med tanke på interaksjon mellom spiller og brett. Det meste av interaksjonsmuligheter er nå på plass bortsett fra detaljer for timing av hendelser og håndtering av konflikter. Dette vil bli prioritere fremover når vi ser på å få flere spillere på brettet.
+
+Brukerhistorer:
+**TODO**
+
+Oppgaver fremover:
+- Vi har starter tildeling av issues som har frist på tirsdag (31.03) neste uke, men brukerhistoriene er ikke på plass per dags dato.
+
+Hovedkrav vi anser som en del av MVP:
+- Det er ikke gjort noen endringer i forhold til hovedkrav som er satt ennå. Hovedkravene baserer seg fortsatt på de mest grunnleggende reglene i spillet.
+
+Alle kjente bugs er dokumentert i README.md
 
 ## Deloppgave 3
+
+Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
+
+**KLASSEDIAGRAM**
+- **TODO**
+
+Commit-fordeling:
+- Fordelingen på commits er fortsatt for skjeiv og på dette tidspunktet vil nok ikke den overordnede fordelingen over hele prosjekte bli jevn, men vi jobber mot jevnere fordeling av fremtidige commits. Slik at commits i de kommende ukene vil være mye jevnere.
+- I denne innleveringen har vi også blant annet benyttet oss av noe gruppeprogrammering (dokumnetert i wiki referat) for å få jevnere deltagelse men dette reflekteres ikke direkte i oversikten over commits på gitHub.
