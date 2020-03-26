@@ -49,7 +49,7 @@ Alle kjente bugs er dokumentert i README.md
 
 Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
 
-**KLASSEDIAGRAM**
+Klassediagram:
 - **TODO**
 
 Commit-fordeling:
