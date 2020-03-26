@@ -170,8 +170,8 @@ public class GameScreen implements Screen {
     /**
      * Visual representation of player rotation, gets updated by renderer.
      *
-     * @param playerIndex
-     * @param rotation
+     * @param playerIndex the current player "which rotates"
+     * @param rotation the direction the player shall have
      */
     public void updatePlayerRotation(int playerIndex, Direction rotation) {
         switch(rotation) {
