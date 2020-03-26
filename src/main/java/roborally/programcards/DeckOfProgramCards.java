@@ -5,6 +5,10 @@ import java.util.ArrayList;
 public class DeckOfProgramCards {
     private ArrayList<ProgramCard> deckOfProgramCards;
 
+    /**
+     * Constructing the deck of program cards that dictate player movement
+     * Each card has unique priority and a movement type
+     */
     public DeckOfProgramCards() {
         deckOfProgramCards = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
