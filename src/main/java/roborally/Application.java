@@ -11,12 +11,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import roborally.screens.*;
 
 /**
- * Application runs main.
- *
- * Extends Game, which implements ApplicationListener.
- * ApplicationListener delegates to a Screen ("a game state").
- *
+ * Main.
+ * Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Game.html
  */
+
 public class Application extends Game {
     // Hardcoded board size is a 7:9 ratio
     public static final int WIDTH = 2000;
@@ -40,9 +38,6 @@ public class Application extends Game {
         new LwjglApplication(new Application(), config);
     }
 
-    /**
-     * Called as the application is first created. "Start-state".
-     */
     @Override
     public void create() {
         camera = new OrthographicCamera();
@@ -51,7 +46,6 @@ public class Application extends Game {
         batch = new SpriteBatch();
         font = new BitmapFont();
         font.setColor(Color.BLACK);
-
 
         loadingScreen = new LoadingScreen(this);
         menuScreen = new MenuScreen(this);
@@ -71,10 +65,6 @@ public class Application extends Game {
     @Override
     public void resume() {/*intentionally empty method*/}
 
-    /**
-     * As the application gets "destroyed", dispose() removes what was created in the create()-method.
-     * In purpose of memory resource management.
-     */
     @Override
     public void dispose(){
         batch.dispose();

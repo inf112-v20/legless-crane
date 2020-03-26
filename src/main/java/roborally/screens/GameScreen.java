@@ -35,12 +35,7 @@ import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
 
-/**
- * A game state.
- *
- * Constructors in the "screen-classes" are equal to Create() in "Application".
- *
- */
+// Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
 
 public class GameScreen implements Screen {
     private TiledMap boardgfx;
@@ -288,7 +283,7 @@ public class GameScreen implements Screen {
                         if (placementOfPhases.get(i).getTopCard() == null) {
                             card.addAction(Actions.moveTo(placementOfPhases.get(i).getX(), placementOfPhases.get(i).getY(), 0.2f));
                             placementOfPhases.get(i).addCard(card);
-                            if (i==numberOfPhases-1) {
+                            if (placementOfPhases.size()==numberOfPhases) {
                                 phasesAreProgrammed = true;
                             } return;
                         }

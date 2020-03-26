@@ -9,10 +9,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import roborally.Application;
 
-/**
- * Refers to GameScreen for complementary documentation.
- * Transfers to MenuScreen ("loading process").
- */
+// Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
+
 public class LoadingScreen implements Screen {
     private final Application app;
     private final ShapeRenderer shapeRenderer;
@@ -56,7 +54,6 @@ public class LoadingScreen implements Screen {
         app.batch.begin();
         app.font.draw(app.batch, "Screen is loading",650,650);
         app.batch.end();
-
     }
 
     @Override

@@ -12,9 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import roborally.Application;
 
-/**
- * Refers to GameScreen for complementary documentation.
- */
+// Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
+
 public class WinScreen implements Screen {
     private final Application app;
     private final Stage stage;
