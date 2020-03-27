@@ -89,7 +89,7 @@ public class Player {
     }
 
     public Vector2 getBackupPoint() {
-        // not needed?
+        // helpful for testing
         return backupPoint;
     }
 
