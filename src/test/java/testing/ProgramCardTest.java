@@ -1,11 +1,11 @@
 package testing;
 
-import org.junit.jupiter.api.Test;
+
 import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
-
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

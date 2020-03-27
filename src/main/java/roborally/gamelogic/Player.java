@@ -21,6 +21,7 @@ public class Player {
     private Vector2 backupPoint;
     private final int playerNumber;
     private final GameLogic gameLogic;
+    private int nextFlag;
 
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
         this.lives = 3;
@@ -31,6 +32,7 @@ public class Player {
         this.playerNumber = playerNumber;
         this.rotation = Direction.NORTH;
         this.gameLogic = gameLogic;
+        this.nextFlag = 1;
     }
 
     public void setBackupPoint(Vector2 backupPoint) {
@@ -45,10 +47,13 @@ public class Player {
      */
     public void updateHealth(int changeInHealth) {
         // health is updated to somewhere between 9-0 according to changeInHealth
-        health = max( min( health + changeInHealth , MAX_HEALTH) , -1);
+        health = max( min( health + changeInHealth , MAX_HEALTH) , 0);
 
-        if (health < 0)
-            respawn();
+        if (health < 0) {
+            lives -= 1;
+            health = MAX_HEALTH;
+            gameLogic.respawnPlayer(this);
+        }
     }
 
     public int getHealth() {
@@ -60,24 +65,21 @@ public class Player {
     }
 
     /**
-     * Adds a particular flag number if correctly visited by the current player.
-     *
-     * @param flagNumber the flag number on the tile (w/flag) being visited.
-     *
+     * checks what the next flag the player should visit is.
+     * If the flag number is too high or low, do nothing.
+     * @param flagNum the number of the flag to register
+     * @return whether or not this flag number is the next in order for the player.
      */
-    public void addFlag(int flagNumber){
-        if (flagNumber == 3) {
-            // TODO: app.setScreen(WinScreen); in GameScreen?
-        } flag.add(flagNumber);
+    public boolean registerFlag(int flagNum) {
+        if (nextFlag==flagNum) {
+            nextFlag++;
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * Keeps track of how many flags which the current player has visited.
-     */
-    public int numberOfFlags() {
-        if (flag.isEmpty()){
-            return 0;
-        } return flag.size();
+    public int getNextFlag() {
+        return nextFlag;
     }
 
     public Vector2 getPosition() {
@@ -102,21 +104,5 @@ public class Player {
 
     public void setRotation(Direction rotation) {
         this.rotation = rotation;
-    }
-
-    /**
-     * checks if the player has lives left, if it does, it respawns with full health at it's backupPoint
-     *
-     * if not, nothing currently happens to it. This will change once we implement a game over screen or something.
-     */
-    private void respawn() {
-        if (lives > 0) {
-            lives -= 1;
-            health = MAX_HEALTH;
-            gameLogic.respawnPlayer(this);
-        } else {
-            System.out.println("Game over");
-            //TODO Show this information to the player on GameScreen and not in console (app.setScreen(LoseScreen))
-        }
     }
 }

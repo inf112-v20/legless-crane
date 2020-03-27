@@ -24,12 +24,12 @@ import java.util.ArrayList;
  **/
 
 public class Board {
+    private int flags = 0;
     private int boardWidth;
     private int boardHeight;
     private int boardSize;
     private final ArrayList<Tile> tiles = new ArrayList<>();
     private final Vector2[] spawnPoints = new Vector2[8];
-    private final Vector2[] flags = new Vector2[4];
 
     /**
      * The constructor first reads the board from file using readBoard()
@@ -64,6 +64,12 @@ public class Board {
                 tiles.set(k, temp);
             }
         }
+
+        for (Tile t : tiles) {
+            if (t.isFlag()) {
+                flags++;
+            }
+        } // count the flags on this board as this varies from map to map between 1-4
     }
 
     public Tile getTile(Vector2 pos) {
@@ -80,6 +86,10 @@ public class Board {
 
     public Vector2 getSpawnPoints(int i) {
         return spawnPoints[i];
+    }
+
+    public int getFlags() {
+        return flags;
     }
 
     /**
@@ -166,7 +176,7 @@ public class Board {
             newTile = readStaticLasers(listOfLayers.get(6)[i], newTile);
             //TODO Get laser origin points from listOfLayers.get(7) (and handle beams dynamically instead)
             newTile = readSpawns(listOfLayers.get(8)[i], newTile, i);
-            newTile = readFlags(listOfLayers.get(9)[i], newTile, i);
+            newTile = readFlags(listOfLayers.get(9)[i], newTile);
             newTile = readWalls(listOfLayers.get(10)[i], newTile);
 
             // add the built Tile object to the board
@@ -256,23 +266,19 @@ public class Board {
      * @param i the position in list of this tile
      * @return the tile we either have or have not added properties to.
      */
-    private Tile.Builder readFlags(int tileID, Tile.Builder newTile, int i) {
+    private Tile.Builder readFlags(int tileID, Tile.Builder newTile) {
 
         if (tileID == 0) {
             return newTile;
         }
         switch (tileID) {
             case 55: newTile.setFlag(1); // flag number 1
-                flags[0] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 63: newTile.setFlag(2); // flag number 2
-                flags[1] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 71: newTile.setFlag(3); // flag number 3
-                flags[2] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 79: newTile.setFlag(4); // flag number 4
-                flags[3] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for flags - ID: " + tileID);

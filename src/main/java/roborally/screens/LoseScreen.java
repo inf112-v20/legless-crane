@@ -47,7 +47,7 @@ public class LoseScreen implements Screen {
         stage.draw();
 
         app.batch.begin();
-        app.font.draw(app.batch, "Game lost",970,1900);
+        app.font.draw(app.batch, "Game Over",Application.WIDTH/2f,Application.HEIGHT/2f);
         app.batch.end();
     }
 

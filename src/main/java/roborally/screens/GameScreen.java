@@ -95,7 +95,7 @@ public class GameScreen implements Screen {
         app.batch.begin();
         app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-450,Application.HEIGHT/40f);
         app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-350,Application.HEIGHT/40f);
-        app.font.draw(app.batch, "Flags conquered: " + gameLogic.currentPlayer.numberOfFlags(),Application.WIDTH-200,Application.HEIGHT/40f);
+        app.font.draw(app.batch, "Flags conquered: " + (gameLogic.currentPlayer.getNextFlag()-1),Application.WIDTH-200,Application.HEIGHT/40f);
         app.batch.end();
 
         stage.draw();
@@ -122,6 +122,14 @@ public class GameScreen implements Screen {
         boardgfx.dispose();
         renderer.dispose();
         app.batch.dispose();
+    }
+
+    public void playerWins() {
+        app.setScreen(app.winScreen);
+        // Pass which player wins to customize message on screeN?
+    }
+    public void gameOver() {
+        app.setScreen(app.loseScreen);
     }
 
     /**
@@ -185,6 +193,8 @@ public class GameScreen implements Screen {
             case WEST:
                 playerTiles.get(playerIndex).setRotation(1);
                 break;
+            default:
+                System.out.println("Wrong case in updatePlayerRotation(" + playerIndex +"," + rotation.toString()+")");
         }
     }
 
@@ -322,6 +332,8 @@ public class GameScreen implements Screen {
                                 case "rotateright":
                                     gameLogic.rotatePlayer(gameLogic.currentPlayer, +1);
                                     break;
+                                default:
+                                    System.out.println("Card not recognized");
                             }
                             placementOfPhases.remove(phase);
                             if (placementOfPhases.isEmpty()){      // When all movements are done

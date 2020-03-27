@@ -1,7 +1,7 @@
 package testing;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import roborally.board.Direction;
 
 /**
@@ -15,7 +15,7 @@ public class DirectionTest {
         Direction north = Direction.NORTH;
         Direction east = north.rotate(1);
 
-        Assertions.assertEquals(Direction.EAST, east);
+        assertEquals(Direction.EAST, east);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class DirectionTest {
         Direction north = Direction.NORTH;
         Direction west = north.rotate(-1);
 
-        Assertions.assertEquals(Direction.WEST, west);
+        assertEquals(Direction.WEST, west);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class DirectionTest {
         Direction north = Direction.NORTH;
         Direction south = north.rotate(2);
 
-        Assertions.assertEquals(Direction.SOUTH, south);
+        assertEquals(Direction.SOUTH, south);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class DirectionTest {
         Direction west = Direction.WEST;
         Direction east = west.rotate(2);
 
-        Assertions.assertEquals(Direction.EAST, east);
+        assertEquals(Direction.EAST, east);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class DirectionTest {
         Direction east = Direction.EAST;
         Direction west = east.rotate(2);
 
-        Assertions.assertEquals(Direction.WEST, west);
+        assertEquals(Direction.WEST, west);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class DirectionTest {
         Direction south = Direction.SOUTH;
         Direction north = south.rotate(2);
 
-        Assertions.assertEquals(Direction.NORTH, north);
+        assertEquals(Direction.NORTH, north);
     }
 }
 
