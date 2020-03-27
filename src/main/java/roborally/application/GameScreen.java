@@ -1,4 +1,4 @@
-package roborally.screens;
+package roborally.application;
 
 
 import com.badlogic.gdx.Gdx;
@@ -22,7 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import roborally.Application;
 import roborally.board.Direction;
 import roborally.gamelogic.GameLogic;
 import roborally.gamelogic.Player;
@@ -48,10 +47,7 @@ public class GameScreen implements Screen {
     private final Stage stage;
     private Skin skin;
 
-    private static final String FILE_PATH_0 = "boards/board_template.tmx"; // empty board
     private static final String FILE_PATH_1 = "boards/Risky_Exchange.tmx";
-    private static final String FILE_PATH_2 = "boards/Checkmate.tmx";
-    //TODO Allow for player to choose between these from menu?
 
     public GameScreen(final Application app) {
         this.app = app;
@@ -195,6 +191,7 @@ public class GameScreen implements Screen {
                 break;
             default:
                 System.out.println("Wrong case in updatePlayerRotation(" + playerIndex +"," + rotation.toString()+")");
+                break;
         }
     }
 

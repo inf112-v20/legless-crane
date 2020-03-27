@@ -215,7 +215,7 @@ public class Board {
         // if bigger holes will get implemented, this method will likely be expanded
         if (tileID == 0)
             return newTile;
-        if (tileID == 6)
+        else if (tileID == 6)
             newTile.damagePlayer(-10);
         else
             System.out.println("Did not recognize TileID when checking for holes - ID: " + tileID);
@@ -234,6 +234,7 @@ public class Board {
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for wrenches - ID: " + tileID);
+                break;
         }
         return newTile;
     }
@@ -251,6 +252,7 @@ public class Board {
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for cogs - ID: " + tileID);
+                break;
         }
         return newTile;
     }
@@ -263,7 +265,6 @@ public class Board {
      *
      * @param tileID the ID each tile has in the .tmx file
      * @param newTile the Tile we are currently building
-     * @param i the position in list of this tile
      * @return the tile we either have or have not added properties to.
      */
     private Tile.Builder readFlags(int tileID, Tile.Builder newTile) {
@@ -282,6 +283,7 @@ public class Board {
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for flags - ID: " + tileID);
+                break;
         }
         return newTile;
     }
@@ -317,6 +319,7 @@ public class Board {
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for spawnpoints - ID: " + tileID);
+                break;
         }
         return newTile;
     }
@@ -352,6 +355,7 @@ public class Board {
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for walls - ID: " + tileID);
+                break;
         }
         return newTile;
     }
@@ -447,6 +451,7 @@ public class Board {
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for yellow belts - ID: " + tileID);
+                break;
         }
         return newTile;
     }
@@ -456,7 +461,6 @@ public class Board {
             return newTile;
         }
         switch (tileID) {
-            // blue belts
             case 17:
                 newTile.setCornerBelt(Direction.SOUTH,2, 1); // east to south, bend
                 break;
@@ -543,6 +547,7 @@ public class Board {
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for blue belts - ID: " + tileID);
+                break;
         }
         return newTile;
     }
