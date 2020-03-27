@@ -65,7 +65,13 @@ public class ProgramCardTest {
 
         for (int i = 0; i < 5; i++) {
             String movement = placementOfPhases.get(i).getMovement();
-            assertEquals(true, movement.equals("1") || movement.equals("2") || movement.equals("3") || movement.equals("u") || movement.equals("back") || movement.equals("rotateright") || movement.equals("rotateleft"));
+            assertEquals(true, "1".equals(movement)
+                    || "2".equals(movement)
+                    || "3".equals(movement)
+                    || "u".equals(movement)
+                    || "back".equals(movement)
+                    || "rotateright".equals(movement)
+                    || "rotateleft".equals(movement));
         }
     }
 }

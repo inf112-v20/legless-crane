@@ -114,7 +114,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>roborally.Application</mainClass>
+              <mainClass>roborally.application.Application</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -163,7 +163,7 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <mainClass>roborally.Application</mainClass>
+                <mainClass>roborally.application.Application</mainClass>
               </manifest>
             </archive>
           </configuration>

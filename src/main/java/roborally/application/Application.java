@@ -1,4 +1,4 @@
-package roborally;
+package roborally.application;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import roborally.screens.*;
 
 /**
  * Main.

@@ -1,4 +1,4 @@
-package roborally.screens;
+package roborally.application;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,16 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import roborally.Application;
 
 // Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
 
-public class LoseScreen implements Screen {
+public class WinScreen implements Screen {
     private final Application app;
     private final Stage stage;
     private Skin skin;
 
-    public LoseScreen(final Application app){
+    public WinScreen(final Application app){
         this.app = app;
         this.stage = new Stage(new StretchViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
@@ -47,7 +46,7 @@ public class LoseScreen implements Screen {
         stage.draw();
 
         app.batch.begin();
-        app.font.draw(app.batch, "Game Over",Application.WIDTH/2f,Application.HEIGHT/2f);
+        app.font.draw(app.batch, "Game won!",970,1900);
         app.batch.end();
     }
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import roborally.board.Board;
 import roborally.board.Direction;
 import roborally.board.Tile;
-import roborally.screens.GameScreen;
+import roborally.application.GameScreen;
 
 import java.util.ArrayList;
 
@@ -243,9 +243,9 @@ public class GameLogic {
      *
      */
     private void registerFlag(Player player) {
-        if(player.registerFlag(board.getTile(player.getPosition()).getFlagNum()))
-            if (player.getNextFlag()>board.getFlags())
-                gameScreen.playerWins();
+        if(player.registerFlag(board.getTile(player.getPosition()).getFlagNum())
+                && player.getNextFlag()>board.getFlags())
+            gameScreen.playerWins();
     }
 
     public void backwardMovement(Player player) {
