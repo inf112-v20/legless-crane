@@ -14,7 +14,6 @@ public class Player {
     private int lives;
     private int health;
     private static final int MAX_HEALTH = 9;
-    private final ArrayList<Integer> flag;
     private Vector2 position;
     private Direction rotation;
     private Vector2 backupPoint;
@@ -25,7 +24,6 @@ public class Player {
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
         this.lives = 3;
         this.health = MAX_HEALTH;
-        this.flag = new ArrayList<>();
         this.position = spawnPoint;
         this.backupPoint = spawnPoint;
         this.playerNumber = playerNumber;
