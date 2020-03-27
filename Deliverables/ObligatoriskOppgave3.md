@@ -22,7 +22,7 @@ Forbedringspunkt fra retrospektivet:
 -   Kontinuerlig arbeid med prosjektet for å unngå skippertak og bedre flyt.
 -   Tettere oppfølging av hverandre, men teamlead for uken tar hovedansvar.
 
-Prioritering av oppgaver fremover:
+### Prioritering av oppgaver fremover:
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/pb.png?raw=true)
 
 Gruppedynamikke og kommunikasjon:
@@ -169,7 +169,8 @@ Alle kjente bugs er dokumentert i README.md
 
 Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
 
-Klassediagram: 
+### Klassediagram: 
+
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/uml.png?raw=true)
 
 Commit-fordeling:
