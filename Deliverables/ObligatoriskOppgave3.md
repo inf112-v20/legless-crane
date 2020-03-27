@@ -25,7 +25,7 @@ Forbedringspunkt fra retrospektivet:
 #### Prioritering av oppgaver fremover:
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/pb.png?raw=true)
 
-Gruppedynamikke og kommunikasjon:
+Gruppedynamikk og kommunikasjon:
 -   Gruppen kommer generelt godt overens men vi har manglet tydelige roller og har hatt dårlig kommunikasjon utenfor møter. Dette er noe vi nå jobber målrettet med for å forbedre.
 
 
