@@ -20,7 +20,7 @@ public class PlayerTest {
 
     @Test
     public void initialHealth(){
-        Assertions.assertEquals(10, player.getHealth());
+        Assertions.assertEquals(9, player.getHealth());
     }
 
     @Test
@@ -48,17 +48,17 @@ public class PlayerTest {
     @Test
     public void playerTakesDamageAndLosesOneHealth(){
         player.updateHealth(-1);
-        Assertions.assertEquals(9, player.getHealth());
+        Assertions.assertEquals(8, player.getHealth());
     }
 
     @Test
     public void playerTakesDamageAndLosesNineHealth(){
         player.updateHealth(-9);
-        Assertions.assertEquals(1, player.getHealth());
+        Assertions.assertEquals(0, player.getHealth());
     }
 
     @Test
-    public void playerTakesDamageAndLosesALife(){
+    public void playerTakesMaxDamageAndLosesALife(){
         player.updateHealth(-10);
         Assertions.assertEquals(2, player.getLives());
     }

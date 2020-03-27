@@ -14,7 +14,7 @@ import static java.lang.Math.min;
 public class Player {
     private int lives;
     private int health;
-    private static final int MAX_HEALTH = 10;
+    private static final int MAX_HEALTH = 9;
     private final ArrayList<Integer> flag;
     private Vector2 position;
     private Direction rotation;
@@ -45,9 +45,9 @@ public class Player {
      */
     public void updateHealth(int changeInHealth) {
         // health is updated to somewhere between 9-0 according to changeInHealth
-        health = max( min( health + changeInHealth , MAX_HEALTH) , 0);
+        health = max( min( health + changeInHealth , MAX_HEALTH) , -1);
 
-        if (health <= 0)
+        if (health < 0)
             respawn();
     }
 
