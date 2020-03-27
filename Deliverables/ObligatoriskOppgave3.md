@@ -14,27 +14,24 @@ Første rotasjon 26.03-03.04.2020 blis som følgende:
 
 Erfaringer verdt å merke:
 -   Lange sprint har vært ineffektivt for oss og gjort oss sårbare for skippertak i slutten av sprinten. Vi må derfor konkludere med at vi har valgt feil prosjekmetodikk for oss. 
--   Vi kommer derfor å gå over til kanban med fokus på kontinuerlig flyt og oppdatering av prosjekttavle.
+-   Vi kommer derfor å gå over til kanban med fokus på kontinuerlig flyt og oppdatering av prosjekttavle.**Fullt retrospektiv finnes i prosjekt wiki.**
 
-**Fullt retrospektiv finnes i prosjekt wiki.**
-
-Forbedringspunkt fra retrospektivet:
+Forbedringspunkt fra retrospektivet (fullt retrospektiv i Wiki):
 -   Kontinuerlig arbeid med prosjektet for å unngå skippertak og bedre flyt.
 -   Tettere oppfølging av hverandre, men teamlead for uken tar hovedansvar.
 
-#### Prioritering av oppgaver fremover:
+#### Prioritering av oppgaver fremover
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/pb.png?raw=true)
 Vi har etter samtale med gruppeleder sett oss nødt til å fokusere fullstendig på å MVP og unngå å bruke tid på funksjoner som faller utenfor dette. I tillegg til dette har vi begynt med to ukentlige tidsfrister for issues, slik at vi holder en kontinuerlig flyt av oppgaver gjennom en sprint. I stedet for å gjøre mye mot slutten og lite i starten.
 
 Gruppedynamikk og kommunikasjon:
 -   Gruppen kommer generelt godt overens men vi har manglet tydelige roller og har hatt dårlig kommunikasjon utenfor møter. Dette er noe vi nå jobber målrettet med for å forbedre.
 
-
 ## Deloppgave 2
 Krav vi har prioritert:
 -   I denne perioden, som nå er over, har vi etter samtale med gruppeleder prioritert alt som var utestående med tanke på interaksjon mellom spiller og brett. Det meste av interaksjonsmuligheter er nå på plass bortsett fra detaljer for timing av hendelser og håndtering av konflikter. Dette vil bli prioritere fremover når vi ser på å få flere spillere på brettet.
 
-### Brukerhistorer:
+### Brukerhistorer
 #### Brukerhistore #1: Programmere en robot (påbegynnelse av faser)
 -   "Som spiller trenger jeg å kunne programmere en robot via programkort, for å kunne bevege den underveis i spillet og la den interagere med resten av miljøet på spillebrettet."
  
@@ -156,8 +153,6 @@ Arbeidsoppgaver:
 -   Dokumenter hver av klassene i prosjektet grundig.
 -   Hold denne dokumentasjonen oppdatert etterhvert som koden utvikler seg.
 
-
-
 Oppgaver fremover:
 -   Vi har starter tildeling av issues som har frist på tirsdag (31.03) neste uke, men brukerhistoriene er ikke på plass per dags dato.
 
@@ -170,7 +165,7 @@ Alle kjente bugs er dokumentert i README.md
 
 Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
 
-#### Klassediagram: 
+### Klassediagram
 
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/uml.png?raw=true)
 
