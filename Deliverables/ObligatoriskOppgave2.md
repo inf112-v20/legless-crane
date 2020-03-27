@@ -179,5 +179,3 @@ Test Case: brikke starter på x:6, 7:2 vendt mot sør, 1 ahead, mot brettfelt me
 -   Expected: Brikke skal ikke bevege seg inn på feltet (Vil endres seinere til kun å ikke gå gjennom kanten på feltet)
 -   Actual: Brikke går ikke inn på feltet
 -   PASS 
-
-![alt text](https://github.com/inf112-v20/legless-crane.gitDeliverables/pb.png?raw=true "Project board")
