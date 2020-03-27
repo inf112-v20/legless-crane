@@ -49,8 +49,11 @@ public class Player {
         // health is updated to somewhere between 9-0 according to changeInHealth
         health = max( min( health + changeInHealth , MAX_HEALTH) , 0);
 
-        if (health <= 0)
-            respawn();
+        if (health <= 0) {
+            lives -= 1;
+            health = MAX_HEALTH;
+            gameLogic.respawnPlayer(this);
+        }
     }
 
     public int getHealth() {
@@ -102,22 +105,4 @@ public class Player {
     public void setRotation(Direction rotation) {
         this.rotation = rotation;
     }
-
-    /**
-     * checks if the player has lives left, if it does, it respawns with full health at it's backupPoint
-     *
-     * if not, nothing currently happens to it. This will change once we implement a game over screen or something.
-     */
-    private void respawn() {
-        if (lives > 0) {
-            lives -= 1;
-            health = MAX_HEALTH;
-            gameLogic.respawnPlayer(this);
-        } else {
-            System.out.println("Game over");
-            //TODO Show this information to the player on GameScreen and not in console (app.setScreen(LoseScreen))
-        }
-    }
-
-
 }

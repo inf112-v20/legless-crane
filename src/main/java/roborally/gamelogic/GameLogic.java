@@ -134,8 +134,12 @@ public class GameLogic {
      * @param player the player which should respawn.
      */
     public void respawnPlayer(Player player) {
-        gameScreen.setPlayerPosition(player, player.getBackupPoint());
-        player.setPosition(player.getBackupPoint());
+        if(player.getLives()<=0) {
+            gameScreen.gameOver();
+        } else {
+            gameScreen.setPlayerPosition(player, player.getBackupPoint());
+            player.setPosition(player.getBackupPoint());
+        }
     }
 
     /**

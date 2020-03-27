@@ -95,7 +95,7 @@ public class GameScreen implements Screen {
         app.batch.begin();
         app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-450,Application.HEIGHT/40f);
         app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-350,Application.HEIGHT/40f);
-        app.font.draw(app.batch, "Flags conquered: " + gameLogic.currentPlayer.numberOfFlags(),Application.WIDTH-200,Application.HEIGHT/40f);
+        app.font.draw(app.batch, "Flags conquered: " + (gameLogic.currentPlayer.getNextFlag()-1),Application.WIDTH-200,Application.HEIGHT/40f);
         app.batch.end();
 
         stage.draw();
@@ -127,6 +127,9 @@ public class GameScreen implements Screen {
     public void playerWins() {
         app.setScreen(app.winScreen);
         // Pass which player wins to customize message on screeN?
+    }
+    public void gameOver() {
+        app.setScreen(app.loseScreen);
     }
 
     /**
