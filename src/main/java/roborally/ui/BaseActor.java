@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Polygon;
 
 /**
  * This class is borrowed from "Beginning Java Game Development with LibGDX" (2015). @Author: Lee Stemkoski.
- * Is being inherited by the classes "Phase" and "ProgramCard".
+ * Is being inherited by the class "ProgramCard". 
  * Simplifies the graphical representation of the cards during the game (UI) in GameScreen.
  */
 public class BaseActor extends Actor {
@@ -21,9 +21,6 @@ public class BaseActor extends Actor {
         boundingPolygon = null;
     }
 
-    /**
-     * An object is being represented graphically by a picture (.jpg-file in "assets"). Used for program cards.
-     */
     public void setTexture(Texture t){
         int w = t.getWidth();
         int h = t.getHeight();
@@ -32,18 +29,11 @@ public class BaseActor extends Actor {
         region.setRegion(t);
     }
 
-    /**
-     * The act()-method in "Actor" (which this class is extending) is being executed at first.
-     */
     public void act(float dt)
     {
         super.act( dt );
     }
 
-    /**
-     * Initializes an object in a rectangular shape.
-     * Can be translated/rotated. Used for program cards.
-     */
     public void draw(Batch batch, float parentAlpha)
     {
         Color c = getColor();
@@ -53,10 +43,6 @@ public class BaseActor extends Actor {
                     getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation() );
     }
 
-    /**
-     * The graphical represented object has its "origin" set to the center of its associated image.
-     * To be able to rotate the image correctly. Used for program cards.
-     */
     public void setRectangleBoundary()
     {
         float w = getWidth();

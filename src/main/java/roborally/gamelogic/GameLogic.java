@@ -245,16 +245,16 @@ public class GameLogic {
         if (flagNumber == 1) {
             if (player.numberOfFlags() == 0) {
                 player.addFlag(1);
-            } return;
+            }
         } else if (flagNumber == 2) {
             if (player.numberOfFlags() == 1) {
                 player.addFlag(2);
-            } return;
+            }
         }
         if (flagNumber == 3) {
             if (player.numberOfFlags() == 2) {
                 player.addFlag(3);
-            } return;
+            }
         }
     }
 
