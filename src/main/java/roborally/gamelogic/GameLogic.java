@@ -305,14 +305,15 @@ public class GameLogic {
      */
     private boolean validMove(Player player, Direction direction) {
         Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
-        Tile currentTile = board.getTile(player.getPosition());
-        Tile nextTile = board.getTile(nextPosition);
 
-        if (!((nextPosition.x < boardWidth && nextPosition.x >= 0)&&
-                (nextPosition.y < boardHeight && nextPosition.y >= 0))) {
-           // check to avoid  moving off the screen
+        if (nextPosition.x > boardWidth || nextPosition.x < 0 || nextPosition.y > boardHeight || nextPosition.y < 0) {
+            System.out.println("Should be outside board: (" +nextPosition.x+ ","+nextPosition.y+ ")");
+            // check to avoid  moving off the screen
             return false;
         }
+
+        Tile currentTile = board.getTile(player.getPosition());
+        Tile nextTile = board.getTile(nextPosition);
 
         if (currentTile.canBlockMovement()) {
             for (Direction dir : currentTile.getBlockingDirections())
