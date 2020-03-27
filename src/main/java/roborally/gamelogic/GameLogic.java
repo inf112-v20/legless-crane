@@ -245,16 +245,16 @@ public class GameLogic {
         if (flagNumber == 1) {
             if (player.numberOfFlags() == 0) {
                 player.addFlag(1);
-            }
+            } else {return;}
         } else if (flagNumber == 2) {
             if (player.numberOfFlags() == 1) {
                 player.addFlag(2);
-            }
+            } else {return;}
         }
         if (flagNumber == 3) {
             if (player.numberOfFlags() == 2) {
                 player.addFlag(3);
-            }
+            } else {return;}
         }
     }
 
@@ -317,7 +317,7 @@ public class GameLogic {
 
         if (currentTile.canBlockMovement()) {
             for (Direction dir : currentTile.getBlockingDirections())
-                if (dir == direction)
+                if (dir.equals(direction))
                     return false;
         } else if (nextTile.canBlockMovement()) {
             for (Direction dir : nextTile.getBlockingDirections())

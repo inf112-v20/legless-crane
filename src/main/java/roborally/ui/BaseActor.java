@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Polygon;
 
 /**
  * This class is borrowed from "Beginning Java Game Development with LibGDX" (2015). @Author: Lee Stemkoski.
- * Is being inherited by the class "ProgramCard". 
+ * Is being inherited by the class "ProgramCard".
  * Simplifies the graphical representation of the cards during the game (UI) in GameScreen.
  */
 public class BaseActor extends Actor {

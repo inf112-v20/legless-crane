@@ -295,7 +295,7 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (phasesAreProgrammed) {
                     for (ProgramCard phase : placementOfPhases) {
-                        if (!phase.equals(null)) {
+                        if (phase != null) {
                             String movement = phase.getMovement();
                             switch (movement) {
                                 case "1":
