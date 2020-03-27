@@ -176,7 +176,7 @@ public class Board {
             newTile = readStaticLasers(listOfLayers.get(6)[i], newTile);
             //TODO Get laser origin points from listOfLayers.get(7) (and handle beams dynamically instead)
             newTile = readSpawns(listOfLayers.get(8)[i], newTile, i);
-            newTile = readFlags(listOfLayers.get(9)[i], newTile, i);
+            newTile = readFlags(listOfLayers.get(9)[i], newTile);
             newTile = readWalls(listOfLayers.get(10)[i], newTile);
 
             // add the built Tile object to the board
@@ -266,7 +266,7 @@ public class Board {
      * @param i the position in list of this tile
      * @return the tile we either have or have not added properties to.
      */
-    private Tile.Builder readFlags(int tileID, Tile.Builder newTile, int i) {
+    private Tile.Builder readFlags(int tileID, Tile.Builder newTile) {
 
         if (tileID == 0) {
             return newTile;

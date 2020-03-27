@@ -193,6 +193,8 @@ public class GameScreen implements Screen {
             case WEST:
                 playerTiles.get(playerIndex).setRotation(1);
                 break;
+            default:
+                System.out.println("Wrong case in updatePlayerRotation(" + playerIndex +"," + rotation.toString()+")");
         }
     }
 
@@ -330,6 +332,8 @@ public class GameScreen implements Screen {
                                 case "rotateright":
                                     gameLogic.rotatePlayer(gameLogic.currentPlayer, +1);
                                     break;
+                                default:
+                                    System.out.println("Card not recognized");
                             }
                             placementOfPhases.remove(phase);
                             if (placementOfPhases.isEmpty()){      // When all movements are done
