@@ -296,9 +296,7 @@ public class GameLogic {
     private boolean validMove(Player player, Direction direction) {
         Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
-        if (nextPosition.x > boardWidth || nextPosition.x < 0 || nextPosition.y > boardHeight || nextPosition.y < 0) {
-            System.out.println("Should be outside board: (" +nextPosition.x+ ","+nextPosition.y+ ")");
-            // check to avoid  moving off the screen
+        if (nextPosition.x > boardWidth || nextPosition.y > boardHeight || nextPosition.x < 0 || nextPosition.y < 0) {
             return false;
         }
 
