@@ -100,7 +100,10 @@ Kjente bugs?
 -    Ved å rotere brikken mot venstre kan frem-og tilbakeknappene miste funksjon. Det går fint dersom man roterer mot høyre (igjen). 
 
 ## Deloppgave 3
-Viser til readme.md for teknisk teknisk produktoppsett, UML under mappen "Deliverables", samt Retrospektiv på Wiki.
+Viser til readme.md for teknisk teknisk produktoppsett, samt Retrospektiv på Wiki.
+
+### UML:
+![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/uml2.png?raw=true)
 
 ### Manuelle Tester Menuscreen:
  Test Case: Trykk på "Quit"
