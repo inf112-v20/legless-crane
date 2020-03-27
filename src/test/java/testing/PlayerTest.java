@@ -14,9 +14,9 @@ import static org.mockito.Mockito.mock;
  */
 public class PlayerTest {
     private GameLogic gameLogic = mock(GameLogic.class);
-    private Vector2 startpos = new Vector2(1,1);
+    private Vector2 startingPosition= new Vector2(1,1);
     private Board board = new Board("boards/testBoard0.tmx");
-    private Player player = new Player(0, startpos, gameLogic);
+    private Player player = new Player(0, startingPosition, gameLogic);
 
     @Test
     public void initialHealth(){
@@ -30,7 +30,7 @@ public class PlayerTest {
 
     @Test
     public void initialPosition(){
-        Assertions.assertEquals(startpos, player.getPosition());
+        Assertions.assertEquals(startingPosition, player.getPosition());
     }
 
     @Test
@@ -74,6 +74,6 @@ public class PlayerTest {
         int damage = board.getTile(new Vector2(1, 3)).getHealthChange();
         Assertions.assertEquals(-10, damage);
         player.updateHealth(damage);
-        Assertions.assertEquals(startpos, player.getPosition());
+        Assertions.assertEquals(startingPosition, player.getPosition());
     }
 }
