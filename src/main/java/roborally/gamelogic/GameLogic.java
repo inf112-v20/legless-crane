@@ -153,7 +153,10 @@ public class GameLogic {
         gameScreen.updatePlayerRotation(player.getPlayerNumber()-1, player.getRotation());
     }
     /**
-     *
+     * Method which moves the player according to the type of movement belt the player is currently positioned at.
+     * Checks if current location is belt, then checks each direction and bend the player could move or rotate to, to get the correct movement.
+     * Called  one once in updateGameState() for yellow belts, twice for blue.
+     * @param player the player which should be moved and rotated.
      */
     private void beltsMovePlayer(Player player) {
         Tile currentTile = board.getTile(player.getPosition());
@@ -207,16 +210,11 @@ public class GameLogic {
             }
         }
     }
-    /**private void blueGay(Player player) {
-        Tile currentTile = board.getTile(player.getPosition());
-        int bend = currentTile.getBendDirection();
-        Direction dir = currentTile.getMovementDirection();
-        if (board.getTile(player.getPosition()).isBelt() && speed == 2) {
 
-        }
-    }
     /**
-     * TODO: add documentation
+     * In this method we check if the player is currently on cog tile.
+     * If true, the player will then start rotating according to the two types of rotation tiles.
+     * @param player the player which should be rotated.
      */
     private void rotationCogs(Player player) {
         Tile currentTile = board.getTile(player.getPosition());
