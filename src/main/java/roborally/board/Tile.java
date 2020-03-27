@@ -3,10 +3,8 @@ package roborally.board;
 public class Tile {
     private final boolean canBlockMovement;
     private final boolean doesDamage;
-    private final boolean canMergeLanes;
     private final boolean isBelt;
     private final boolean isCog;
-    private final boolean canBackup;
     private final boolean isWrench;
     private final boolean isSpawner;
     private final boolean isFlag;
@@ -15,7 +13,6 @@ public class Tile {
     private final int flagNum;
     private final int movementSpeed;
     private final Direction[] blockingDirections;
-    private final Direction[] fromDirections;
     private final Direction movementDirection;
     private final String name;
     private final int healthChange;
@@ -31,12 +28,10 @@ public class Tile {
     private Tile(Builder builder) {
         //booleans
         this.canBlockMovement=builder.canBlockMovement;
-        this.canMergeLanes=builder.canMergeLanes;
         this.doesDamage = builder.doesDamage;
         this.healthChange = builder.healthChange;
         this.isBelt = builder.isBelt;
         this.isCog =builder.canRotate;
-        this.canBackup=builder.canBackup;
         this.isWrench = builder.isWrench;
         this.isSpawner=builder.isSpawner;
         this.isFlag=builder.isFlag;
@@ -50,7 +45,6 @@ public class Tile {
         //directions
         this.blockingDirections=builder.blockingDirections;
         this.movementDirection=builder.movementDirection;
-        this.fromDirections=builder.fromDirections;
         this.name=builder.name;
     }
     // getters
@@ -62,13 +56,9 @@ public class Tile {
 
     public boolean doesDamage() { return doesDamage; }
 
-    public boolean canMergeLanes() { return canMergeLanes; } //TODO Remove if not used
-
     public boolean isBelt() { return isBelt; }
 
     public boolean isCog() { return isCog; }
-
-    public boolean canBackup() { return canBackup; } //TODO Remove if not used
 
     public boolean isWrench() { return isWrench; }
 
@@ -86,8 +76,6 @@ public class Tile {
 
     public Direction[] getBlockingDirections() { return blockingDirections; }
 
-    public Direction[] getFromDirections() { return fromDirections; } //TODO Remove if not used
-
     public Direction getMovementDirection() { return movementDirection; } //TODO Remove if not used
 
     public int getHealthChange() { return healthChange; }
@@ -101,17 +89,15 @@ public class Tile {
      * add to it using any of the set methods like .setBlocker() .setRotation() and so on
      * finally call the .build() method to call the private constructor of the Tile Class.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
         private boolean canBlockMovement;
         private boolean doesDamage;
         private Direction[] blockingDirections; // directions blocked by this tile
         private Direction movementDirection;
-        private boolean canMergeLanes;
-        private Direction[] fromDirections;
         private boolean isBelt;
         private int rotation;
         private boolean canRotate;
-        private boolean canBackup;
         private boolean isWrench;
         private boolean isFlag;
         private int flagNum;
@@ -139,7 +125,6 @@ public class Tile {
         public Builder setWrench() {
             // might be smart to merge this and setSpawner() ? are these always the same?
             this.isWrench = true;
-            this.canBackup = true;
             this.healthChange = 1;
             return this;
         }
@@ -174,10 +159,8 @@ public class Tile {
         }
 
         public Builder setMergingBelt(Direction movementDirection, int movementSpeed, Direction[] fromDirections) {
-            this.canMergeLanes = true;
             this.isBelt = true;
             this.movementSpeed = movementSpeed;
-            this.fromDirections = fromDirections;
             this.movementDirection = movementDirection;
             return this;
         }
