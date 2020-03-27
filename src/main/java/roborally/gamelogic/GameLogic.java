@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 
 public class GameLogic {
+    @SuppressWarnings("CanBeFinal")
     public Player currentPlayer;
     private final ArrayList<Player> players = new ArrayList<>();
     private Board board;
@@ -71,12 +72,10 @@ public class GameLogic {
                 player.updateHealth(playerTile.getHealthChange());
 
             else if (playerTile.isBelt()) {
-                if (speed == 1) {
-                    beltsMovePlayer(player);
-                } else {
-                    beltsMovePlayer(player);
+                if (speed != 1) {
                     beltsMovePlayer(player);
                 }
+                beltsMovePlayer(player);
             }
             else if (playerTile.isCog())
                 rotationCogs(player);

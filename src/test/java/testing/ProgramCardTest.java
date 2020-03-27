@@ -6,8 +6,8 @@ import roborally.programcards.ProgramCard;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ProgramCardTest {
     private final DeckOfProgramCards deckOfProgramCards = new DeckOfProgramCards();
@@ -65,7 +65,7 @@ public class ProgramCardTest {
 
         for (int i = 0; i < 5; i++) {
             String movement = placementOfPhases.get(i).getMovement();
-            assertEquals(true, "1".equals(movement)
+            assertTrue("1".equals(movement)
                     || "2".equals(movement)
                     || "3".equals(movement)
                     || "u".equals(movement)

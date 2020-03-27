@@ -331,6 +331,7 @@ public class GameScreen implements Screen {
                                     break;
                                 default:
                                     System.out.println("Card not recognized");
+                                    break;
                             }
                             placementOfPhases.remove(phase);
                             if (placementOfPhases.isEmpty()){      // When all movements are done
