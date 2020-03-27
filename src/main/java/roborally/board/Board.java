@@ -24,12 +24,12 @@ import java.util.ArrayList;
  **/
 
 public class Board {
+    private int flags = 0;
     private int boardWidth;
     private int boardHeight;
     private int boardSize;
     private final ArrayList<Tile> tiles = new ArrayList<>();
     private final Vector2[] spawnPoints = new Vector2[8];
-    private final Vector2[] flags = new Vector2[4];
 
     /**
      * The constructor first reads the board from file using readBoard()
@@ -64,6 +64,12 @@ public class Board {
                 tiles.set(k, temp);
             }
         }
+
+        for (Tile t : tiles) {
+            if (t.isFlag()) {
+                flags++;
+            }
+        } // count the flags on this board as this varies from map to map between 1-4
     }
 
     public Tile getTile(Vector2 pos) {
@@ -80,6 +86,10 @@ public class Board {
 
     public Vector2 getSpawnPoints(int i) {
         return spawnPoints[i];
+    }
+
+    public int getFlags() {
+        return flags;
     }
 
     /**
@@ -263,16 +273,12 @@ public class Board {
         }
         switch (tileID) {
             case 55: newTile.setFlag(1); // flag number 1
-                flags[0] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 63: newTile.setFlag(2); // flag number 2
-                flags[1] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 71: newTile.setFlag(3); // flag number 3
-                flags[2] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 79: newTile.setFlag(4); // flag number 4
-                flags[3] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for flags - ID: " + tileID);

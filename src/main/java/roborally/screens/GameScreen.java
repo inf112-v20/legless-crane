@@ -124,6 +124,11 @@ public class GameScreen implements Screen {
         app.batch.dispose();
     }
 
+    public void playerWins() {
+        app.setScreen(app.winScreen);
+        // Pass which player wins to customize message on screeN?
+    }
+
     /**
      * Loads the board from a ".tmx-file".
      * Gets a given layer of the board through getLayers().

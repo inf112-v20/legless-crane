@@ -103,7 +103,7 @@ public class GameLogic {
                 player.setBackupPoint(playerPosition);
 
             } else if (playerTile.isFlag()) {
-                checkOutFlag(currentPlayer);
+                registerFlag(currentPlayer);
             }
         }
         count = 0; // reset timer if we have interacted with player
@@ -227,33 +227,21 @@ public class GameLogic {
             }
         }
     }
+
     /**
-     * Reads which "flag number" the current player is visiting.
+     * Checks what number is on the flag the player is standing on
+     * checks if this corresponds to the next flag the player should visit
+     * registers the flag in player.registerFlag() and checks if the player has all the flags
      *
-     * Updates the number of flags the player has conquered if visited in the correct order.
-     * If correctly visited (depends on the method numberOfFlags(); in the Player-class), addFlag(flagNumber) gets called in the Player-class.
-     * The "HUD" in GameScreen represents visually the progress of the current player.
+     * if the player does, the win screen shows.
      *
-     * @param player the player standing on the current tile (with flag).
+     * @param player the player we're comparing values for.
      *
      */
-    private void checkOutFlag(Player player) {
-        Tile currentTile = board.getTile(player.getPosition());
-        int flagNumber = currentTile.getFlagNum();
-        if (flagNumber == 1) {
-            if (player.numberOfFlags() == 0) {
-                player.addFlag(1);
-            } else {return;}
-        } else if (flagNumber == 2) {
-            if (player.numberOfFlags() == 1) {
-                player.addFlag(2);
-            } else {return;}
-        }
-        if (flagNumber == 3) {
-            if (player.numberOfFlags() == 2) {
-                player.addFlag(3);
-            } else {return;}
-        }
+    private void registerFlag(Player player) {
+        if(player.registerFlag(board.getTile(player.getPosition()).getFlagNum()))
+            if (player.getNextFlag()>board.getFlags())
+                gameScreen.playerWins();
     }
 
     public void backwardMovement(Player player) {

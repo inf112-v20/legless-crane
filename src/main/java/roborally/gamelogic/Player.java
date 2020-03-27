@@ -21,6 +21,7 @@ public class Player {
     private Vector2 backupPoint;
     private final int playerNumber;
     private final GameLogic gameLogic;
+    private int nextFlag;
 
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
         this.lives = 3;
@@ -31,6 +32,7 @@ public class Player {
         this.playerNumber = playerNumber;
         this.rotation = Direction.NORTH;
         this.gameLogic = gameLogic;
+        this.nextFlag = 1;
     }
 
     public void setBackupPoint(Vector2 backupPoint) {
@@ -60,24 +62,21 @@ public class Player {
     }
 
     /**
-     * Adds a particular flag number if correctly visited by the current player.
-     *
-     * @param flagNumber the flag number on the tile (w/flag) being visited.
-     *
+     * checks what the next flag the player should visit is.
+     * If the flag number is too high or low, do nothing.
+     * @param flagNum the number of the flag to register
+     * @return whether or not this flag number is the next in order for the player.
      */
-    public void addFlag(int flagNumber){
-        if (flagNumber == 3) {
-            // TODO: app.setScreen(WinScreen); in GameScreen?
-        } flag.add(flagNumber);
+    public boolean registerFlag(int flagNum) {
+        if (nextFlag==flagNum) {
+            nextFlag++;
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * Keeps track of how many flags which the current player has visited.
-     */
-    public int numberOfFlags() {
-        if (flag.isEmpty()){
-            return 0;
-        } return flag.size();
+    public int getNextFlag() {
+        return nextFlag;
     }
 
     public Vector2 getPosition() {
@@ -119,4 +118,6 @@ public class Player {
             //TODO Show this information to the player on GameScreen and not in console (app.setScreen(LoseScreen))
         }
     }
+
+
 }
