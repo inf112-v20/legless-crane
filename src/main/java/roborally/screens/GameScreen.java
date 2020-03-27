@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -28,7 +27,6 @@ import roborally.board.Direction;
 import roborally.gamelogic.GameLogic;
 import roborally.gamelogic.Player;
 import roborally.programcards.DeckOfProgramCards;
-import roborally.programcards.Phase;
 import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ public class GameScreen implements Screen {
 
     private final Application app;
     private final GameLogic gameLogic;
-    private ArrayList<Phase> placementOfPhases;
+    private ArrayList<ProgramCard> placementOfPhases;
     private boolean phasesAreProgrammed;
     private final int numberOfPhases = 5;
 
@@ -217,10 +215,10 @@ public class GameScreen implements Screen {
      * Phases. Program cards (chosen as phases) will be stored as the indices in the array "placementOfPhases".
      */
     public void phases() {
-        placementOfPhases = new ArrayList<Phase>();
+        placementOfPhases = new ArrayList<>();
         Texture img = new Texture("cards/background.jpg");
         for (int i = 0; i < numberOfPhases; i++) {
-            Phase phase = new Phase();
+            ProgramCard phase = new ProgramCard();
             phase.setTexture(img);
             phase.setWidth(170);
             phase.setHeight(200);
@@ -255,10 +253,12 @@ public class GameScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     for (int i = 0; i < numberOfPhases; i++) {
-                        if (placementOfPhases.get(i).getTopCard() == null) {
+                        if (placementOfPhases.get(i).getMovement().equals("default")) {
                             card.addAction(Actions.moveTo(placementOfPhases.get(i).getX(), placementOfPhases.get(i).getY(), 0.2f));
-                            placementOfPhases.get(i).addCard(card);
-                            if (placementOfPhases.size()==numberOfPhases) {
+                            placementOfPhases.remove(i);   // "default card"
+                            placementOfPhases.add(i, card); // "program card"
+
+                            if (!placementOfPhases.get(numberOfPhases-1).getMovement().equals("default")) {
                                 phasesAreProgrammed = true;
                             } return;
                         }
@@ -294,9 +294,9 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (phasesAreProgrammed) {
-                    for (Phase phase : placementOfPhases) {
-                        if (phase.getTopCard() != null) {
-                            String movement = phase.getTopCard().getMovement();
+                    for (ProgramCard phase : placementOfPhases) {
+                        if (!phase.equals(null)) {
+                            String movement = phase.getMovement();
                             switch (movement) {
                                 case "1":
                                     gameLogic.forwardMovement(gameLogic.currentPlayer);

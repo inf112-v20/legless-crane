@@ -17,6 +17,14 @@ public class ProgramCard extends BaseActor {
         this.movement = movement;
         this.priority = priority;
     }
+
+    /**
+     * Default program card (represents a phase ready to be "programmed").
+     */
+    public ProgramCard(){
+        this.movement = "default";
+    }
+
     public String getMovement() {
         return movement;
     }
