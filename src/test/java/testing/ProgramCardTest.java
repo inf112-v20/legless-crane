@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ProgramCardTest {
     private final DeckOfProgramCards deckOfProgramCards = new DeckOfProgramCards();
     private final ArrayList<ProgramCard> placementOfPhases = new ArrayList<>();
-    private ProgramCard phase = new ProgramCard();
+    private final ProgramCard phase = new ProgramCard();
 
     // Control deck size (in regards to deal correctly 9 random cards in GameScreen). 0-83: deckOfProgramCards-1.
 

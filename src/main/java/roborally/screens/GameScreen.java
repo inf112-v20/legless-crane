@@ -93,9 +93,9 @@ public class GameScreen implements Screen {
         update(v);
 
         app.batch.begin();
-        app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-450,Application.HEIGHT/40);
-        app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-350,Application.HEIGHT/40);
-        app.font.draw(app.batch, "Flags conquered: " + gameLogic.currentPlayer.numberOfFlags(),Application.WIDTH-200,Application.HEIGHT/40);
+        app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-450,Application.HEIGHT/40f);
+        app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-350,Application.HEIGHT/40f);
+        app.font.draw(app.batch, "Flags conquered: " + gameLogic.currentPlayer.numberOfFlags(),Application.WIDTH-200,Application.HEIGHT/40f);
         app.batch.end();
 
         stage.draw();
@@ -223,7 +223,7 @@ public class GameScreen implements Screen {
             phase.setWidth(170);
             phase.setHeight(200);
             phase.setOriginCenter();
-            phase.setPosition(Application.WIDTH / 3 + 250 * i, Application.HEIGHT / 10);
+            phase.setPosition(Application.WIDTH / 3f + 250 * i, Application.HEIGHT / 10f);
             phase.setRectangleBoundary();
             placementOfPhases.add(phase);
             stage.addActor(phase);
@@ -246,7 +246,7 @@ public class GameScreen implements Screen {
             card.setWidth(170);
             card.setHeight(200);
             card.setOriginCenter();
-            card.setPosition(Application.WIDTH / 15, Application.HEIGHT / 20 + 120 * i );
+            card.setPosition(Application.WIDTH / 15f, Application.HEIGHT / 20f + 120 * i );
             card.setRectangleBoundary();
 
             card.addListener(new ClickListener() {
@@ -277,7 +277,7 @@ public class GameScreen implements Screen {
      */
     private void buttons() {
         TextButton menuButton = new TextButton("Main menu", skin, "default");
-        menuButton.setPosition(Application.WIDTH / 20, Application.HEIGHT - 150);
+        menuButton.setPosition(Application.WIDTH / 20f, Application.HEIGHT - 150f);
         menuButton.setSize(250, 100);
         menuButton.getLabel().setFontScale(3.0f);
         menuButton.addListener(new ClickListener() {
@@ -287,7 +287,7 @@ public class GameScreen implements Screen {
             }
         });
         TextButton goButton = new TextButton("Let's go!", skin, "default");
-        goButton.setPosition(Application.WIDTH / 3 + 450, Application.HEIGHT / 50);
+        goButton.setPosition(Application.WIDTH / 3f + 450, Application.HEIGHT / 50f);
         goButton.setSize(250, 100);
         goButton.getLabel().setFontScale(3.0f);
         goButton.addListener(new ClickListener() {
@@ -295,7 +295,7 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (phasesAreProgrammed) {
                     for (ProgramCard phase : placementOfPhases) {
-                        if (!phase.equals(null)) {
+                        if (phase != null) {
                             String movement = phase.getMovement();
                             switch (movement) {
                                 case "1":

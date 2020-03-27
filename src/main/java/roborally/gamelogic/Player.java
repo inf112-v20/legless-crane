@@ -66,7 +66,7 @@ public class Player {
      *
      */
     public void addFlag(int flagNumber){
-        if (flag.size()==2) {
+        if (flagNumber == 3) {
             // TODO: app.setScreen(WinScreen); in GameScreen?
         } flag.add(flagNumber);
     }
