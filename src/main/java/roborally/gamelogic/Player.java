@@ -2,6 +2,8 @@ package roborally.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
 import roborally.board.Direction;
+
+import java.util.ArrayList;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -11,7 +13,8 @@ import static java.lang.Math.min;
 public class Player {
     private int lives;
     private int health;
-    private static final int MAX_HEALTH = 10;
+    private static final int MAX_HEALTH = 9;
+    private final ArrayList<Integer> flag;
     private Vector2 position;
     private Direction rotation;
     private Vector2 backupPoint;
@@ -22,6 +25,7 @@ public class Player {
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
         this.lives = 3;
         this.health = MAX_HEALTH;
+        this.flag = new ArrayList<>();
         this.position = spawnPoint;
         this.backupPoint = spawnPoint;
         this.playerNumber = playerNumber;
@@ -42,9 +46,9 @@ public class Player {
      */
     public void updateHealth(int changeInHealth) {
         // health is updated to somewhere between 9-0 according to changeInHealth
-        health = max( min( health + changeInHealth , MAX_HEALTH) , 0);
+        health = max( min( health + changeInHealth , MAX_HEALTH) , -1);
 
-        if (health <= 0) {
+        if (health < 0) {
             lives -= 1;
             health = MAX_HEALTH;
             gameLogic.respawnPlayer(this);

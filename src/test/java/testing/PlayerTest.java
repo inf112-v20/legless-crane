@@ -16,14 +16,14 @@ import static org.mockito.Mockito.mock;
  * Testing for correct initialisation of a player. This includes position, health etc.
  */
 public class PlayerTest {
-    private final GameLogic gameLogic = mock(GameLogic.class);
-    private final Vector2 startpos = new Vector2(1,1);
-    private final Board board = new Board("boards/testBoard0.tmx");
-    private final Player player = new Player(0, startpos, gameLogic);
+    private GameLogic gameLogic = mock(GameLogic.class);
+    private Vector2 startingPosition= new Vector2(1,1);
+    private Board board = new Board("boards/testBoard0.tmx");
+    private Player player = new Player(0, startingPosition, gameLogic);
 
     @Test
     public void initialHealth(){
-        assertEquals(10, player.getHealth());
+        assertEquals(9, player.getHealth());
     }
 
     @Test
@@ -33,7 +33,7 @@ public class PlayerTest {
 
     @Test
     public void initialPosition(){
-        assertEquals(startpos, player.getPosition());
+        assertEquals(startingPosition, player.getPosition());
     }
 
     @Test
@@ -51,17 +51,17 @@ public class PlayerTest {
     @Test
     public void playerTakesDamageAndLosesOneHealth(){
         player.updateHealth(-1);
-        assertEquals(9, player.getHealth());
+        assertEquals(8, player.getHealth());
     }
 
     @Test
     public void playerTakesDamageAndLosesNineHealth(){
         player.updateHealth(-9);
-        assertEquals(1, player.getHealth());
+        assertEquals(0, player.getHealth());
     }
 
     @Test
-    public void playerTakesDamageAndLosesALife(){
+    public void playerTakesMaxDamageAndLosesALife(){
         player.updateHealth(-10);
         assertEquals(2, player.getLives());
     }
@@ -77,6 +77,6 @@ public class PlayerTest {
         int damage = board.getTile(new Vector2(1, 3)).getHealthChange();
         assertEquals(-10, damage);
         player.updateHealth(damage);
-        assertEquals(startpos, player.getPosition());
+        assertEquals(startingPosition, player.getPosition());
     }
 }
