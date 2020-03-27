@@ -60,12 +60,12 @@ public class PlayerTest {
         assertEquals(0, player.getHealth());
     }
 
-   /** @Test
+    @Test
     public void playerTakesMaxDamageAndLosesALife(){
         player.updateHealth(-10);
         assertEquals(2, player.getLives());
     }
-    */
+
 
     @Test
     public void checkDamagePlayerTakesFromHoleIsTen(){

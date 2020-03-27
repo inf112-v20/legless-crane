@@ -2,6 +2,8 @@ package roborally.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
 import roborally.board.Direction;
+
+import java.util.ArrayList;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -44,7 +46,7 @@ public class Player {
      */
     public void updateHealth(int changeInHealth) {
         // health is updated to somewhere between 9-0 according to changeInHealth
-        health = max( min( health + changeInHealth , MAX_HEALTH) , 0);
+        health = max( min( health + changeInHealth , MAX_HEALTH) , -1);
 
         if (health < 0) {
             lives -= 1;
