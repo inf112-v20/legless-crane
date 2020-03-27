@@ -23,7 +23,7 @@ Forbedringspunkt fra retrospektivet:
 -   Tettere oppfølging av hverandre, men teamlead for uken tar hovedansvar.
 
 Prioritering av oppgaver fremover:
--   Skjermdump av project board i deliverables på gitHub 
+![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/pb.png?raw=true)
 
 Gruppedynamikke og kommunikasjon:
 -   Gruppen kommer generelt godt overens men vi har manglet tydelige roller og har hatt dårlig kommunikasjon utenfor møter. Dette er noe vi nå jobber målrettet med for å forbedre.
@@ -169,7 +169,8 @@ Alle kjente bugs er dokumentert i README.md
 
 Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
 
-Klassediagram: Blir lagt til under deliverables på gitHub
+Klassediagram: 
+![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/uml.png?raw=true)
 
 Commit-fordeling:
 -   Fordelingen på commits er fortsatt for skjeiv og på dette tidspunktet vil nok ikke den overordnede fordelingen over hele prosjekte bli jevn, men vi jobber mot jevnere fordeling av fremtidige commits. Slik at commits i de kommende ukene vil være mye jevnere.
