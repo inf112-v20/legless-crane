@@ -24,6 +24,7 @@ Forbedringspunkt fra retrospektivet:
 
 #### Prioritering av oppgaver fremover:
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/pb.png?raw=true)
+Vi har etter samtale med gruppeleder sett oss nødt til å fokusere fullstendig på å MVP og unngå å bruke tid på funksjoner som faller utenfor dette. I tillegg til dette har vi begynt med to ukentlige tidsfrister for issues, slik at vi holder en kontinuerlig flyt av oppgaver gjennom en sprint. I stedet for å gjøre mye mot slutten og lite i starten.
 
 Gruppedynamikk og kommunikasjon:
 -   Gruppen kommer generelt godt overens men vi har manglet tydelige roller og har hatt dårlig kommunikasjon utenfor møter. Dette er noe vi nå jobber målrettet med for å forbedre.
