@@ -43,23 +43,6 @@ public class GameLogic {
     }
 
     /**
-     * TODO might move away from having a parameter here if we calculate instead of assign the next player
-     *
-     * This method should calculate which player is next in line for executing moves, temp method for now remove if
-     * we do not implement multiple players before end of sprint
-     *
-     * Should check which player has the highest priority card (or just who's next in line) and update the currentPlayer
-     * variable to that player.
-     *
-     * @param player player which should become the current one
-     */
-    private void updateCurrentPlayer(Player player) {
-        // the current player should be set as the next according to priority on cards and other gamerules
-        // see event driven game-loop.
-        currentPlayer = player;
-    }
-
-    /**
      * Gets called by GameScreen every frame, checks the state of the game and updates it accordingly
      *
      * This is where the majority of the game logic / game loop will take place, might rely on it's own methods for
