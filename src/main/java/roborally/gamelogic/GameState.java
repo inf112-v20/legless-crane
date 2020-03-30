@@ -1,7 +1,7 @@
 package roborally.gamelogic;
 
 public enum GameState {
-    GIVECARDS, MOVEPLAYER,MOVEBOARD, DAMAGE;
+    DEAL_CARDS, MOVEPLAYER,MOVEBOARD,FIRE_LASERS,RESOLVE_INTERACTIONS, CLEANUP;
 
 
     public GameState next() {

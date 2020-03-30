@@ -43,7 +43,15 @@ public class GameLogic {
             players.add(new Player(i+1, board.getSpawnPoints(i),this));
         }
         currentPlayer = players.get(0); // so far only used by GameScreen
-        gameState = GameState.GIVECARDS;
+        gameState = GameState.DEAL_CARDS;
+    }
+
+    private void performMove() {
+        // perform the next move in the list of moves on the player in question.
+        // a 3 move should be broken up into a 3 queued moves of 1 and should added to the list as such.
+
+        // list of moves
+        // list of players these moves belong to
     }
 
     /**
@@ -60,27 +68,91 @@ public class GameLogic {
     public void updateGameState() {
         // keep timer, but tune this so things don't happen too fast?
         // have a different timer for different things?
+        // an extra delay with message to indicate a new phase has begun?
         if (count<10) {
             count++;
             return;
         }
         switch (gameState) {
 
-            case GIVECARDS:
-                // give new cards to the players, check how many cards to give each player according to health
-                // render this change on screen
+            // Missing, announce intent to power down or continue running next turn, done in deal cards?
+
+            case DEAL_CARDS:
+                //TODO Deal cards to each player, for each damage token a robot has, deal one fewer Program card.
+                // See "Locking registers" for anyone with 5 or more damage tokens
+                // Check if all players have chosen the five cards they want to use, begin timer if one has yet to choose.
+                // If only one player is programming registers on a given turn (because the other
+                // robots are powered down or out of the game) begin timer right away.
+                // Once all players have chosen their cards, insert them in the correct order in the cards/moveList
+                // remember which cards corresponds to which Player.
                 break;
             case MOVEPLAYER:
-                // move the player
+                //TODO move the player
+                // Execute the moves using performMove()
                 break;
             case MOVEBOARD:
-                // move pieces on board, blue belts move twice.
-
-                // move.belts(blue)
-                // move.belts(blue, yellow) or something
+                //TODO Order of board elements:
+                // 1. Express conveyor belts move 1 space in the direction of the arrows.
+                // 2. Express conveyor belts and normal conveyor belts move 1 space in the
+                // direction of the arrows.
+                // 3. Pushers push if active.
+                // 4. Gears rotate 90° in the direction of the arrows.
                 break;
-            case DAMAGE:
-                // Lasers?
+            case FIRE_LASERS:
+                //TODO Lasers fire
+                // Lasers don't pass through robots or walls
+                // robot lasers fire
+                break;
+            case RESOLVE_INTERACTIONS:
+                //TODO Any robot that’s survived the mayhem to this point and is on a flag “touches” that flag. Starting
+                // next turn, it can move on to the next flag, in order.
+                // Any robot on a flag or repair site updates its archive location by putting its Archive marker
+                // on that space. If the robot is destroyed before reaching another archive location, this is where it
+                // will reenter the race.
+                break;
+            case CLEANUP:
+                // Repairs & Upgrades
+                //Robots on a single-wrench space discard 1 Damage token.
+                //Robots on a crossed wrench/hammer space discard 1
+                //Damage token AND draw one Option card. When you
+                //draw an Option card, read it aloud to the other players
+                //and put it in front of you, face up. (See “Using Options to
+                //Prevent Damage” on p. 10 for more on Option cards.)
+
+                //Discard all Program cards from registers that aren’t
+                //locked.
+
+                //Players whose robots were powered down
+                //this turn announce whether their robots will
+                //remain powered down on the next turn.
+                //Each robot that was destroyed this turn
+                //reenters play in the space containing its
+                //Archive marker. The player chooses which
+                //direction the robot faces.
+                //Robots reentering the race receive 2
+                //Damage tokens (plus any Damage tokens
+                //taken while powered down). A player
+                //may decide at this time to reenter the race
+                //powered down for the next turn (to discard
+                //the Damage tokens).
+                //After you’re done with cleanup, begin the
+                //next turn.
+
+                //If two or more robots would reenter play
+                //on the same space, they’re placed back on
+                //the board in the order they were destroyed.
+                //The first robot that was destroyed gets the archive
+                //space, facing any direction that player chooses.
+                //The player whose robot was destroyed next then
+                //chooses an empty adjacent space (looking
+                //orthogonally OR diagonally) and puts the robot on
+                //that space. That robot can face any direction that
+                //player chooses, except that there can’t be another
+                //robot in its line of sight 3 spaces away or closer.
+                //Ignore all board elements except for pits when
+                //placing your robot in an adjacent space.
+                //You can’t start a turn with your robot in a pit.
+                //They suffer enough as it is.
                 break;
         }
 
@@ -117,10 +189,7 @@ public class GameLogic {
         count = 0; // reset timer if we have interacted with player
     }
 
-    private void performMove() {
-        // perform the next move in the list of moves on the player in question.
-        // a 3 move should be broken up into a 3 queued moves of 1 and should added to the list as such.
-    }
+
 
 
     /**
@@ -135,7 +204,10 @@ public class GameLogic {
     private void movePlayerInDirection(Player player, Direction dir) {
         Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir);
 
+
         if (validMove(player, dir)) {
+            //TODO When robots collide, one will push the other, check for other robots here?
+
             gameScreen.setPlayerPosition(player, nextPos);
             player.setPosition(nextPos);
         }
