@@ -19,6 +19,8 @@ public class GameLogic {
     public int boardHeight;
     private int count = 0;
 
+    private GameState gameState;
+
     /**
      * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
      * instance of GameLogic and GameScreen.
@@ -41,6 +43,7 @@ public class GameLogic {
             players.add(new Player(i+1, board.getSpawnPoints(i),this));
         }
         currentPlayer = players.get(0); // so far only used by GameScreen
+        gameState = GameState.GIVECARDS;
     }
 
     /**
@@ -54,11 +57,34 @@ public class GameLogic {
      * For testing purposes we have added a "timer" so for instance a cog does not continuously rotate the player,
      * should only do so every 10 frames.
      */
-    public void updateGameState(){
+    public void updateGameState() {
+        // keep timer, but tune this so things don't happen too fast?
+        // have a different timer for different things?
         if (count<10) {
             count++;
             return;
         }
+        switch (gameState) {
+
+            case GIVECARDS:
+                // give new cards to the players, check how many cards to give each player according to health
+                // render this change on screen
+                break;
+            case MOVEPLAYER:
+                // move the player
+                break;
+            case MOVEBOARD:
+                // move pieces on board, blue belts move twice.
+
+                // move.belts(blue)
+                // move.belts(blue, yellow) or something
+                break;
+            case DAMAGE:
+                // Lasers?
+                break;
+        }
+
+
 
         for (Player player : players) {
             Vector2 playerPosition = player.getPosition();
@@ -90,6 +116,12 @@ public class GameLogic {
         }
         count = 0; // reset timer if we have interacted with player
     }
+
+    private void performMove() {
+        // perform the next move in the list of moves on the player in question.
+        // a 3 move should be broken up into a 3 queued moves of 1 and should added to the list as such.
+    }
+
 
     /**
      * Method for moving a player in a specific direction
