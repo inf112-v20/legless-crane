@@ -6,6 +6,7 @@ import roborally.board.Direction;
 import roborally.board.Tile;
 import roborally.application.GameScreen;
 
+import javax.swing.text.Element;
 import java.util.ArrayList;
 
 
@@ -47,6 +48,7 @@ public class GameLogic {
         }
         currentPlayer = players.get(0); // so far only used by GameScreen
         gameState = GameState.DEAL_CARDS;
+        elementMoves = ElementMoves.EXPRESS_BELTS;
     }
 
     private void performMove() {
@@ -93,7 +95,20 @@ public class GameLogic {
             count++;
             return;
         }
+        for (Player player : players) {
+            //TODO When is the best time to check for this? MOVEBOARD and MOVEPLAYER?
+            // Move to own method (YES, merge with onBoard?) and call from those?
+
+            // Check if player is in hole or went of board as a result of moving or being pushed by players or board
+            Vector2 playerPosition = player.getPosition();
+            Tile playerTile = board.getTile(playerPosition);
+
+            if (!onBoard(playerPosition) || playerTile.isHole())
+                player.updateHealth(-10);
+        }
+
         switch (gameState) {
+            //TODO Add tests that ensure this updates correctly
             case DEAL_CARDS:
                 //TODO Deal cards to each player, for each damage token a robot has, deal one fewer Program card.
                 // See "Locking registers" for anyone with 5 or more damage tokens
@@ -104,15 +119,31 @@ public class GameLogic {
                 // remember which cards corresponds to which Player.
 
                 // Missing: announce intent to power down or continue running next turn
+                gameState.next();
+
+                // save all moves to be made in a list of lists?
+                // moves[phases][cards]
+                // ( ( left, forward, right, uTURN) , (forward, back, forward, back) , ... , ... , ... )
+
+
+                // Allow all players to select their cards. Once all players have selected cards, add into a list of list
+                // in sorted order. of all moves to be executed.
+
+
+
+                break;
+            case REVEAL_CARDS:
+                // add the cards in order for this phase to the queued moves, and queued players.
+                //TODO Show to all players which cards each player is using this phase
                 break;
             case MOVEPLAYER:
                 performMove();
-                /*
-                if (queuedMoves.size() == 0 && queuedPlayers.size() == 0) {
-                    //if queued moves and queued players are empty, a new round should begin.
-                    // start new phase first?
+
+                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
+                    // we've executed the moves of all players this phase. (One card per player.
+                    gameState.next();
+                    //TODO Add tests, or otherwise ensure that both queuedMoves and queuedPlayers is always the same length?
                 }
-                */
                 break;
             case MOVEBOARD:
                 for (Player player : players) {
@@ -120,6 +151,7 @@ public class GameLogic {
                     Tile playerTile = board.getTile(playerPosition);
 
                     switch(elementMoves) {
+                        //TODO Add tests that ensure this updates correctly
                         case EXPRESS_BELTS:
                             if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) {
                                 beltsMovePlayer(player);
@@ -143,10 +175,12 @@ public class GameLogic {
                             break;
                     }
                 }
-                elementMoves = elementMoves.next();
+                elementMoves.next();
                 // once all players have been moved, proceed to next element
                 break;
             case FIRE_LASERS:
+                //TODO Implement robot lasers
+                //TODO Lasers are blocked by walls and players.
                 for (Player player : players) {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
@@ -155,10 +189,8 @@ public class GameLogic {
                         player.updateHealth(playerTile.getHealthChange());
                     }
                 }
-                elementMoves = elementMoves.next();
+                gameState.next();
                 // once all players have been moved, proceed to next element
-                //TODO Implement robot lasers
-                //TODO Lasers are blocked by walls and players.
                 break;
             case RESOLVE_INTERACTIONS:
                 for (Player player : players) {
@@ -166,7 +198,6 @@ public class GameLogic {
                     Tile playerTile = board.getTile(playerPosition);
 
                     if (playerTile.isWrench()) {
-                        player.updateHealth(playerTile.getHealthChange());
                         player.setBackupPoint(playerPosition);
                     }
                     else if (playerTile.isFlag()) {
@@ -174,23 +205,9 @@ public class GameLogic {
                         player.setBackupPoint(playerPosition);
                     }
                 }
-                elementMoves = elementMoves.next();
-                //TODO Any robot that’s survived the mayhem to this point and is on a flag “touches” that flag. Starting
-                // next turn, it can move on to the next flag, in order.
-                // Any robot on a flag or repair site updates its archive location by putting its Archive marker
-                // on that space. If the robot is destroyed before reaching another archive location, this is where it
-                // will reenter the race.
+                gameState.next();
                 break;
             case CLEANUP:
-                for (Player player : players) {
-                    Vector2 playerPosition = player.getPosition();
-                    Tile playerTile = board.getTile(playerPosition);
-
-                    if (playerTile.isWrench()) {
-                        player.updateHealth(playerTile.getHealthChange());
-                    }
-                }
-
                 //TODO give prompt to players who're powered down for them to choose to stay powered down next round
                 // or continue and be dealt cards.
 
@@ -211,46 +228,19 @@ public class GameLogic {
                 // that space. That robot can face any direction that player chooses, except that there can’t be another
                 // robot in its line of sight 3 spaces away or closer. Ignore all board elements except for pits when
                 // placing your robot in an adjacent space. You can’t start a turn with your robot in a pit.
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
 
-                elementMoves = elementMoves.next();
-                break;
-        }
-
-
-
-        for (Player player : players) {
-            Vector2 playerPosition = player.getPosition();
-            Tile playerTile = board.getTile(playerPosition);
-            int speed = playerTile.getMovementSpeed();
-
-            if (!onBoard(playerPosition))
-                player.updateHealth(-10);
-
-            else if (playerTile.isLaser())
-                player.updateHealth(playerTile.getHealthChange());
-
-            else if (playerTile.isBelt()) {
-                if (speed != 1) {
-                    beltsMovePlayer(player);
+                    if (playerTile.isWrench()) {
+                        player.updateHealth(playerTile.getHealthChange());
+                    }
                 }
-                beltsMovePlayer(player);
-            }
-            else if (playerTile.isCog())
-                rotationCogs(player);
-
-            else if (playerTile.isWrench()) {
-                player.updateHealth(playerTile.getHealthChange());
-                player.setBackupPoint(playerPosition);
-
-            } else if (playerTile.isFlag()) {
-                registerFlag(currentPlayer);
-            }
+                gameState.next();
+                break;
         }
         count = 0; // reset timer if we have interacted with player
     }
-
-
-
 
     /**
      * Method for moving a player in a specific direction
@@ -263,11 +253,8 @@ public class GameLogic {
      */
     private void movePlayerInDirection(Player player, Direction dir) {
         Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir);
-
-
         if (validMove(player, dir)) {
             //TODO When robots collide, one will push the other, check for other robots here?
-
             gameScreen.setPlayerPosition(player, nextPos);
             player.setPosition(nextPos);
         }
