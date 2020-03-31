@@ -18,7 +18,7 @@ public class TempTileObjectTests {
 
     @Test
     public void boardCorrectlyReadsHoles() {
-        assertTrue(board.getTile(new Vector2(1, 3)).doesDamage());
+        assertTrue(board.getTile(new Vector2(1, 3)).isLaser());
     }
 
     @Test

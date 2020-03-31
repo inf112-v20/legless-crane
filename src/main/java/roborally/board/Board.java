@@ -190,9 +190,9 @@ public class Board {
         if (tileID == 0)
             return newTile;
         else if(tileID == 39 || tileID == 47 || tileID == 40) {
-            newTile.damagePlayer(-1); // single laser
+            newTile.setLaser(-1); // single laser
         } else if (tileID == 101 ||tileID == 102 || tileID == 103) {
-            newTile.damagePlayer(-2); // double laser
+            newTile.setLaser(-2); // double laser
         } else {
             System.out.println("Did not recognize TileID when checking for static laser beams - ID: " + tileID);
         }
@@ -217,7 +217,7 @@ public class Board {
         if (tileID == 0)
             return newTile;
         else if (tileID == 6)
-            newTile.damagePlayer(-10);
+            newTile.setHole();
         else
             System.out.println("Did not recognize TileID when checking for holes - ID: " + tileID);
         return newTile;

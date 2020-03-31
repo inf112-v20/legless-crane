@@ -20,6 +20,9 @@ public class GameLogic {
     private int count = 0;
 
     private GameState gameState;
+    private ElementMoves elementMoves;
+    private ArrayList<Moves> queuedMoves = new ArrayList<>();
+    private ArrayList<Integer> queuedPlayers = new ArrayList<>();
 
     /**
      * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
@@ -49,9 +52,26 @@ public class GameLogic {
     private void performMove() {
         // perform the next move in the list of moves on the player in question.
         // a 3 move should be broken up into a 3 queued moves of 1 and should added to the list as such.
-
-        // list of moves
-        // list of players these moves belong to
+        // a u turn should be broken up in 2 left or 2 right rotations.
+        // this gives us staggered movement which we can use to better illustrate for the player what happens on the
+        // board.
+        switch (queuedMoves.remove(0)) {
+            case FORWARD:
+                forwardMovement(players.get(queuedPlayers.remove(0)));
+                break;
+            case BACK:
+                backwardMovement(players.get(queuedPlayers.remove(0)));
+                break;
+            case LEFT:
+                rotatePlayer(players.get(queuedPlayers.remove(0)), -1);
+                break;
+            case RIGHT:
+                rotatePlayer(players.get(queuedPlayers.remove(0)), 1);
+                break;
+            default:
+                System.out.println("Issue in performMove()");
+                break;
+        }
     }
 
     /**
@@ -74,9 +94,6 @@ public class GameLogic {
             return;
         }
         switch (gameState) {
-
-            // Missing, announce intent to power down or continue running next turn, done in deal cards?
-
             case DEAL_CARDS:
                 //TODO Deal cards to each player, for each damage token a robot has, deal one fewer Program card.
                 // See "Locking registers" for anyone with 5 or more damage tokens
@@ -85,25 +102,79 @@ public class GameLogic {
                 // robots are powered down or out of the game) begin timer right away.
                 // Once all players have chosen their cards, insert them in the correct order in the cards/moveList
                 // remember which cards corresponds to which Player.
+
+                // Missing: announce intent to power down or continue running next turn
                 break;
             case MOVEPLAYER:
-                //TODO move the player
-                // Execute the moves using performMove()
+                performMove();
+                /*
+                if (queuedMoves.size() == 0 && queuedPlayers.size() == 0) {
+                    //if queued moves and queued players are empty, a new round should begin.
+                    // start new phase first?
+                }
+                */
                 break;
             case MOVEBOARD:
-                //TODO Order of board elements:
-                // 1. Express conveyor belts move 1 space in the direction of the arrows.
-                // 2. Express conveyor belts and normal conveyor belts move 1 space in the
-                // direction of the arrows.
-                // 3. Pushers push if active.
-                // 4. Gears rotate 90° in the direction of the arrows.
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
+
+                    switch(elementMoves) {
+                        case EXPRESS_BELTS:
+                            if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) {
+                                beltsMovePlayer(player);
+                            }
+                            break;
+                        case ALL_BELTS:
+                            if (playerTile.isBelt()) {
+                                beltsMovePlayer(player);
+                            }
+                            break;
+                        case PUSHERS:
+                            // Currently not implemented
+                            break;
+                        case COGS:
+                            if (playerTile.isCog()) {
+                                rotationCogs(player);
+                            }
+                            break;
+                        case DONE:
+                            gameState.next();
+                            break;
+                    }
+                }
+                elementMoves = elementMoves.next();
+                // once all players have been moved, proceed to next element
                 break;
             case FIRE_LASERS:
-                //TODO Lasers fire
-                // Lasers don't pass through robots or walls
-                // robot lasers fire
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
+
+                    if (playerTile.isLaser()) {
+                        player.updateHealth(playerTile.getHealthChange());
+                    }
+                }
+                elementMoves = elementMoves.next();
+                // once all players have been moved, proceed to next element
+                //TODO Implement robot lasers
+                //TODO Lasers are blocked by walls and players.
                 break;
             case RESOLVE_INTERACTIONS:
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
+
+                    if (playerTile.isWrench()) {
+                        player.updateHealth(playerTile.getHealthChange());
+                        player.setBackupPoint(playerPosition);
+                    }
+                    else if (playerTile.isFlag()) {
+                        registerFlag(currentPlayer);
+                        player.setBackupPoint(playerPosition);
+                    }
+                }
+                elementMoves = elementMoves.next();
                 //TODO Any robot that’s survived the mayhem to this point and is on a flag “touches” that flag. Starting
                 // next turn, it can move on to the next flag, in order.
                 // Any robot on a flag or repair site updates its archive location by putting its Archive marker
@@ -111,48 +182,37 @@ public class GameLogic {
                 // will reenter the race.
                 break;
             case CLEANUP:
-                // Repairs & Upgrades
-                //Robots on a single-wrench space discard 1 Damage token.
-                //Robots on a crossed wrench/hammer space discard 1
-                //Damage token AND draw one Option card. When you
-                //draw an Option card, read it aloud to the other players
-                //and put it in front of you, face up. (See “Using Options to
-                //Prevent Damage” on p. 10 for more on Option cards.)
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
 
-                //Discard all Program cards from registers that aren’t
-                //locked.
+                    if (playerTile.isWrench()) {
+                        player.updateHealth(playerTile.getHealthChange());
+                    }
+                }
 
-                //Players whose robots were powered down
-                //this turn announce whether their robots will
-                //remain powered down on the next turn.
-                //Each robot that was destroyed this turn
-                //reenters play in the space containing its
-                //Archive marker. The player chooses which
-                //direction the robot faces.
-                //Robots reentering the race receive 2
-                //Damage tokens (plus any Damage tokens
-                //taken while powered down). A player
-                //may decide at this time to reenter the race
-                //powered down for the next turn (to discard
-                //the Damage tokens).
-                //After you’re done with cleanup, begin the
-                //next turn.
+                //TODO give prompt to players who're powered down for them to choose to stay powered down next round
+                // or continue and be dealt cards.
 
-                //If two or more robots would reenter play
-                //on the same space, they’re placed back on
-                //the board in the order they were destroyed.
-                //The first robot that was destroyed gets the archive
-                //space, facing any direction that player chooses.
-                //The player whose robot was destroyed next then
-                //chooses an empty adjacent space (looking
-                //orthogonally OR diagonally) and puts the robot on
-                //that space. That robot can face any direction that
-                //player chooses, except that there can’t be another
-                //robot in its line of sight 3 spaces away or closer.
-                //Ignore all board elements except for pits when
-                //placing your robot in an adjacent space.
-                //You can’t start a turn with your robot in a pit.
-                //They suffer enough as it is.
+                //TODO Discard cards (just jump to DEAL_CARDS?)
+
+                //TODO Respawn players.
+
+                //TODO give prompt to players so they can chose which direction their robot should face when respawned
+
+                //TODO Respawning players start with 2 damage tokens, give them a prompt to choose between starting
+                // powered down or not (to discard this damage)
+
+                //TODO Handle multiple players respawning on same tile
+                // If two or more robots would reenter play on the same space, they’re placed back on
+                // the board in the order they were destroyed. The first robot that was destroyed gets the archive
+                // space, facing any direction that player chooses. The player whose robot was destroyed next then
+                // chooses an empty adjacent space (looking orthogonally OR diagonally) and puts the robot on
+                // that space. That robot can face any direction that player chooses, except that there can’t be another
+                // robot in its line of sight 3 spaces away or closer. Ignore all board elements except for pits when
+                // placing your robot in an adjacent space. You can’t start a turn with your robot in a pit.
+
+                elementMoves = elementMoves.next();
                 break;
         }
 
@@ -166,7 +226,7 @@ public class GameLogic {
             if (!onBoard(playerPosition))
                 player.updateHealth(-10);
 
-            else if (playerTile.doesDamage())
+            else if (playerTile.isLaser())
                 player.updateHealth(playerTile.getHealthChange());
 
             else if (playerTile.isBelt()) {

@@ -2,7 +2,7 @@ package roborally.board;
 
 public class Tile {
     private final boolean canBlockMovement;
-    private final boolean doesDamage;
+    private final boolean isLaser;
     private final boolean isBelt;
     private final boolean isCog;
     private final boolean isWrench;
@@ -14,8 +14,8 @@ public class Tile {
     private final int movementSpeed;
     private final Direction[] blockingDirections;
     private final Direction movementDirection;
-    private final String name;
     private final int healthChange;
+    private final boolean isHole;
 
     /**
      * Private constructor which allows us to utilize a builder design pattern to add customized functionality to each
@@ -28,13 +28,14 @@ public class Tile {
     private Tile(Builder builder) {
         //booleans
         this.canBlockMovement=builder.canBlockMovement;
-        this.doesDamage = builder.doesDamage;
+        this.isLaser = builder.isLaser;
         this.healthChange = builder.healthChange;
         this.isBelt = builder.isBelt;
         this.isCog =builder.canRotate;
         this.isWrench = builder.isWrench;
         this.isSpawner=builder.isSpawner;
         this.isFlag=builder.isFlag;
+        this.isHole = builder.isHole;
 
         //ints
         this.bendDirection=builder.bendDirection;
@@ -45,26 +46,16 @@ public class Tile {
         //directions
         this.blockingDirections=builder.blockingDirections;
         this.movementDirection=builder.movementDirection;
-        this.name=builder.name;
     }
     // getters
     public boolean canBlockMovement() { return canBlockMovement; }
-
-    public String toString() {
-        return name;
-    }
-
-    public boolean doesDamage() { return doesDamage; }
-
+    public boolean isLaser() { return isLaser; }
     public boolean isBelt() { return isBelt; }
-
     public boolean isCog() { return isCog; }
-
     public boolean isWrench() { return isWrench; }
-
     public boolean isSpawner() { return isSpawner; }
-
     public boolean isFlag() { return isFlag; }
+    public boolean isHole() { return isHole; }
 
     public int getMovementSpeed() { return movementSpeed; }
 
@@ -80,6 +71,8 @@ public class Tile {
 
     public int getHealthChange() { return healthChange; }
 
+
+
     /**
      * By calling this class using Tile.Builder() we can add functionality to it using the different set methods
      * this way we allow for tiles with different properties where elements on the board overlap. Meaning we do not
@@ -92,7 +85,7 @@ public class Tile {
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
         private boolean canBlockMovement;
-        private boolean doesDamage;
+        private boolean isLaser;
         private Direction[] blockingDirections; // directions blocked by this tile
         private Direction movementDirection;
         private boolean isBelt;
@@ -104,13 +97,12 @@ public class Tile {
         private boolean isSpawner;
         private int bendDirection;
         private int movementSpeed;
-        private String name;
         private int healthChange;
+        private boolean isHole;
 
         public Builder setBlocker(Direction[] blockingDirections) {
             this.canBlockMovement = true;
             this.blockingDirections = blockingDirections;
-            this.name = "blocker";
             return this;
         }
 
@@ -165,16 +157,21 @@ public class Tile {
             return this;
         }
 
-        public Builder damagePlayer(int healthChange) {
-            this.doesDamage = true;
+        public Builder setLaser(int healthChange) {
+            this.isLaser = true;
             this.healthChange = healthChange;
             return this;
+        }
+
+        public Builder setHole() {
+            this.isHole = true;
+            this.healthChange = - 10;
+            return this;
+
         }
 
         public Tile build(){
             return new Tile(this);
         }
-
-
     }
 }
