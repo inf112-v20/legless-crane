@@ -55,6 +55,10 @@ public class GameScreen implements Screen {
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
 
+    public static ProgramCard[][] getChosenCards() {
+        return new ProgramCard[0][];
+    }
+
     private void update(float f){
         stage.act(f);
     }

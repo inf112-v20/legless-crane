@@ -5,8 +5,8 @@ import roborally.board.Board;
 import roborally.board.Direction;
 import roborally.board.Tile;
 import roborally.application.GameScreen;
+import roborally.programcards.ProgramCard;
 
-import javax.swing.text.Element;
 import java.util.ArrayList;
 
 
@@ -19,11 +19,13 @@ public class GameLogic {
     public int boardWidth;
     public int boardHeight;
     private int count = 0;
+    private int phase = 0;
 
     private GameState gameState;
     private ElementMoves elementMoves;
     private ArrayList<Moves> queuedMoves = new ArrayList<>();
     private ArrayList<Integer> queuedPlayers = new ArrayList<>();
+    private ProgramCard[][] chosenCards;
 
     /**
      * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
@@ -76,6 +78,60 @@ public class GameLogic {
         }
     }
 
+    private void queuePhase(ProgramCard[] phase) {
+        // Get selection from libGDX
+        // Assume selection is a list of lists, with every player's move for that phase in the inner list
+        // Index of list is important, player 1's move will always be in index 0.
+
+
+        // TODO Turn this into a list of ArrayLists sorted by move priority.
+        for (int i = 0; i <phase.length-1 ;i++) {
+            //Turn card into queued moves and queued players that perform them.
+            switch(phase[i].getMovement()) {
+                case "1":
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedPlayers.add(i);
+                    break;
+                case "2":
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedPlayers.add(i);
+                    queuedPlayers.add(i);
+                    break;
+                case "3":
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedPlayers.add(i);
+                    queuedPlayers.add(i);
+                    queuedPlayers.add(i);
+                    break;
+                case "u":
+                    queuedMoves.add(Moves.RIGHT);
+                    queuedMoves.add(Moves.RIGHT);
+                    // Add some random component here to choose either right or left rotation? does it even matter?
+                    queuedPlayers.add(i);
+                    queuedPlayers.add(i);
+                    break;
+                case "back":
+                    queuedMoves.add(Moves.BACK);
+                    queuedPlayers.add(i);
+                    break;
+                case "rotateleft":
+                    queuedMoves.add(Moves.LEFT);
+                    queuedPlayers.add(i);
+                    break;
+                case "rotateright":
+                    queuedMoves.add(Moves.RIGHT);
+                    queuedPlayers.add(i);
+                    break;
+                default:
+                    System.out.println("Card not recognized");
+                    break;
+            }
+        }
+    }
+
     /**
      * Gets called by GameScreen every frame, checks the state of the game and updates it accordingly
      *
@@ -108,8 +164,18 @@ public class GameLogic {
         }
 
         switch (gameState) {
-            //TODO Add tests that ensure this updates correctly
+            //TODO Add tests that ensure this updates correctly ?
             case DEAL_CARDS:
+                if (phase < 5) {
+                    // If the whole round has not been completed, proceed to next phase.
+                    gameState.next();
+                    break;
+
+                    // Handle this if-statement differently? A bit ugly perhaps?
+                }
+
+                // if this is the first round, or the start of a new one, get cards and start at first phase.
+
                 //TODO Deal cards to each player, for each damage token a robot has, deal one fewer Program card.
                 // See "Locking registers" for anyone with 5 or more damage tokens
                 // Check if all players have chosen the five cards they want to use, begin timer if one has yet to choose.
@@ -118,27 +184,29 @@ public class GameLogic {
                 // Once all players have chosen their cards, insert them in the correct order in the cards/moveList
                 // remember which cards corresponds to which Player.
 
-                // Missing: announce intent to power down or continue running next turn
-                gameState.next();
+                //TODO announce intent to power down or continue running next turn
 
-                // save all moves to be made in a list of lists?
+                chosenCards = GameScreen.getChosenCards();
+                // Moves chosen by all players, separated into phases
                 // moves[phases][cards]
-                // ( ( left, forward, right, uTURN) , (forward, back, forward, back) , ... , ... , ... )
+                // ( ( player1 card, player2 card, ... , ... , ...) ,
+                // ( player1 card, player2 card, ... , ... , ...)
+                // , ... , ... , ... )
 
+                gameState.next();
+                phase = 0;
 
-                // Allow all players to select their cards. Once all players have selected cards, add into a list of list
-                // in sorted order. of all moves to be executed.
-
-
+                //TODO Currently DealCards gets called every phase, jump straight to Reveal cards if phase < XYZ?
 
                 break;
             case REVEAL_CARDS:
+                queuePhase(chosenCards[phase]);
                 // add the cards in order for this phase to the queued moves, and queued players.
                 //TODO Show to all players which cards each player is using this phase
+                phase++;
                 break;
             case MOVEPLAYER:
                 performMove();
-
                 if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
                     // we've executed the moves of all players this phase. (One card per player.
                     gameState.next();
@@ -171,6 +239,7 @@ public class GameLogic {
                             }
                             break;
                         case DONE:
+                            elementMoves.next(); // this should return to express belts for next phase.
                             gameState.next();
                             break;
                     }
@@ -238,6 +307,8 @@ public class GameLogic {
                 }
                 gameState.next();
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + gameState);
         }
         count = 0; // reset timer if we have interacted with player
     }
