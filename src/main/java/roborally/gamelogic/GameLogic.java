@@ -19,7 +19,7 @@ public class GameLogic {
     public int boardWidth;
     public int boardHeight;
     private int count = 0;
-    private int phase = 0;
+    private int phase = 5; // would it make more sense to start this at a different number and change the if statement?
 
     private GameState gameState;
     private ElementMoves elementMoves;
@@ -83,8 +83,6 @@ public class GameLogic {
         // Assume selection is a list of lists, with every player's move for that phase in the inner list
         // Index of list is important, player 1's move will always be in index 0.
 
-
-        // TODO Turn this into a list of ArrayLists sorted by move priority.
         for (int i = 0; i <phase.length-1 ;i++) {
             //Turn card into queued moves and queued players that perform them.
             switch(phase[i].getMovement()) {
@@ -130,6 +128,8 @@ public class GameLogic {
                     break;
             }
         }
+
+        //TODO Sort queuedMoves and queuedPlayers by priority of cards.
     }
 
     /**
@@ -151,105 +151,70 @@ public class GameLogic {
             count++;
             return;
         }
-        for (Player player : players) {
-            //TODO When is the best time to check for this? MOVEBOARD and MOVEPLAYER?
-            // Move to own method (YES, merge with onBoard?) and call from those?
-
-            // Check if player is in hole or went of board as a result of moving or being pushed by players or board
-            Vector2 playerPosition = player.getPosition();
-            Tile playerTile = board.getTile(playerPosition);
-
-            if (!onBoard(playerPosition) || playerTile.isHole())
-                player.updateHealth(-10);
-        }
 
         switch (gameState) {
-            //TODO Add tests that ensure this updates correctly ?
             case DEAL_CARDS:
-                if (phase < 5) {
-                    // If the whole round has not been completed, proceed to next phase.
-                    gameState.next();
-                    break;
-
-                    // Handle this if-statement differently? A bit ugly perhaps?
+                if (phase >= 5) {
+                    phase = 0;
+                    chosenCards = GameScreen.getChosenCards();
+                    // if this is the first round, or the start of a new one, get cards and start at first phase.
                 }
-
-                // if this is the first round, or the start of a new one, get cards and start at first phase.
-
-                //TODO Deal cards to each player, for each damage token a robot has, deal one fewer Program card.
-                // See "Locking registers" for anyone with 5 or more damage tokens
-                // Check if all players have chosen the five cards they want to use, begin timer if one has yet to choose.
-                // If only one player is programming registers on a given turn (because the other
-                // robots are powered down or out of the game) begin timer right away.
-                // Once all players have chosen their cards, insert them in the correct order in the cards/moveList
-                // remember which cards corresponds to which Player.
-
-                //TODO announce intent to power down or continue running next turn
-
-                chosenCards = GameScreen.getChosenCards();
-                // Moves chosen by all players, separated into phases
-                // moves[phases][cards]
-                // ( ( player1 card, player2 card, ... , ... , ...) ,
-                // ( player1 card, player2 card, ... , ... , ...)
-                // , ... , ... , ... )
-
                 gameState.next();
-                phase = 0;
-
-                //TODO Currently DealCards gets called every phase, jump straight to Reveal cards if phase < XYZ?
-
+                phase++;
                 break;
+
             case REVEAL_CARDS:
                 queuePhase(chosenCards[phase]);
                 // add the cards in order for this phase to the queued moves, and queued players.
-                //TODO Show to all players which cards each player is using this phase
-                phase++;
                 break;
             case MOVEPLAYER:
                 performMove();
+                killIfOffBoard();
                 if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
-                    // we've executed the moves of all players this phase. (One card per player.
+                    // we've executed the moves of all players this phase. (One card per player each phase)
                     gameState.next();
-                    //TODO Add tests, or otherwise ensure that both queuedMoves and queuedPlayers is always the same length?
                 }
                 break;
             case MOVEBOARD:
+                killIfOffBoard();
                 for (Player player : players) {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
                     switch(elementMoves) {
-                        //TODO Add tests that ensure this updates correctly
                         case EXPRESS_BELTS:
                             if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) {
                                 beltsMovePlayer(player);
                             }
+                            elementMoves.next();
+                            // once an element has been handled, proceed to the next
                             break;
                         case ALL_BELTS:
                             if (playerTile.isBelt()) {
                                 beltsMovePlayer(player);
                             }
+                            elementMoves.next();
+                            // once an element has been handled, proceed to the next
                             break;
                         case PUSHERS:
                             // Currently not implemented
+                            elementMoves.next();
+                            // once an element has been handled, proceed to the next
                             break;
                         case COGS:
                             if (playerTile.isCog()) {
                                 rotationCogs(player);
                             }
+                            elementMoves.next();
+                            // once an element has been handled, proceed to the next
                             break;
                         case DONE:
                             elementMoves.next(); // this should return to express belts for next phase.
-                            gameState.next();
+                            gameState.next(); // once all elements have been handled, Fire Lasers.
                             break;
                     }
                 }
-                elementMoves.next();
-                // once all players have been moved, proceed to next element
-                break;
             case FIRE_LASERS:
-                //TODO Implement robot lasers
-                //TODO Lasers are blocked by walls and players.
                 for (Player player : players) {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
@@ -259,7 +224,6 @@ public class GameLogic {
                     }
                 }
                 gameState.next();
-                // once all players have been moved, proceed to next element
                 break;
             case RESOLVE_INTERACTIONS:
                 for (Player player : players) {
@@ -277,26 +241,7 @@ public class GameLogic {
                 gameState.next();
                 break;
             case CLEANUP:
-                //TODO give prompt to players who're powered down for them to choose to stay powered down next round
-                // or continue and be dealt cards.
 
-                //TODO Discard cards (just jump to DEAL_CARDS?)
-
-                //TODO Respawn players.
-
-                //TODO give prompt to players so they can chose which direction their robot should face when respawned
-
-                //TODO Respawning players start with 2 damage tokens, give them a prompt to choose between starting
-                // powered down or not (to discard this damage)
-
-                //TODO Handle multiple players respawning on same tile
-                // If two or more robots would reenter play on the same space, they’re placed back on
-                // the board in the order they were destroyed. The first robot that was destroyed gets the archive
-                // space, facing any direction that player chooses. The player whose robot was destroyed next then
-                // chooses an empty adjacent space (looking orthogonally OR diagonally) and puts the robot on
-                // that space. That robot can face any direction that player chooses, except that there can’t be another
-                // robot in its line of sight 3 spaces away or closer. Ignore all board elements except for pits when
-                // placing your robot in an adjacent space. You can’t start a turn with your robot in a pit.
                 for (Player player : players) {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
@@ -325,7 +270,6 @@ public class GameLogic {
     private void movePlayerInDirection(Player player, Direction dir) {
         Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir);
         if (validMove(player, dir)) {
-            //TODO When robots collide, one will push the other, check for other robots here?
             gameScreen.setPlayerPosition(player, nextPos);
             player.setPosition(nextPos);
         }
@@ -477,12 +421,19 @@ public class GameLogic {
     }
 
     /**
-     * Checks if the desired position is within the board
-     * @param move the desired position
-     * @return whether or not the desired position's x,y coordinates are within the board.
+     * Checks if any player has gone into a pit or off the board. Kills the player if that is the case.
+     *
+     * Should be called whenever players move or can be moved. so MOVEBOARD and MVOEPLAYER in updateGameState
      */
-    private boolean onBoard(Vector2 move) {
-        return (move.x < boardWidth-1 && move.x >= 1) && (move.y < boardHeight-1 && move.y >= 1);
+    private void killIfOffBoard() {
+        for (Player player : players) {
+            // Check if player is in hole or went of board as a result of moving or being pushed by players or board
+            Vector2 position = player.getPosition();
+            Tile playerTile = board.getTile(position);
+
+            if (position.x >= boardWidth || position.y >= boardHeight || position.x <= 0 || position.y <= 0 || playerTile.isHole())
+                player.updateHealth(-10);
+        }
     }
 
     /**

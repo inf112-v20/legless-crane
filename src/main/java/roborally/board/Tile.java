@@ -61,13 +61,13 @@ public class Tile {
 
     public int getBendDirection() { return bendDirection; }
 
-    public int getRotation() { return rotation; } //TODO Remove if not used
+    public int getRotation() { return rotation; }
 
-    public int getFlagNum() { return flagNum; } //TODO Remove if not used
+    public int getFlagNum() { return flagNum; }
 
     public Direction[] getBlockingDirections() { return blockingDirections; }
 
-    public Direction getMovementDirection() { return movementDirection; } //TODO Remove if not used
+    public Direction getMovementDirection() { return movementDirection; }
 
     public int getHealthChange() { return healthChange; }
 
@@ -141,7 +141,6 @@ public class Tile {
         }
 
         public Builder setCornerBelt(Direction movementDirection, int movementSpeed, int bendDirection) {
-            //TODO How to determine which direction to rotate?
             this.movementSpeed = movementSpeed;
             this.bendDirection = bendDirection;
             this.isBelt = true;

@@ -56,6 +56,11 @@ public class GameScreen implements Screen {
     }
 
     public static ProgramCard[][] getChosenCards() {
+        // Should return moves chosen by all players, separated into phases
+        // moves[phases][cards]
+        // ( ( player1 card, player2 card, ... , ... , ...) ,
+        // ( player1 card, player2 card, ... , ... , ...)
+        // , ... , ... , ... )
         return new ProgramCard[0][];
     }
 

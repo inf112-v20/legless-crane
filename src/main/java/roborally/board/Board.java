@@ -175,7 +175,6 @@ public class Board {
             newTile = readBlueBelts(listOfLayers.get(4)[i], newTile);
             newTile = readCogs(listOfLayers.get(5)[i], newTile);
             newTile = readStaticLasers(listOfLayers.get(6)[i], newTile);
-            //TODO Get laser origin points from listOfLayers.get(7) (and handle beams dynamically instead)
             newTile = readSpawns(listOfLayers.get(8)[i], newTile, i);
             newTile = readFlags(listOfLayers.get(9)[i], newTile);
             newTile = readWalls(listOfLayers.get(10)[i], newTile);
@@ -185,7 +184,6 @@ public class Board {
         }
     }
 
-    // TODO handle lasers differently than static board elements as they change dynamically.
     private Tile.Builder readStaticLasers(int tileID, Tile.Builder newTile) {
         if (tileID == 0)
             return newTile;
