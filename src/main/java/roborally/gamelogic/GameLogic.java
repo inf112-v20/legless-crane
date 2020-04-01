@@ -26,6 +26,7 @@ public class GameLogic {
     private ArrayList<Moves> queuedMoves = new ArrayList<>();
     private ArrayList<Integer> queuedPlayers = new ArrayList<>();
     private ProgramCard[][] chosenCards;
+    public boolean cardsChosen = false;
 
     /**
      * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
@@ -152,11 +153,18 @@ public class GameLogic {
             return;
         }
 
+
+        System.out.println(gameState);
         switch (gameState) {
+
             case DEAL_CARDS:
                 if (phase >= 5) {
                     phase = 0;
-                    chosenCards = GameScreen.getChosenCards();
+                    System.out.println();
+                    if(cardsChosen) {
+                        chosenCards = gameScreen.getChosenCards();
+                        System.out.println(chosenCards);
+                    }
                     // if this is the first round, or the start of a new one, get cards and start at first phase.
                 }
                 gameState.next();

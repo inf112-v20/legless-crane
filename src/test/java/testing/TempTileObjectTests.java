@@ -18,41 +18,41 @@ public class TempTileObjectTests {
 
     @Test
     public void boardCorrectlyReadsHoles() {
-        assertTrue(board.getTile(new Vector2(1, 3)).isLaser());
+        assertEquals(true, board.getTile(new Vector2(1, 3)).isLaser());
     }
 
     @Test
     public void boardCorrectlyReadsWrenches() {
-        assertTrue(board.getTile(new Vector2(3, 0)).isWrench());
+        assertEquals(true, board.getTile(new Vector2(3, 0)).isWrench());
     }
 
     @Test
     public void boardCorrectlyReadsCogs() {
-        assertTrue(board.getTile(new Vector2(2, 4)).isCog()); }
+        assertEquals(true, board.getTile(new Vector2(2, 4)).isCog()); }
 
     @Test
     public void boardCorrectlyReadsYellowBelts() {
-        assertTrue(board.getTile(new Vector2(0, 2)).isBelt());
+        assertEquals(true, board.getTile(new Vector2(0, 2)).isBelt());
         assertEquals(board.getTile(new Vector2(0,2)).getMovementSpeed(),1);
     }
 
     @Test
     public void boardCorrectlyReadsBlueBelts() {
-        assertTrue(board.getTile(new Vector2(4, 4)).isBelt());
+        assertEquals(true, board.getTile(new Vector2(4, 4)).isBelt());
         assertEquals(board.getTile(new Vector2(4,4)).getMovementSpeed(),2);
     }
 
     @Test
     public void boardCorrectlyReadsSpawnPoints() {
-        assertTrue(board.getTile(new Vector2(1, 0)).isSpawner()); }
+        assertEquals(true, board.getTile(new Vector2(1, 0)).isSpawner()); }
 
     @Test
     public void boardCorrectlyReadsFlags() {
-        assertTrue(board.getTile(new Vector2(3, 1)).isFlag());
+        assertEquals(true, board.getTile(new Vector2(3, 1)).isFlag());
     }
 
     @Test
     public void boardCorrectlyReadsWalls() {
-        assertTrue(board.getTile(new Vector2(1, 4)).canBlockMovement());
+        assertEquals(true, board.getTile(new Vector2(1, 4)).canBlockMovement());
     }
 }
