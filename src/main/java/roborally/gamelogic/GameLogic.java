@@ -54,12 +54,10 @@ public class GameLogic {
         elementMoves = ElementMoves.EXPRESS_BELTS;
     }
 
+    /**
+     * performs the move queued next with the player that should perform it. (Assuming the lists are in sync)
+     */
     private void performMove() {
-        // perform the next move in the list of moves on the player in question.
-        // a 3 move should be broken up into a 3 queued moves of 1 and should added to the list as such.
-        // a u turn should be broken up in 2 left or 2 right rotations.
-        // this gives us staggered movement which we can use to better illustrate for the player what happens on the
-        // board.
         switch (queuedMoves.remove(0)) {
             case FORWARD:
                 forwardMovement(players.get(queuedPlayers.remove(0)));
@@ -73,20 +71,26 @@ public class GameLogic {
             case RIGHT:
                 rotatePlayer(players.get(queuedPlayers.remove(0)), 1);
                 break;
+
             default:
-                System.out.println("Issue in performMove()");
-                break;
+                throw new IllegalStateException("Unexpected value");
         }
     }
 
-    private void queuePhase(ProgramCard[] phase) {
-        // Get selection from libGDX
-        // Assume selection is a list of lists, with every player's move for that phase in the inner list
-        // Index of list is important, player 1's move will always be in index 0.
+    /**
+     * Gets the card chosen by all players for the given phase we're in.
+     *
+     * Converts the cards chosen into queued moves so they can be staggered, i.e. move 1 * 3 instead of move 3 tiles
+     * instantly for a 3 movement card.
+     *
+     *TODO: Sort this list according to priority, make sure we sort both queuedPlayers and queuedMoves at the same time
+     * in the same way.
+     */
+    private void queuePhase() {
+        ProgramCard[] cardsThisPhase = gameScreen.getChosenCards()[phase];
 
-        for (int i = 0; i <2-1 ;i++) {
-            //Turn card into queued moves and queued players that perform them.
-            switch(phase[i].getMovement()) {
+        for (int i = 0; i <1 ;i++) {
+            switch(cardsThisPhase[i].getMovement()) {
                 case "1":
                     queuedMoves.add(Moves.FORWARD);
                     queuedPlayers.add(i);
@@ -108,7 +112,6 @@ public class GameLogic {
                 case "u":
                     queuedMoves.add(Moves.RIGHT);
                     queuedMoves.add(Moves.RIGHT);
-                    // Add some random component here to choose either right or left rotation? does it even matter?
                     queuedPlayers.add(i);
                     queuedPlayers.add(i);
                     break;
@@ -125,149 +128,156 @@ public class GameLogic {
                     queuedPlayers.add(i);
                     break;
                 default:
-                    System.out.println("Card not recognized");
-                    break;
+                    throw new IllegalStateException("Unexpected value: " + cardsThisPhase[i].getMovement());
             }
         }
-
-        //TODO Sort queuedMoves and queuedPlayers by priority of cards.
     }
 
     /**
      * Gets called by GameScreen every frame, checks the state of the game and updates it accordingly
      *
-     * This is where the majority of the game logic / game loop will take place, might rely on it's own methods for
-     * logic blocks to maintain readability in the code.
+     * the update of the gameState is staggered to only update every 10 frames (or every 10th call of updateGameState()
+     * so the screen does not update instantly, making it difficult for the player to follow the progress of the game.
      *
-     * Currently only checks if the player goes outside the board or into a hole.
+     * updateGameState() loops through the enum GameState each phase performing every step in order.
      *
-     * For testing purposes we have added a "timer" so for instance a cog does not continuously rotate the player,
-     * should only do so every 10 frames.
+     * 1. DEAL_CARDS is visited once every round, we get the cards chosen by the player on GameScreen and advance the
+     * GameState, if cards haven't been chosen yet, nothing happens. This is where the phases begin
+     *
+     * Every phase consists of these steps being done in order:
+     * A. REVEAL_CARDS gets the movement for this phase (one card per player,
+     * and queues the moves to be made using queuePhase([the_cards_this_phase])
+     *
+     * B. MOVE_PLAYER moves the players on the board, it goes through the sorted list of moves and players performing
+     * them which was made with queuePhase earlier in REVEAL_CARDS. If the player moves off the board or pushes another
+     * player off the board or into a pit, the player dies (checked with killIfOffBoard()). Each player gets to perform
+     * it's move before the board starts to move or attack the player. we check if there are any more moves queued, if
+     * not then we advance the gameState.
+     *
+     * C. MOVE_BOARD handles interactions between the player and elements on the board where the player is moved,
+     * if on a belt the player is moved etc. Once all elements have been checked in order, the gameState advances.
+     * TODO: Implement pushers (Not in MVP?)
+     *
+     * D. FIRE_LASERS updates the player's health if any are standing on a static laser.
+     * TODO: expand this to include lasers fired by players
+     * TODO: Add logic making sure the laser does not go through players or walls and damage things not in it's LoS
+     *
+     * E. RESOLVE_INTERACTIONS handles additional interactions between player and board such as registering
+     * flags and updating backup/archive locations. In other words, flags and repair sites on the board.
+     *
+     * 2. CLEANUP happens after all 5 phases have been performed, any player on a wrench/repair tile will be repaired.
+     * TODO: Expand this to give the player option cards if on a crossed wrench/hammer space. (Not in MVP?)
+     * TODO: If any players have locked registers, those cards should not reenter the deck.
+     *
      */
     public void updateGameState() {
-        // keep timer, but tune this so things don't happen too fast?
-        // have a different timer for different things?
-        // an extra delay with message to indicate a new phase has begun?
         if (count<10) {
             count++;
             return;
         }
+        count = 0;
+        //TODO: Fine-tune this timer so the game flows well.
 
-        System.out.println(gameState + " in phase "+ phase);
         switch (gameState) {
             case DEAL_CARDS:
-                // If cards have been chosen, get the cards
-                // Once they're gotten, progress gamestate
-                if(cardsChosen) {
-                    chosenCards = gameScreen.getChosenCards();
-                    gameState = gameState.next();
-                } else {
-                    System.out.println("Cards not yet chosen");
-                }
+                if(cardsChosen) gameState = gameState.advance();
                 break;
 
             case REVEAL_CARDS:
-                queuePhase(chosenCards[phase]);
-                gameState = gameState.next();
-                // add the cards in order for this phase to the queued moves, and queued players.
+                queuePhase();
+                gameState = gameState.advance();
                 break;
-            case MOVEPLAYER:
+
+            case MOVE_PLAYER:
                 performMove();
                 killIfOffBoard();
-                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
-                    // we've executed the moves of all players this phase. (One card per player each phase)
-                    gameState = gameState.next();
-                }
+                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) gameState = gameState.advance();
                 break;
-            case MOVEBOARD:
-                killIfOffBoard();
+
+            case MOVE_BOARD:
                 for (Player player : players) {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
                     switch(elementMoves) {
                         case EXPRESS_BELTS:
-                            if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) {
-                                beltsMovePlayer(player);
-                            }
-                            elementMoves = elementMoves.next();
-                            // once an element has been handled, proceed to the next
+                            if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) beltsMovePlayer(player);
+                            elementMoves = elementMoves.advance();
                             break;
+
                         case ALL_BELTS:
-                            if (playerTile.isBelt()) {
-                                beltsMovePlayer(player);
-                            }
-                            elementMoves = elementMoves.next();
-                            // once an element has been handled, proceed to the next
+                            if (playerTile.isBelt()) beltsMovePlayer(player);
+                            elementMoves = elementMoves.advance();
                             break;
+
                         case PUSHERS:
-                            // Currently not implemented
-                            elementMoves = elementMoves.next();
-                            // once an element has been handled, proceed to the next
+                            elementMoves = elementMoves.advance();
                             break;
+
                         case COGS:
-                            if (playerTile.isCog()) {
-                                rotationCogs(player);
-                            }
-                            elementMoves = elementMoves.next();
-                            // once an element has been handled, proceed to the next
+                            if (playerTile.isCog()) rotationCogs(player);
+                            elementMoves = elementMoves.advance();
                             break;
+
                         case DONE:
-                            elementMoves = elementMoves.next(); // this should return to express belts for next phase.
-                            gameState = gameState.next(); // once all elements have been handled, Fire Lasers.
+                            elementMoves = elementMoves.advance();
+                            gameState = gameState.advance();
+                            killIfOffBoard();
                             break;
+
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + elementMoves);
                     }
                 }
+
             case FIRE_LASERS:
                 for (Player player : players) {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
-                    if (playerTile.isLaser()) {
-                        player.updateHealth(playerTile.getHealthChange());
-                    }
+                    if (playerTile.isLaser()) player.updateHealth(playerTile.getHealthChange());
                 }
-                gameState = gameState.next();
+
+                gameState = gameState.advance();
                 break;
+
             case RESOLVE_INTERACTIONS:
                 for (Player player : players) {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
-                    if (playerTile.isWrench()) {
-                        player.setBackupPoint(playerPosition);
-                    }
-                    else if (playerTile.isFlag()) {
+                    if (playerTile.isWrench()) player.setBackupPoint(playerPosition);
+
+                    if (playerTile.isFlag()) {
                         registerFlag(currentPlayer);
                         player.setBackupPoint(playerPosition);
                     }
                 }
-                gameState = gameState.next();
+                gameState = gameState.advance();
                 break;
+
             case CLEANUP:
+                if (phase < 4) {
+                    gameState = gameState.advance().advance();
+                    phase++;
+                    break;
+                }
 
                 for (Player player : players) {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
-                    if (playerTile.isWrench()) {
-                        player.updateHealth(playerTile.getHealthChange());
-                    }
-                }
-                if (phase < 4) {
-                    gameState = gameState.REVEAL_CARDS;
-                    phase++;
-                } else {
-                    cardsChosen = false;
-                    gameState = gameState.DEAL_CARDS;
-                    phase = 0;
+                    if (playerTile.isWrench()) player.updateHealth(playerTile.getHealthChange());
                 }
 
+                cardsChosen = false;
+                gameState = gameState.advance();
+                phase = 0;
                 break;
+
             default:
                 throw new IllegalStateException("Unexpected value: " + gameState);
         }
-        count = 0; // reset timer if we have interacted with player
     }
 
     /**
@@ -443,8 +453,10 @@ public class GameLogic {
             Vector2 position = player.getPosition();
             Tile playerTile = board.getTile(position);
 
-            if (position.x >= boardWidth || position.y >= boardHeight || position.x <= 0 || position.y <= 0 || playerTile.isHole())
+            if (position.x >= boardWidth || position.y >= boardHeight || position.x <= 0 || position.y <= 0 || playerTile.isHole()) {
+                System.out.println("player died");
                 player.updateHealth(-10);
+            }
         }
     }
 

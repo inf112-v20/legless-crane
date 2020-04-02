@@ -56,12 +56,14 @@ public class GameScreen implements Screen {
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
 
+    /**
+     * Should return moves[phases][cards]
+     * ( ( player1 card, player2 card, ... , ... , ...) ,
+     * ( player1 card, player2 card, ... , ... , ...)
+     * , ... , ... , ... )
+     * @return moves chosen by all players, separated into phases
+     */
     public ProgramCard[][] getChosenCards() {
-        // Should return moves chosen by all players, separated into phases
-        // moves[phases][cards]
-        // ( ( player1 card, player2 card, ... , ... , ...) ,
-        // ( player1 card, player2 card, ... , ... , ...)
-        // , ... , ... , ... )
         return chosenCards;
     }
 
@@ -311,17 +313,11 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (cardsReady) {
-
                     chosenCards = new ProgramCard[5][gameLogic.getPlayers().size()];
+                    for (int i = 0; i < 5; i++) chosenCards[i][0] = placementOfPhases.get(i);
 
-                    for (int i = 0; i < 5; i++) {
-                        chosenCards[i][0] = placementOfPhases.get(i);
-
-                    }
                     gameLogic.cardsChosen = true;
                     cardsReady = false;
-
-                    // add player 1's cards.
                     // TODO Add functionality for more players and feed this into the same method.
                 }
             }

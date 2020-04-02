@@ -6,7 +6,7 @@ import java.util.Collections;
 public enum ElementMoves {
     EXPRESS_BELTS, ALL_BELTS, PUSHERS, COGS, DONE;
 
-    public ElementMoves next() {
+    public ElementMoves advance() {
         ArrayList<ElementMoves> states = new ArrayList<>();
         Collections.addAll(states, ElementMoves.values());
 

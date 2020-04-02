@@ -293,28 +293,28 @@ public class Board {
         }
         switch (tileID) {
             case 121: newTile.setSpawner(); // spawn player 1
-                spawnPoints[0] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[0] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 122: newTile.setSpawner(); // spawn player 2
-                spawnPoints[1] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[1] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 123: newTile.setSpawner(); // spawn player 3
-                spawnPoints[2] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[2] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 124: newTile.setSpawner(); // spawn player 4
-                spawnPoints[3] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[3] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 129: newTile.setSpawner(); // spawn player 5
-                spawnPoints[4] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[4] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 130: newTile.setSpawner(); // spawn player 6
-                spawnPoints[5] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[5] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 131: newTile.setSpawner(); // spawn player 7
-                spawnPoints[6] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[6] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 132: newTile.setSpawner(); // spawn player 8
-                spawnPoints[7] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[7] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for spawnpoints - ID: " + tileID);
