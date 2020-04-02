@@ -19,7 +19,7 @@ public class GameLogic {
     public int boardWidth;
     public int boardHeight;
     private int count = 0;
-    private int phase = 5; // would it make more sense to start this at a different number and change the if statement?
+    private int phase; // would it make more sense to start this at a different number and change the if statement?
 
     private GameState gameState;
     private ElementMoves elementMoves;
@@ -84,7 +84,7 @@ public class GameLogic {
         // Assume selection is a list of lists, with every player's move for that phase in the inner list
         // Index of list is important, player 1's move will always be in index 0.
 
-        for (int i = 0; i <phase.length-1 ;i++) {
+        for (int i = 0; i <2-1 ;i++) {
             //Turn card into queued moves and queued players that perform them.
             switch(phase[i].getMovement()) {
                 case "1":
@@ -153,26 +153,22 @@ public class GameLogic {
             return;
         }
 
-
-        System.out.println(gameState);
+        System.out.println(gameState + " in phase "+ phase);
         switch (gameState) {
-
             case DEAL_CARDS:
-                if (phase >= 5) {
-                    phase = 0;
-                    System.out.println();
-                    if(cardsChosen) {
-                        chosenCards = gameScreen.getChosenCards();
-                        System.out.println(chosenCards);
-                    }
-                    // if this is the first round, or the start of a new one, get cards and start at first phase.
+                // If cards have been chosen, get the cards
+                // Once they're gotten, progress gamestate
+                if(cardsChosen) {
+                    chosenCards = gameScreen.getChosenCards();
+                    gameState = gameState.next();
+                } else {
+                    System.out.println("Cards not yet chosen");
                 }
-                gameState.next();
-                phase++;
                 break;
 
             case REVEAL_CARDS:
                 queuePhase(chosenCards[phase]);
+                gameState = gameState.next();
                 // add the cards in order for this phase to the queued moves, and queued players.
                 break;
             case MOVEPLAYER:
@@ -180,7 +176,7 @@ public class GameLogic {
                 killIfOffBoard();
                 if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
                     // we've executed the moves of all players this phase. (One card per player each phase)
-                    gameState.next();
+                    gameState = gameState.next();
                 }
                 break;
             case MOVEBOARD:
@@ -194,31 +190,31 @@ public class GameLogic {
                             if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) {
                                 beltsMovePlayer(player);
                             }
-                            elementMoves.next();
+                            elementMoves = elementMoves.next();
                             // once an element has been handled, proceed to the next
                             break;
                         case ALL_BELTS:
                             if (playerTile.isBelt()) {
                                 beltsMovePlayer(player);
                             }
-                            elementMoves.next();
+                            elementMoves = elementMoves.next();
                             // once an element has been handled, proceed to the next
                             break;
                         case PUSHERS:
                             // Currently not implemented
-                            elementMoves.next();
+                            elementMoves = elementMoves.next();
                             // once an element has been handled, proceed to the next
                             break;
                         case COGS:
                             if (playerTile.isCog()) {
                                 rotationCogs(player);
                             }
-                            elementMoves.next();
+                            elementMoves = elementMoves.next();
                             // once an element has been handled, proceed to the next
                             break;
                         case DONE:
-                            elementMoves.next(); // this should return to express belts for next phase.
-                            gameState.next(); // once all elements have been handled, Fire Lasers.
+                            elementMoves = elementMoves.next(); // this should return to express belts for next phase.
+                            gameState = gameState.next(); // once all elements have been handled, Fire Lasers.
                             break;
                     }
                 }
@@ -231,7 +227,7 @@ public class GameLogic {
                         player.updateHealth(playerTile.getHealthChange());
                     }
                 }
-                gameState.next();
+                gameState = gameState.next();
                 break;
             case RESOLVE_INTERACTIONS:
                 for (Player player : players) {
@@ -246,7 +242,7 @@ public class GameLogic {
                         player.setBackupPoint(playerPosition);
                     }
                 }
-                gameState.next();
+                gameState = gameState.next();
                 break;
             case CLEANUP:
 
@@ -258,7 +254,15 @@ public class GameLogic {
                         player.updateHealth(playerTile.getHealthChange());
                     }
                 }
-                gameState.next();
+                if (phase < 4) {
+                    gameState = gameState.REVEAL_CARDS;
+                    phase++;
+                } else {
+                    cardsChosen = false;
+                    gameState = gameState.DEAL_CARDS;
+                    phase = 0;
+                }
+
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + gameState);

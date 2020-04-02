@@ -12,10 +12,10 @@ public enum ElementMoves {
 
         int index = states.indexOf(this);
 
-        if (index == states.size()) {
-            return states.get(0);
-        } else {
+        if (index < states.size()-1) {
             return states.get(index+1);
+        } else {
+            return states.get(0);
         }
     }
 }

@@ -39,6 +39,7 @@ public class GameScreen implements Screen {
     private final ArrayList<TiledMapTileLayer.Cell> playerTiles = new ArrayList<>();
 
     private final Application app;
+    private boolean cardsReady = false;
     private final GameLogic gameLogic;
     private ArrayList<ProgramCard> placementOfPhases;
     private final int numberOfPhases = 5;
@@ -275,7 +276,7 @@ public class GameScreen implements Screen {
                             placementOfPhases.add(i, card); // "program card"
 
                             if (!placementOfPhases.get(numberOfPhases-1).getMovement().equals("default")) {
-                                gameLogic.cardsChosen = true;
+                                cardsReady = true;
                             } return;
                         }
                     }
@@ -309,15 +310,16 @@ public class GameScreen implements Screen {
         goButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (gameLogic.cardsChosen) {
+                if (cardsReady) {
 
                     chosenCards = new ProgramCard[5][gameLogic.getPlayers().size()];
 
                     for (int i = 0; i < 5; i++) {
                         chosenCards[i][0] = placementOfPhases.get(i);
-                    }
 
-                    System.out.println(chosenCards);
+                    }
+                    gameLogic.cardsChosen = true;
+                    cardsReady = false;
 
                     // add player 1's cards.
                     // TODO Add functionality for more players and feed this into the same method.
