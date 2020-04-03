@@ -5,6 +5,7 @@ import roborally.board.Board;
 import roborally.board.Direction;
 import roborally.board.Tile;
 import roborally.application.GameScreen;
+import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,14 @@ public class GameLogic {
     public int boardWidth;
     public int boardHeight;
     private int count = 0;
+    private int phase; // would it make more sense to start this at a different number and change the if statement?
+
+    private GameState gameState;
+    private ElementMoves elementMoves;
+    private ArrayList<Moves> queuedMoves = new ArrayList<>();
+    private ArrayList<Integer> queuedPlayers = new ArrayList<>();
+    private ProgramCard[][] chosenCards;
+    public boolean cardsChosen = false;
 
     /**
      * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
@@ -41,54 +50,234 @@ public class GameLogic {
             players.add(new Player(i+1, board.getSpawnPoints(i),this));
         }
         currentPlayer = players.get(0); // so far only used by GameScreen
+        gameState = GameState.DEAL_CARDS;
+        elementMoves = ElementMoves.EXPRESS_BELTS;
+    }
+
+    /**
+     * performs the move queued next with the player that should perform it. (Assuming the lists are in sync)
+     */
+    private void performMove() {
+        switch (queuedMoves.remove(0)) {
+            case FORWARD:
+                forwardMovement(players.get(queuedPlayers.remove(0)));
+                break;
+            case BACK:
+                backwardMovement(players.get(queuedPlayers.remove(0)));
+                break;
+            case LEFT:
+                rotatePlayer(players.get(queuedPlayers.remove(0)), -1);
+                break;
+            case RIGHT:
+                rotatePlayer(players.get(queuedPlayers.remove(0)), 1);
+                break;
+
+            default:
+                throw new IllegalStateException("Unexpected value");
+        }
+    }
+
+    /**
+     * Gets the card chosen by all players for the given phase we're in.
+     *
+     * Converts the cards chosen into queued moves so they can be staggered, i.e. move 1 * 3 instead of move 3 tiles
+     * instantly for a 3 movement card.
+     *
+     *TODO: Sort this list according to priority, make sure we sort both queuedPlayers and queuedMoves at the same time
+     * in the same way.
+     */
+    private void queuePhase() {
+        ProgramCard[] cardsThisPhase = gameScreen.getChosenCards()[phase];
+
+        for (int i = 0; i <1 ;i++) {
+            switch(cardsThisPhase[i].getMovement()) {
+                case "1":
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedPlayers.add(i);
+                    break;
+                case "2":
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedPlayers.add(i);
+                    queuedPlayers.add(i);
+                    break;
+                case "3":
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedMoves.add(Moves.FORWARD);
+                    queuedPlayers.add(i);
+                    queuedPlayers.add(i);
+                    queuedPlayers.add(i);
+                    break;
+                case "u":
+                    queuedMoves.add(Moves.RIGHT);
+                    queuedMoves.add(Moves.RIGHT);
+                    queuedPlayers.add(i);
+                    queuedPlayers.add(i);
+                    break;
+                case "back":
+                    queuedMoves.add(Moves.BACK);
+                    queuedPlayers.add(i);
+                    break;
+                case "rotateleft":
+                    queuedMoves.add(Moves.LEFT);
+                    queuedPlayers.add(i);
+                    break;
+                case "rotateright":
+                    queuedMoves.add(Moves.RIGHT);
+                    queuedPlayers.add(i);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + cardsThisPhase[i].getMovement());
+            }
+        }
     }
 
     /**
      * Gets called by GameScreen every frame, checks the state of the game and updates it accordingly
      *
-     * This is where the majority of the game logic / game loop will take place, might rely on it's own methods for
-     * logic blocks to maintain readability in the code.
+     * the update of the gameState is staggered to only update every 10 frames (or every 10th call of updateGameState()
+     * so the screen does not update instantly, making it difficult for the player to follow the progress of the game.
      *
-     * Currently only checks if the player goes outside the board or into a hole.
+     * updateGameState() loops through the enum GameState each phase performing every step in order.
      *
-     * For testing purposes we have added a "timer" so for instance a cog does not continuously rotate the player,
-     * should only do so every 10 frames.
+     * 1. DEAL_CARDS is visited once every round, we get the cards chosen by the player on GameScreen and advance the
+     * GameState, if cards haven't been chosen yet, nothing happens. This is where the phases begin
+     *
+     * Every phase consists of these steps being done in order:
+     * A. REVEAL_CARDS gets the movement for this phase (one card per player,
+     * and queues the moves to be made using queuePhase([the_cards_this_phase])
+     *
+     * B. MOVE_PLAYER moves the players on the board, it goes through the sorted list of moves and players performing
+     * them which was made with queuePhase earlier in REVEAL_CARDS. If the player moves off the board or pushes another
+     * player off the board or into a pit, the player dies (checked with killIfOffBoard()). Each player gets to perform
+     * it's move before the board starts to move or attack the player. we check if there are any more moves queued, if
+     * not then we advance the gameState.
+     *
+     * C. MOVE_BOARD handles interactions between the player and elements on the board where the player is moved,
+     * if on a belt the player is moved etc. Once all elements have been checked in order, the gameState advances.
+     * TODO: Implement pushers (Not in MVP?)
+     *
+     * D. FIRE_LASERS updates the player's health if any are standing on a static laser.
+     * TODO: expand this to include lasers fired by players
+     * TODO: Add logic making sure the laser does not go through players or walls and damage things not in it's LoS
+     *
+     * E. RESOLVE_INTERACTIONS handles additional interactions between player and board such as registering
+     * flags and updating backup/archive locations. In other words, flags and repair sites on the board.
+     *
+     * 2. CLEANUP happens after all 5 phases have been performed, any player on a wrench/repair tile will be repaired.
+     * TODO: Expand this to give the player option cards if on a crossed wrench/hammer space. (Not in MVP?)
+     * TODO: If any players have locked registers, those cards should not reenter the deck.
+     *
      */
-    public void updateGameState(){
+    public void updateGameState() {
         if (count<10) {
             count++;
             return;
         }
+        count = 0;
+        //TODO: Fine-tune this timer so the game flows well.
 
-        for (Player player : players) {
-            Vector2 playerPosition = player.getPosition();
-            Tile playerTile = board.getTile(playerPosition);
-            int speed = playerTile.getMovementSpeed();
+        switch (gameState) {
+            case DEAL_CARDS:
+                if(cardsChosen) gameState = gameState.advance();
+                break;
 
-            if (!onBoard(playerPosition))
-                player.updateHealth(-10);
+            case REVEAL_CARDS:
+                queuePhase();
+                gameState = gameState.advance();
+                break;
 
-            else if (playerTile.doesDamage())
-                player.updateHealth(playerTile.getHealthChange());
+            case MOVE_PLAYER:
+                performMove();
+                killIfOffBoard();
+                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) gameState = gameState.advance();
+                break;
 
-            else if (playerTile.isBelt()) {
-                if (speed != 1) {
-                    beltsMovePlayer(player);
+            case MOVE_BOARD:
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
+
+                    switch(elementMoves) {
+                        case EXPRESS_BELTS:
+                            if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) beltsMovePlayer(player);
+                            elementMoves = elementMoves.advance();
+                            break;
+
+                        case ALL_BELTS:
+                            if (playerTile.isBelt()) beltsMovePlayer(player);
+                            elementMoves = elementMoves.advance();
+                            break;
+
+                        case PUSHERS:
+                            elementMoves = elementMoves.advance();
+                            break;
+
+                        case COGS:
+                            if (playerTile.isCog()) rotationCogs(player);
+                            elementMoves = elementMoves.advance();
+                            break;
+
+                        case DONE:
+                            elementMoves = elementMoves.advance();
+                            gameState = gameState.advance();
+                            killIfOffBoard();
+                            break;
+
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + elementMoves);
+                    }
                 }
-                beltsMovePlayer(player);
-            }
-            else if (playerTile.isCog())
-                rotationCogs(player);
 
-            else if (playerTile.isWrench()) {
-                player.updateHealth(playerTile.getHealthChange());
-                player.setBackupPoint(playerPosition);
+            case FIRE_LASERS:
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
 
-            } else if (playerTile.isFlag()) {
-                registerFlag(currentPlayer);
-            }
+                    if (playerTile.isLaser()) player.updateHealth(playerTile.getHealthChange());
+                }
+
+                gameState = gameState.advance();
+                break;
+
+            case RESOLVE_INTERACTIONS:
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
+
+                    if (playerTile.isWrench()) player.setBackupPoint(playerPosition);
+
+                    if (playerTile.isFlag()) {
+                        registerFlag(currentPlayer);
+                        player.setBackupPoint(playerPosition);
+                    }
+                }
+                gameState = gameState.advance();
+                break;
+
+            case CLEANUP:
+                if (phase < 4) {
+                    gameState = gameState.advance().advance();
+                    phase++;
+                    break;
+                }
+
+                for (Player player : players) {
+                    Vector2 playerPosition = player.getPosition();
+                    Tile playerTile = board.getTile(playerPosition);
+
+                    if (playerTile.isWrench()) player.updateHealth(playerTile.getHealthChange());
+                }
+
+                cardsChosen = false;
+                gameState = gameState.advance();
+                phase = 0;
+                break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + gameState);
         }
-        count = 0; // reset timer if we have interacted with player
     }
 
     /**
@@ -102,7 +291,6 @@ public class GameLogic {
      */
     private void movePlayerInDirection(Player player, Direction dir) {
         Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir);
-
         if (validMove(player, dir)) {
             gameScreen.setPlayerPosition(player, nextPos);
             player.setPosition(nextPos);
@@ -255,12 +443,21 @@ public class GameLogic {
     }
 
     /**
-     * Checks if the desired position is within the board
-     * @param move the desired position
-     * @return whether or not the desired position's x,y coordinates are within the board.
+     * Checks if any player has gone into a pit or off the board. Kills the player if that is the case.
+     *
+     * Should be called whenever players move or can be moved. so MOVEBOARD and MVOEPLAYER in updateGameState
      */
-    private boolean onBoard(Vector2 move) {
-        return (move.x < boardWidth-1 && move.x >= 1) && (move.y < boardHeight-1 && move.y >= 1);
+    private void killIfOffBoard() {
+        for (Player player : players) {
+            // Check if player is in hole or went of board as a result of moving or being pushed by players or board
+            Vector2 position = player.getPosition();
+            Tile playerTile = board.getTile(position);
+
+            if (position.x >= boardWidth || position.y >= boardHeight || position.x <= 0 || position.y <= 0 || playerTile.isHole()) {
+                System.out.println("player died");
+                player.updateHealth(-10);
+            }
+        }
     }
 
     /**

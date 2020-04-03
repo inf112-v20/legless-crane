@@ -17,7 +17,7 @@ mvn clean install
 #### Run with commandline
 ```
 cd C:\..\legless-crane\target
-java -jar roborally-0.3.jar
+java -jar roborally-0.4.jar
 ```
 
 ### Alternative:
@@ -30,18 +30,12 @@ Download [latest release](https://github.com/inf112-v20/legless-crane/releases) 
 
 #### Run
 1.  Locate target directory in `..\legless-crane\target`
-2.  Run `roborally-0.3.jar`
+2.  Run `roborally-0.4.jar`
 
 ### Emergency measures
 In case none of the options above work, run main method in "Application.java" from IntelliJ (or other IDEs).
 
 ## Known bugs
-~~When executing .jar file, it crashes on some PCs.~~ - fixed in version 0.3
-
-~~Boards with more than one element on a single tile do not read correctly in Board.java, only the last element read in the given tile is saved.~~ - fixed in version 0.3
-
-~~Left rotate sometime prevents robot moving back and ahead, until you use right rotate.~~ - fixed in version 0.3, we no longer use this rotation.
-
 When resizing the game window clickListeners move coordinates, making the buttons useless.
 
 Currently throws "WARNING: An illegal reflective access operation has occurred", 

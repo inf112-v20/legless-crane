@@ -175,7 +175,6 @@ public class Board {
             newTile = readBlueBelts(listOfLayers.get(4)[i], newTile);
             newTile = readCogs(listOfLayers.get(5)[i], newTile);
             newTile = readStaticLasers(listOfLayers.get(6)[i], newTile);
-            //TODO Get laser origin points from listOfLayers.get(7) (and handle beams dynamically instead)
             newTile = readSpawns(listOfLayers.get(8)[i], newTile, i);
             newTile = readFlags(listOfLayers.get(9)[i], newTile);
             newTile = readWalls(listOfLayers.get(10)[i], newTile);
@@ -185,14 +184,13 @@ public class Board {
         }
     }
 
-    // TODO handle lasers differently than static board elements as they change dynamically.
     private Tile.Builder readStaticLasers(int tileID, Tile.Builder newTile) {
         if (tileID == 0)
             return newTile;
         else if(tileID == 39 || tileID == 47 || tileID == 40) {
-            newTile.damagePlayer(-1); // single laser
+            newTile.setLaser(-1); // single laser
         } else if (tileID == 101 ||tileID == 102 || tileID == 103) {
-            newTile.damagePlayer(-2); // double laser
+            newTile.setLaser(-2); // double laser
         } else {
             System.out.println("Did not recognize TileID when checking for static laser beams - ID: " + tileID);
         }
@@ -217,7 +215,7 @@ public class Board {
         if (tileID == 0)
             return newTile;
         else if (tileID == 6)
-            newTile.damagePlayer(-10);
+            newTile.setHole();
         else
             System.out.println("Did not recognize TileID when checking for holes - ID: " + tileID);
         return newTile;
@@ -295,28 +293,28 @@ public class Board {
         }
         switch (tileID) {
             case 121: newTile.setSpawner(); // spawn player 1
-                spawnPoints[0] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[0] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 122: newTile.setSpawner(); // spawn player 2
-                spawnPoints[1] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[1] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 123: newTile.setSpawner(); // spawn player 3
-                spawnPoints[2] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[2] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 124: newTile.setSpawner(); // spawn player 4
-                spawnPoints[3] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[3] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 129: newTile.setSpawner(); // spawn player 5
-                spawnPoints[4] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[4] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 130: newTile.setSpawner(); // spawn player 6
-                spawnPoints[5] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[5] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 131: newTile.setSpawner(); // spawn player 7
-                spawnPoints[6] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[6] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             case 132: newTile.setSpawner(); // spawn player 8
-                spawnPoints[7] = new Vector2(i%boardWidth, boardHeight -((float) i / boardWidth) -1);
+                spawnPoints[7] = new Vector2(i%boardWidth, boardHeight -(i / boardWidth) -1);
                 break;
             default:
                 System.out.println("Did not recognize TileID when checking for spawnpoints - ID: " + tileID);
