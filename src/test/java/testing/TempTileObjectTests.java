@@ -5,7 +5,6 @@ import roborally.board.Board;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class TempTileObjectTests {
@@ -18,7 +17,7 @@ public class TempTileObjectTests {
 
     @Test
     public void boardCorrectlyReadsHoles() {
-        assertEquals(true, board.getTile(new Vector2(1, 3)).isLaser());
+        assertEquals(true, board.getTile(new Vector2(1, 3)).isHole());
     }
 
     @Test
