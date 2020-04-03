@@ -1,6 +1,7 @@
 package roborally.board;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Enum containing possible directions a player or other elements could be facing or operate in.
@@ -38,10 +39,7 @@ public enum Direction {
         // allows us to accept a negative or positive int for how much and how little it should rotate
         // negative value is counter-clockwise, positive is clockwise
         ArrayList<Direction> directions = new ArrayList<>();
-        directions.add(NORTH);
-        directions.add(EAST);
-        directions.add(SOUTH);
-        directions.add(WEST);
+        Collections.addAll(directions, Direction.values());
         int index = directions.indexOf(this);
 
         if ((rotation + index) % directions.size() < 0)

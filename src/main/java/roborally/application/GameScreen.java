@@ -39,10 +39,11 @@ public class GameScreen implements Screen {
     private final ArrayList<TiledMapTileLayer.Cell> playerTiles = new ArrayList<>();
 
     private final Application app;
+    private boolean cardsReady = false;
     private final GameLogic gameLogic;
     private ArrayList<ProgramCard> placementOfPhases;
-    private boolean phasesAreProgrammed;
     private final int numberOfPhases = 5;
+    private ProgramCard[][] chosenCards;
 
     private final Stage stage;
     private Skin skin;
@@ -53,6 +54,17 @@ public class GameScreen implements Screen {
         this.app = app;
         this.gameLogic = new GameLogic(this,1, FILE_PATH_1);
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
+    }
+
+    /**
+     * Should return moves[phases][cards]
+     * ( ( player1 card, player2 card, ... , ... , ...) ,
+     * ( player1 card, player2 card, ... , ... , ...)
+     * , ... , ... , ... )
+     * @return moves chosen by all players, separated into phases
+     */
+    public ProgramCard[][] getChosenCards() {
+        return chosenCards;
     }
 
     private void update(float f){
@@ -266,7 +278,7 @@ public class GameScreen implements Screen {
                             placementOfPhases.add(i, card); // "program card"
 
                             if (!placementOfPhases.get(numberOfPhases-1).getMovement().equals("default")) {
-                                phasesAreProgrammed = true;
+                                cardsReady = true;
                             } return;
                         }
                     }
@@ -300,46 +312,13 @@ public class GameScreen implements Screen {
         goButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (phasesAreProgrammed) {
-                    for (ProgramCard phase : placementOfPhases) {
-                        if (phase != null) {
-                            String movement = phase.getMovement();
-                            switch (movement) {
-                                case "1":
-                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
-                                    break;
-                                case "2":
-                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
-                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
-                                    break;
-                                case "3":
-                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
-                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
-                                    gameLogic.forwardMovement(gameLogic.currentPlayer);
-                                    break;
-                                case "u":
-                                    gameLogic.rotatePlayer(gameLogic.currentPlayer, 2);
-                                    break;
-                                case "back":
-                                    gameLogic.backwardMovement(gameLogic.currentPlayer);
-                                    break;
-                                case "rotateleft":
-                                    gameLogic.rotatePlayer(gameLogic.currentPlayer, -1);
-                                    break;
-                                case "rotateright":
-                                    gameLogic.rotatePlayer(gameLogic.currentPlayer, +1);
-                                    break;
-                                default:
-                                    System.out.println("Card not recognized");
-                                    break;
-                            }
-                            placementOfPhases.remove(phase);
-                            if (placementOfPhases.isEmpty()){      // When all movements are done
-                                phasesAreProgrammed = false;
-                            }
-                            return;
-                        }
-                    }
+                if (cardsReady) {
+                    chosenCards = new ProgramCard[5][gameLogic.getPlayers().size()];
+                    for (int i = 0; i < 5; i++) chosenCards[i][0] = placementOfPhases.get(i);
+
+                    gameLogic.cardsChosen = true;
+                    cardsReady = false;
+                    // TODO Add functionality for more players and feed this into the same method.
                 }
             }
         });
