@@ -22,58 +22,58 @@ public class PlayerTest {
     private Player player = new Player(0, startingPosition, gameLogic);
 
     @Test
-    public void initialHealth(){
+    public void initialHealthTest(){
         assertEquals(9, player.getHealth());
     }
 
     @Test
-    public void initialLives(){
+    public void initialLivesTest(){
         assertEquals(3, player.getLives());
     }
 
     @Test
-    public void initialPosition(){
+    public void initialPositionTest(){
         assertEquals(startingPosition, player.getPosition());
     }
 
     @Test
-    public void initialDir(){
+    public void initialDirTest(){
         assertEquals(Direction.NORTH, player.getRotation());
     }
 
     @Test
-    public void changeOfPlayerPosition(){
+    public void changeOfPlayerPositionTest(){
         player.setPosition(new Vector2(1, 0));
         assertNotEquals(player.getBackupPoint(), player.getPosition());
         assertEquals(new Vector2(1, 0), player.getPosition());
     }
 
     @Test
-    public void playerTakesDamageAndLosesOneHealth(){
+    public void playerTakesDamageAndLosesOneHealthTest(){
         player.updateHealth(-1);
         assertEquals(8, player.getHealth());
     }
 
     @Test
-    public void playerTakesDamageAndLosesNineHealth(){
+    public void playerTakesDamageAndLosesNineHealthTest(){
         player.updateHealth(-9);
         assertEquals(0, player.getHealth());
     }
 
     @Test
-    public void playerTakesMaxDamageAndLosesALife(){
+    public void playerTakesMaxDamageAndLosesALifeTest(){
         player.updateHealth(-10);
         assertEquals(2, player.getLives());
     }
 
     @Test
-    public void checkDamagePlayerTakesFromHoleIsTen(){
+    public void checkDamagePlayerTakesFromHoleIsTenTest(){
         int damage = board.getTile(new Vector2(1,3)).getHealthChange();
         assertEquals(-10, damage);
     }
 
     @Test
-    public void checkForCorrectRespawnPosition(){
+    public void checkForCorrectRespawnPositionTest(){
         int damage = board.getTile(new Vector2(1, 3)).getHealthChange();
         assertEquals(-10, damage);
         player.updateHealth(damage);

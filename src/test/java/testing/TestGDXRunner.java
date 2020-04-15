@@ -13,6 +13,8 @@ import org.mockito.Mockito;
 /**
  * Runs a headless test of an Application
  * Thus all methods here are empty
+ *
+ * use @ExtendWith(TestGDXRunner.class) to run tests with the headless application
  */
 public class TestGDXRunner implements BeforeAllCallback {
     @Override
