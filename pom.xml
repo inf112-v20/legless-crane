@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>inf112.legless-crane</groupId>
   <artifactId>roborally</artifactId>
-  <version>0.4</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
   <!-- Project website on github -->
   <url>https://github.com/inf112-v20/legless-crane</url>
@@ -13,31 +13,15 @@
   <developers>
     <developer>
       <name>Sindre Larsen</name>
-      <roles>
-        <role>team leader</role>
-        <role>developer</role>
-      </roles>
     </developer>
     <developer>
       <name>Hedda Roska</name>
-      <roles>
-        <role>documentation manager</role>
-        <role>developer</role>
-      </roles>
     </developer>
     <developer>
       <name>Kjersti Aslesen</name>
-      <roles>
-        <role>lead tester</role>
-        <role>developer</role>
-      </roles>
     </developer>
     <developer>
       <name>Andreas Christensen</name>
-      <roles>
-        <role>customer contact</role>
-        <role>developer</role>
-      </roles>
     </developer>
   </developers>
 
@@ -54,6 +38,13 @@
       <groupId>com.badlogicgames.gdx</groupId>
       <artifactId>gdx</artifactId>
       <version>1.9.9</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.esotericsoftware/kryonet -->
+    <dependency>
+      <groupId>com.esotericsoftware</groupId>
+      <artifactId>kryonet</artifactId>
+      <version>2.22.0-RC1</version>
     </dependency>
 
     <dependency>
