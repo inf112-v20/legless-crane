@@ -1,6 +1,7 @@
 package roborally.network;
 
 
+import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
@@ -8,7 +9,6 @@ import java.io.IOException;
 public class GameServer {
     private Server server;
     private ServerListener listener;
-
 
     public GameServer() throws IOException {
         server = new Server();
@@ -21,4 +21,7 @@ public class GameServer {
         listener = new ServerListener(); // singleton here?
         server.addListener(listener); // think this should work as the ServerListener extends Listener
     }
+
+
+
 }
