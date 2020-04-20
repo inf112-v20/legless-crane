@@ -1,7 +1,6 @@
 package roborally.network;
 
 
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;

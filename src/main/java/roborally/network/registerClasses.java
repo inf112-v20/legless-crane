@@ -10,6 +10,7 @@ public class registerClasses {
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
         TODO Research Kryo a bit more, and implement this?
+         Call from GameServer and GameClient in constructor?
 
         This must be done on both the client and server, before any network communication occurs.
         It is very important that the exact same classes are registered on both the client and server,
