@@ -32,24 +32,7 @@ public class Prototying {
         // and notifying listeners.
 
 
-        // This code adds a listener to handle receiving objects:
-        server.addListener(new Listener() {
-            public void received (Connection connection, Object object) {
-                if (object instanceof SomeRequest) {
-                    SomeRequest request = (SomeRequest)object;
-                    System.out.println(request.text);
 
-                    SomeResponse response = new SomeResponse();
-                    response.text = "Thanks";
-                    connection.sendTCP(response);
-                }
-            }
-        });
-        /*
-        Note the Listener class has other notification methods that can be overridden.
-        Typically a listener has a series of instanceof checks to decide what to do with the object received.
-        In this example, it prints out a string and sends a response over TCP.
-         */
 
 
         /*
