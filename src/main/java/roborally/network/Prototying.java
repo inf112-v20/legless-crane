@@ -24,16 +24,6 @@ public class Prototying {
     }
 
     void startServer() throws IOException {
-        // This code starts a server on TCP port 54555 and UDP port 54777:
-        Server server = new Server();
-        server.start();
-        server.bind(54555, 54777);
-        // The start method starts a thread to handle incoming connections, reading/writing to the socket,
-        // and notifying listeners.
-
-
-
-
 
         /*
         For the above examples to work, the classes that are going to be sent over the network must be registered with the following code:
