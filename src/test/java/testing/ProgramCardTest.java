@@ -68,7 +68,7 @@ public class ProgramCardTest {
 
         for (int i = 0; i < 5; i++) {
             String movement = placementOfPhases.get(i).getMovement();
-            assertEquals(true, "1".equals(movement)
+            assertEquals(true, "move_1_".equals(movement)
                     || "move_2_".equals(movement)
                     || "move_3_".equals(movement)
                     || "u_turn_".equals(movement)
