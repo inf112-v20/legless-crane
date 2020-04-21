@@ -29,7 +29,7 @@ public class ProgramCardTest {
     @Test
     public void checkPriorityAccordingToMovement() {
         assertEquals(240, deckOfProgramCards.getProgramCardPriority(20));
-        assertEquals("rotateright", deckOfProgramCards.getProgramCardMovement(20));
+        assertEquals("rotate_right_", deckOfProgramCards.getProgramCardMovement(20));
     }
 
     // Check if a program card without parameters indicates default movement value. "Phase = program card without movement/priority"..
@@ -69,12 +69,12 @@ public class ProgramCardTest {
         for (int i = 0; i < 5; i++) {
             String movement = placementOfPhases.get(i).getMovement();
             assertEquals(true, "1".equals(movement)
-                    || "2".equals(movement)
-                    || "3".equals(movement)
-                    || "u".equals(movement)
-                    || "back".equals(movement)
-                    || "rotateright".equals(movement)
-                    || "rotateleft".equals(movement));
+                    || "move_2_".equals(movement)
+                    || "move_3_".equals(movement)
+                    || "u_turn_".equals(movement)
+                    || "back_up_".equals(movement)
+                    || "rotate_right_".equals(movement)
+                    || "rotate_left_".equals(movement));
         }
     }
 }
