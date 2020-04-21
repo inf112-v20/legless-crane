@@ -260,7 +260,7 @@ public class GameScreen implements Screen {
             final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
                     deckOfProgramCards.getProgramCardPriority(index));
           
-            String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index) + ".jpg";
+            String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index)+deckOfProgramCards.getProgramCardPriority(index) + ".png";
             card.setTexture(new Texture(fileName));
             card.setWidth(170);
             card.setHeight(200);
@@ -305,7 +305,7 @@ public class GameScreen implements Screen {
                 app.setScreen(app.menuScreen);
             }
         });
-        TextButton goButton = new TextButton("Let's go!", skin, "default");
+        TextButton goButton = new TextButton("Go", skin, "default");
         goButton.setPosition(Application.WIDTH / 3f + 450, Application.HEIGHT / 50f);
         goButton.setSize(250, 100);
         goButton.getLabel().setFontScale(3.0f);

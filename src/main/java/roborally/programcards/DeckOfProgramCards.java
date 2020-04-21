@@ -15,25 +15,25 @@ public class DeckOfProgramCards {
     public DeckOfProgramCards() {
         deckOfProgramCards = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            deckOfProgramCards.add(new ProgramCard("back", 430 + (i * 10)));    // Move backwards
+            deckOfProgramCards.add(new ProgramCard("back_up_", 430 + (i * 10)));    // Move backwards
         }
         for (int i = 0; i < 6; i++) {
-            deckOfProgramCards.add(new ProgramCard("u", 10 + (i * 10)));        // U-turn
+            deckOfProgramCards.add(new ProgramCard("u_turn_", 10 + (i * 10)));        // U-turn
         }
         for (int i = 0; i < 18; i++) {
-            deckOfProgramCards.add(new ProgramCard("rotateright", 80 + (i * 20)));   // Rotate right
+            deckOfProgramCards.add(new ProgramCard("rotate_right_", 80 + (i * 20)));   // Rotate right
         }
         for (int i = 0; i < 18; i++) {
-            deckOfProgramCards.add(new ProgramCard("rotateleft", 70 + (i * 20)));   // Rotate left
+            deckOfProgramCards.add(new ProgramCard("rotate_left_", 70 + (i * 20)));   // Rotate left
         }
         for (int i = 0; i < 18; i++) {
-            deckOfProgramCards.add(new ProgramCard("1", 490 + (i * 10)));       // Move forward 1
+            deckOfProgramCards.add(new ProgramCard("move_1_", 490 + (i * 10)));       // Move forward 1
         }
         for (int i = 0; i < 12; i++) {
-            deckOfProgramCards.add(new ProgramCard("2", 670 + (i * 10)));       // Move forward 2
+            deckOfProgramCards.add(new ProgramCard("move_2_", 670 + (i * 10)));       // Move forward 2
         }
         for (int i = 0; i < 6; i++) {
-            deckOfProgramCards.add(new ProgramCard("3", 790 + (i * 10)));       // Move forward 3
+            deckOfProgramCards.add(new ProgramCard("move_3_", 790 + (i * 10)));       // Move forward 3
         }
     }
 

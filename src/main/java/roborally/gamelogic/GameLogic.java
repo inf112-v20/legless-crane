@@ -91,17 +91,17 @@ public class GameLogic {
 
         for (int i = 0; i <1 ;i++) {
             switch(cardsThisPhase[i].getMovement()) {
-                case "1":
+                case "move_1_":
                     queuedMoves.add(Moves.FORWARD);
                     queuedPlayers.add(i);
                     break;
-                case "2":
+                case "move_2_":
                     queuedMoves.add(Moves.FORWARD);
                     queuedMoves.add(Moves.FORWARD);
                     queuedPlayers.add(i);
                     queuedPlayers.add(i);
                     break;
-                case "3":
+                case "move_3_":
                     queuedMoves.add(Moves.FORWARD);
                     queuedMoves.add(Moves.FORWARD);
                     queuedMoves.add(Moves.FORWARD);
@@ -109,21 +109,21 @@ public class GameLogic {
                     queuedPlayers.add(i);
                     queuedPlayers.add(i);
                     break;
-                case "u":
+                case "u_turn_":
                     queuedMoves.add(Moves.RIGHT);
                     queuedMoves.add(Moves.RIGHT);
                     queuedPlayers.add(i);
                     queuedPlayers.add(i);
                     break;
-                case "back":
+                case "back_up_":
                     queuedMoves.add(Moves.BACK);
                     queuedPlayers.add(i);
                     break;
-                case "rotateleft":
+                case "rotate_left_":
                     queuedMoves.add(Moves.LEFT);
                     queuedPlayers.add(i);
                     break;
-                case "rotateright":
+                case "rotate_right_":
                     queuedMoves.add(Moves.RIGHT);
                     queuedPlayers.add(i);
                     break;
