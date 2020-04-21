@@ -29,6 +29,7 @@ import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 // Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
 
@@ -42,8 +43,11 @@ public class GameScreen implements Screen {
     private boolean cardsReady = false;
     private final GameLogic gameLogic;
     private ArrayList<ProgramCard> placementOfPhases;
+    private Stack<Integer> nextPhase = new Stack<>();
     private final int numberOfPhases = 5;
     private ProgramCard[][] chosenCards;
+    private int phaseNum = 0;
+    private float phaseX, phaseY;
 
     private final Stage stage;
     private Skin skin;
@@ -242,12 +246,15 @@ public class GameScreen implements Screen {
             phase.setWidth(170);
             phase.setHeight(200);
             phase.setOriginCenter();
-            phase.setPosition(Application.WIDTH / 3f + 250 * i, Application.HEIGHT / 10f);
+            phaseX = Application.WIDTH / 3f;
+            phaseY = Application.HEIGHT / 10f;
+            phase.setPosition(phaseX + 250 * i, phaseY);
             phase.setRectangleBoundary();
             placementOfPhases.add(phase);
             stage.addActor(phase);
         }
     }
+
     /**
      * "Deck of program cards" which deals 9 randomly chosen program cards.
      * Reads each of the 9 movements according to the program cards.
@@ -265,22 +272,42 @@ public class GameScreen implements Screen {
             card.setWidth(170);
             card.setHeight(200);
             card.setOriginCenter();
-            card.setPosition(Application.WIDTH / 15f, Application.HEIGHT / 20f + 120 * i );
+            card.setOrigin(Application.WIDTH / 15f, Application.HEIGHT / 20f + 120 * i);
+            card.setPosition(card.getOriginX(), card.getOriginY());
             card.setRectangleBoundary();
 
             card.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    for (int i = 0; i < numberOfPhases; i++) {
-                        if (placementOfPhases.get(i).getMovement().equals("default")) {
-                            card.addAction(Actions.moveTo(placementOfPhases.get(i).getX(), placementOfPhases.get(i).getY(), 0.2f));
-                            placementOfPhases.remove(i);   // "default card"
-                            placementOfPhases.add(i, card); // "program card"
 
-                            if (!placementOfPhases.get(numberOfPhases-1).getMovement().equals("default")) {
-                                cardsReady = true;
-                            } return;
+                    // if the card is not already in a phase
+                    if (card.getY() == card.getOriginY()) {
+                        if (nextPhase.isEmpty() && !placementOfPhases.get(placementOfPhases.size()-1).getMovement().equals("default")) {
+                            return;
                         }
+                        if (!nextPhase.isEmpty()) {
+                            phaseNum = nextPhase.pop();
+                        }
+                        while (!placementOfPhases.get(phaseNum).getMovement().equals("default") && phaseNum < 4) {
+                            phaseNum++;
+                        }
+                        card.addAction(Actions.moveTo(phaseX + 250 * phaseNum, phaseY, 0.2f));
+                        placementOfPhases.remove(phaseNum);
+                        placementOfPhases.add(phaseNum, card);
+
+                        if (!placementOfPhases.get(numberOfPhases - 1).getMovement().equals("default") && nextPhase.isEmpty()) {
+                            cardsReady = true;
+                        } return;
+
+                        // If the card is already in a phase
+                    } else {
+                        int phaseNum = placementOfPhases.indexOf(card);
+                        card.addAction(Actions.moveTo(card.getOriginX(), card.getOriginY(), 0.2f));
+                        placementOfPhases.remove(card);
+                        placementOfPhases.add(phaseNum, new ProgramCard());
+                        nextPhase.push(phaseNum);
+                        cardsReady = false;
+                        return;
                     }
                 }
             });
@@ -305,7 +332,7 @@ public class GameScreen implements Screen {
                 app.setScreen(app.menuScreen);
             }
         });
-        TextButton goButton = new TextButton("Go", skin, "default");
+        TextButton goButton = new TextButton("Start turn", skin, "default");
         goButton.setPosition(Application.WIDTH / 3f + 450, Application.HEIGHT / 50f);
         goButton.setSize(250, 100);
         goButton.getLabel().setFontScale(3.0f);
