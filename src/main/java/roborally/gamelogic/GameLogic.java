@@ -49,6 +49,7 @@ public class GameLogic {
         for(int i = 0; i <numPlayers; i++) {
             players.add(new Player(i+1, board.getSpawnPoints(i),this));
         }
+
         currentPlayer = players.get(0); // so far only used by GameScreen
         gameState = GameState.DEAL_CARDS;
         elementMoves = ElementMoves.EXPRESS_BELTS;
@@ -89,7 +90,7 @@ public class GameLogic {
     private void queuePhase() {
         ProgramCard[] cardsThisPhase = gameScreen.getChosenCards()[phase];
 
-        for (int i = 0; i <1 ;i++) {
+        for (int i = 0; i <cardsThisPhase.length ;i++) {
             switch(cardsThisPhase[i].getMovement()) {
                 case "move_1_":
                     queuedMoves.add(Moves.FORWARD);

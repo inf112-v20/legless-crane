@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Application app) {
         this.app = app;
-        this.gameLogic = new GameLogic(this,1, FILE_PATH_1);
+        this.gameLogic = new GameLogic(this,3, FILE_PATH_1);
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
 
@@ -174,6 +174,10 @@ public class GameScreen implements Screen {
     public void placePlayers() {
         playerTiles.add(new Cell().setTile(new StaticTiledMapTile
                 (new TextureRegion(new Texture("img/Tower.png")))));
+        playerTiles.add(new Cell().setTile(new StaticTiledMapTile
+                (new TextureRegion(new Texture("img/Queen.png")))));
+        playerTiles.add(new Cell().setTile(new StaticTiledMapTile
+                (new TextureRegion(new Texture("img/Pawn.png")))));
 
         playerLayer = new TiledMapTileLayer(gameLogic.boardWidth, gameLogic.boardHeight, 300, 300);
 
@@ -342,6 +346,8 @@ public class GameScreen implements Screen {
                 if (cardsReady) {
                     chosenCards = new ProgramCard[5][gameLogic.getPlayers().size()];
                     for (int i = 0; i < 5; i++) chosenCards[i][0] = placementOfPhases.get(i);
+                    for (int i = 0; i < 5; i++) chosenCards[i][1] = placementOfPhases.get(i);
+                    for (int i = 0; i < 5; i++) chosenCards[i][2] = placementOfPhases.get(i);
 
                     gameLogic.cardsChosen = true;
                     cardsReady = false;
