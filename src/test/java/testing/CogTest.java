@@ -12,7 +12,7 @@ import roborally.gamelogic.GameLogic;
 import roborally.gamelogic.Player;
 
 /**
- * 
+ * Testing correct movement for cogs
  */
 
 public class CogTest {
@@ -26,6 +26,7 @@ public class CogTest {
         gameLogic = mock(GameLogic.class);
         player = new Player(0, new Vector2(1, 1), gameLogic);
     }
+
     @Test
     public void checkCogInPositionTest(){
         assertEquals(true, board.getTile(new Vector2(2,4)).isCog());
@@ -41,9 +42,9 @@ public class CogTest {
 
     @Test
     public void cog53RotateCounterClockwiseTest(){
-        assertEquals(Direction.NORTH, player.getRotation());
+        assertEquals(Direction.EAST, player.getRotation());
         player.setPosition(new Vector2(4,4));
         player.setRotation(player.getRotation().rotate(board.getTile(new Vector2(4,4)).getRotation()));
-        assertEquals(Direction.WEST, player.getRotation());
+        assertEquals(Direction.NORTH, player.getRotation());
     }
 }
