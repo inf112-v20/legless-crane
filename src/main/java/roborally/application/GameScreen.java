@@ -243,12 +243,12 @@ public class GameScreen implements Screen {
      */
     public void phases() {
         placementOfPhases = new ArrayList<>();
-        Texture img = new Texture("cards/background.jpg");
         for (int i = 0; i < numberOfPhases; i++) {
+            Texture img = new Texture("cards/phase"+i+".png");
             ProgramCard phase = new ProgramCard();
             phase.setTexture(img);
-            phase.setWidth(170);
-            phase.setHeight(200);
+            phase.setWidth(210);
+            phase.setHeight(250);
             phase.setOriginCenter();
             phaseX = Application.WIDTH / 3f;
             phaseY = Application.HEIGHT / 10f;
@@ -273,10 +273,10 @@ public class GameScreen implements Screen {
           
             String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index)+deckOfProgramCards.getProgramCardPriority(index) + ".png";
             card.setTexture(new Texture(fileName));
-            card.setWidth(170);
-            card.setHeight(200);
+            card.setWidth(210);
+            card.setHeight(250);
             card.setOriginCenter();
-            card.setOrigin(Application.WIDTH / 15f, Application.HEIGHT / 20f + 120 * i);
+            card.setOrigin(Application.WIDTH / 15f + i%2*150, Application.HEIGHT / 20f + 120 * i);
             card.setPosition(card.getOriginX(), card.getOriginY());
             card.setRectangleBoundary();
 
@@ -327,7 +327,7 @@ public class GameScreen implements Screen {
      */
     private void buttons() {
         TextButton menuButton = new TextButton("Main menu", skin, "default");
-        menuButton.setPosition(Application.WIDTH / 20f, Application.HEIGHT - 150f);
+        menuButton.setPosition(Application.WIDTH / 12f, Application.HEIGHT - 150f);
         menuButton.setSize(250, 100);
         menuButton.getLabel().setFontScale(3.0f);
         menuButton.addListener(new ClickListener() {
