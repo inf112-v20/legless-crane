@@ -8,6 +8,7 @@ import roborally.application.GameScreen;
 import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class GameLogic {
@@ -23,10 +24,12 @@ public class GameLogic {
 
     private GameState gameState;
     private ElementMoves elementMoves;
-    private ArrayList<Moves> queuedMoves = new ArrayList<>();
     private ArrayList<Integer> queuedPlayers = new ArrayList<>();
-    private ProgramCard[][] chosenCards;
+    private ArrayList<Integer> cardIndices = new ArrayList<>();
+    private ArrayList<Moves> queuedMoves = new ArrayList<>();
+    private ArrayList<Integer> list;
     public boolean cardsChosen = false;
+
 
     /**
      * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
@@ -53,6 +56,7 @@ public class GameLogic {
         currentPlayer = players.get(0); // so far only used by GameScreen
         gameState = GameState.DEAL_CARDS;
         elementMoves = ElementMoves.EXPRESS_BELTS;
+        setCardIndices();
     }
 
     /**
@@ -271,7 +275,26 @@ public class GameLogic {
                     if (playerTile.isWrench()) player.updateHealth(playerTile.getHealthChange());
                 }
 
+                for (Player player : players) {
+                    if (player.getHealth() < 5) {
+                        int lockedRegisters = player.getHealth();
+                        for (int i = 0; i < lockedRegisters; i++) {
+                            gameScreen.getChosenCards()[i][player.getPlayerNumber() - 1] = new ProgramCard();
+                        }
+                    } else {
+                        for (int i = 0; i < 5; i++) {
+                            gameScreen.getChosenCards()[i][player.getPlayerNumber() - 1] = new ProgramCard();
+                        }
+                    }
+                }
+
                 cardsChosen = false;
+                cardIndices.clear();
+                setCardIndices();
+
+                gameScreen.prepareCards();
+                gameScreen.deckOfProgramCards();
+
                 gameState = gameState.advance();
                 phase = 0;
                 break;
@@ -279,6 +302,27 @@ public class GameLogic {
             default:
                 throw new IllegalStateException("Unexpected value: " + gameState);
         }
+    }
+
+    /**
+     * During one turn; each player gets unique, random card-indices from the same "deck of cards"
+     *
+     * @return array of 84 numbers (shuffled)
+     */
+    public ArrayList<Integer> getCardIndices(){
+        return cardIndices;
+    }
+
+    /**
+     * Initialize array of 84 numbers. Shuffles it.
+     */
+    private void setCardIndices() {
+        list = new ArrayList<>();
+        for (int i = 0; i < 84; i++) {
+            list.add(i);
+            Collections.shuffle(list);
+        }
+        cardIndices.addAll(list);
     }
 
     /**
