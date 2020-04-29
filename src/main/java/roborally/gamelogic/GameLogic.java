@@ -491,7 +491,7 @@ public class GameLogic {
             Vector2 position = player.getPosition();
             Tile playerTile = board.getTile(position);
 
-            if (position.x >= boardWidth || position.y >= boardHeight || position.x <= 0 || position.y <= 0 || playerTile.isHole()) {
+            if (position.x >= boardWidth-1 || position.y >= boardHeight-1 || position.x <= 0 || position.y <= 0 || playerTile.isHole()) {
                 System.out.println("player died");
                 player.updateHealth(-10);
             }
