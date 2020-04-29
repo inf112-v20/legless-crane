@@ -197,7 +197,6 @@ public class GameLogic {
 
             case MOVE_PLAYER:
                 performMove();
-                killIfOffBoard();
                 if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
                     gameState = gameState.advance();
                     //System.out.println("all players have moved");
