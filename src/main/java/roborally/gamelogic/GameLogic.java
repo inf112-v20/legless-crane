@@ -23,13 +23,15 @@ public class GameLogic {
     private int phase; // would it make more sense to start this at a different number and change the if statement?
 
     private GameState gameState;
-    private ElementMoves elementMoves;
     private ArrayList<Integer> queuedPlayers = new ArrayList<>();
     private ArrayList<Integer> cardIndices = new ArrayList<>();
     private ArrayList<Moves> queuedMoves = new ArrayList<>();
     private ArrayList<Integer> list;
     public boolean cardsChosen = false;
 
+    public GameState getGameState() {
+        return gameState;
+    }
 
     /**
      * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
@@ -55,7 +57,7 @@ public class GameLogic {
 
         currentPlayer = players.get(0); // so far only used by GameScreen
         gameState = GameState.DEAL_CARDS;
-        elementMoves = ElementMoves.EXPRESS_BELTS;
+
         setCardIndices();
     }
 
@@ -176,7 +178,7 @@ public class GameLogic {
      *
      */
     public void updateGameState() {
-        if (count<10) {
+        if (count<60) {
             count++;
             return;
         }
@@ -196,44 +198,35 @@ public class GameLogic {
             case MOVE_PLAYER:
                 performMove();
                 killIfOffBoard();
-                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) gameState = gameState.advance();
+                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
+                    gameState = gameState.advance();
+                    //System.out.println("all players have moved");
+                }
                 break;
 
             case MOVE_BOARD:
-                for (Player player : players) {
-                    Vector2 playerPosition = player.getPosition();
-                    Tile playerTile = board.getTile(playerPosition);
-
-                    switch(elementMoves) {
-                        case EXPRESS_BELTS:
-                            if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) beltsMovePlayer(player);
-                            elementMoves = elementMoves.advance();
-                            break;
-
-                        case ALL_BELTS:
-                            if (playerTile.isBelt()) beltsMovePlayer(player);
-                            elementMoves = elementMoves.advance();
-                            break;
-
-                        case PUSHERS:
-                            elementMoves = elementMoves.advance();
-                            break;
-
-                        case COGS:
-                            if (playerTile.isCog()) rotationCogs(player);
-                            elementMoves = elementMoves.advance();
-                            break;
-
-                        case DONE:
-                            elementMoves = elementMoves.advance();
-                            gameState = gameState.advance();
-                            killIfOffBoard();
-                            break;
-
-                        default:
-                            throw new IllegalStateException("Unexpected value: " + elementMoves);
+                for (ElementMoves moves : ElementMoves.values()) {
+                    for(Player player : players) {
+                        Vector2 playerPosition = player.getPosition();
+                        Tile playerTile = board.getTile(playerPosition);
+                        switch (moves) {
+                            case EXPRESS_BELTS:
+                                if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) beltsMovePlayer(player);
+                                break;
+                            case ALL_BELTS:
+                                if (playerTile.isBelt()) beltsMovePlayer(player);
+                                break;
+                            case PUSHERS:
+                                // pushers not yet implemented
+                                break;
+                            case COGS:
+                                if (playerTile.isCog()) rotationCogs(player);
+                                break;
+                        }
                     }
                 }
+                killIfOffBoard();
+                gameState = gameState.advance();
 
             case FIRE_LASERS:
                 for (Player player : players) {
