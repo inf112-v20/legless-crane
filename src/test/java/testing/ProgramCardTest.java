@@ -1,80 +1,75 @@
 package testing;
 
-
+import org.lwjgl.Sys;
+import roborally.application.GameScreen;
+import roborally.gamelogic.GameLogic;
 import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 
 public class ProgramCardTest {
+    private GameScreen gameScreen;
+    private GameLogic gameLogic = new GameLogic(gameScreen, 3, FILE_PATH_1);
     private final DeckOfProgramCards deckOfProgramCards = new DeckOfProgramCards();
-    private final ArrayList<ProgramCard> placementOfPhases = new ArrayList<>();
+    private static final String FILE_PATH_1 = "boards/Risky_Exchange.tmx";
     private final ProgramCard phase = new ProgramCard();
+    private int count = 0;
 
-    // Control deck size (in regards to deal correctly 9 random cards in GameScreen). 0-83: deckOfProgramCards-1.
-
+    /**
+     * Control if method returns correct size of array ("deckOfCards-indices")
+     */
     @Test
-    public void checkDeckSize() {
-        assertEquals(84, deckOfProgramCards.getDeckSize());
+    public void checkCardIndices1() {
+        assertEquals(84, gameLogic.getCardIndices().size());
     }
 
-    // Check if a card's movement is being consistent with priority (based on array index in DeckOfProgramCards).
-
+    /**
+     * Control that method returns unique numbers ranging from 0 to 83
+     */
     @Test
-    public void checkPriorityAccordingToMovement() {
+    public void checkCardIndices2() {
+        for (int i = 0; i < gameLogic.getCardIndices().size(); i++) {
+            for (int j = 0; j < 84; j++) {
+                if (gameLogic.getCardIndices().get(i) == j)
+                    count++;
+            }
+            assertEquals(1, count);
+            count = 0;
+        }
+    }
+
+    /**
+     * Control accordance between priority and movement
+     */
+    @Test
+    public void checkPriorityAccordingToMovement1() {
         assertEquals(240, deckOfProgramCards.getProgramCardPriority(20));
         assertEquals("rotate_right_", deckOfProgramCards.getProgramCardMovement(20));
     }
 
-    // Check if a program card without parameters indicates default movement value. "Phase = program card without movement/priority"..
+    @Test
+    public void checkPriorityAccordingToMovement2() {
+        assertEquals(660, deckOfProgramCards.getProgramCardPriority(65));
+        assertEquals("move_1_", deckOfProgramCards.getProgramCardMovement(65));
+    }
 
+    @Test
+    public void checkPriorityAccordingToMovement3() {
+        assertEquals(810, deckOfProgramCards.getProgramCardPriority(80));
+        assertEquals("move_3_", deckOfProgramCards.getProgramCardMovement(80));
+    }
+
+    /**
+     * Control that a card without assigned movement/priority returns expected value
+     */
     @Test
     public void checkDefaultPhase() {
         assertEquals("default", phase.getMovement());
-    }
-
-    // Check if a phase correctly adds a program card dealt randomly from DeckOfProgramCards.
-
-    @Test
-    public void checkReadyPhase() {
-
-        // Deal 5 random cards from DeckOfCards:
-
-        for (int i = 0; i < 5; i++) {
-            int index = (int) (Math.random() * deckOfProgramCards.getDeckSize() - 1);
-            final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
-                    deckOfProgramCards.getProgramCardPriority(index));
-
-            // 5 empty program cards as phases (ready to be "programmed")
-
-            placementOfPhases.add(i, phase);
-
-            // Control after addition:
-
-            if (placementOfPhases.get(i).getMovement().equals("default")) {
-                placementOfPhases.remove(i);
-                placementOfPhases.add(i, card);
-            }
-            assertNotNull(placementOfPhases.get(i));
-        }
-
-        // Check if 5 random movements are being read after programming the robot (the 5 phases which are ready):
-
-        for (int i = 0; i < 5; i++) {
-            String movement = placementOfPhases.get(i).getMovement();
-            assertEquals(true, "move_1_".equals(movement)
-                    || "move_2_".equals(movement)
-                    || "move_3_".equals(movement)
-                    || "u_turn_".equals(movement)
-                    || "back_up_".equals(movement)
-                    || "rotate_right_".equals(movement)
-                    || "rotate_left_".equals(movement));
-        }
     }
 }
