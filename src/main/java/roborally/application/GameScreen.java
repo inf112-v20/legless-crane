@@ -43,17 +43,12 @@ public class GameScreen implements Screen {
     private final Application app;
     private final GameLogic gameLogic;
     private ArrayList<ProgramCard> placementOfPhases;
-    private Stack<Integer> nextPhase = new Stack<>();
     DeckOfProgramCards deckOfProgramCards;
-    private ProgramCard[][] chosenCards;
 
     private final int numberOfPhases = 5;
-    private boolean cardsReady = false;
     private int currentPlayer = 0;
     private float phaseX, phaseY;
-    private int startingPoint;
     private int phaseNum = 0;
-    private int lastIndex;
     private int index;
 
     private final Stage stage;
@@ -74,9 +69,6 @@ public class GameScreen implements Screen {
      * , ... , ... , ... )
      * @return moves chosen by all players, separated into phases
      */
-    public ProgramCard[][] getChosenCards() {
-        return chosenCards;
-    }
 
     private void update(float f){
         stage.act(f);
@@ -98,7 +90,6 @@ public class GameScreen implements Screen {
         phases();
         deckOfProgramCards();
         buttons();
-        chosenCards = new ProgramCard[5][gameLogic.getPlayers().size()];
     }
 
     @Override
@@ -271,14 +262,16 @@ public class GameScreen implements Screen {
     /**
      * "Deck of program cards" which deals 9 randomly chosen program cards.
      * Reads each of the 9 movements according to the program cards.
-     * ClickListener (a program card being chosen) adds the chosen program card to a phase.
+     * GameLogic deals with logic of adding/removing cards while programming the robot.
      */
     public void deckOfProgramCards() {
         deckOfProgramCards = new DeckOfProgramCards();
         for (int i = 0; i < gameLogic.getPlayers().get(currentPlayer).getHealth(); i++){
-            index = gameLogic.getCardIndices().get(i);
+            index = gameLogic.getCardIndices().get((currentPlayer*9)+i);
             final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
                     deckOfProgramCards.getProgramCardPriority(index));
+
+            card.setDeckIndex(index);
 
             String fileName = "cards/" + deckOfProgramCards.getProgramCardMovement(index)+deckOfProgramCards.getProgramCardPriority(index) + ".png";
             card.setTexture(new Texture(fileName));
@@ -294,53 +287,38 @@ public class GameScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
 
-                    lastIndex = gameLogic.getPlayers().get(currentPlayer).getHealth()-1;
-                    if (lastIndex > numberOfPhases){
-                        lastIndex = 4;
-                    }
-
-                    // In case all phases are ready:
-                    if (nextPhase.isEmpty() && !placementOfPhases.get(lastIndex).getMovement().equals("default")) {
-                        return;
-                    }
-
-                    // if the card is not already in a phase
+                    // if the card should decide a phase
                     if (card.getY() == card.getOriginY()) {
-                        if (!nextPhase.isEmpty()) {
-                            phaseNum = nextPhase.pop();
-                        }
-                        while (!placementOfPhases.get(phaseNum).getMovement().equals("default") && phaseNum < lastIndex) {
-                            phaseNum++;
-                        }
-                        card.addAction(Actions.moveTo(phaseX + 250 * phaseNum, phaseY, 0.2f));
-                        placementOfPhases.remove(phaseNum);
-                        placementOfPhases.add(phaseNum, card);
 
-                        if (!placementOfPhases.get(lastIndex).getMovement().equals("default") && nextPhase.isEmpty()) {
-                            cardsReady = true;
-                        } return;
-
-                        // If the card is already in a phase
-                    } else {
-                        int phaseNum = placementOfPhases.indexOf(card);
+                        phaseNum = gameLogic.fillPhase(currentPlayer, card.getDeckIndex());
+                        if (phaseNum != -1) {
+                            card.addAction(Actions.moveTo(phaseX + 250 * phaseNum, phaseY, 0.2f));
+                            placementOfPhases.remove(phaseNum);
+                            placementOfPhases.add(phaseNum, card);
+                        } else {
+                            return;
+                        }
+                    }
+                    // If the card is already in a phase
+                    else {
                         card.addAction(Actions.moveTo(card.getOriginX(), card.getOriginY(), 0.2f));
+                        phaseNum = placementOfPhases.indexOf(card);
                         placementOfPhases.remove(card);
                         placementOfPhases.add(phaseNum, new ProgramCard());
-                        nextPhase.push(phaseNum);
-                        cardsReady = false;
+                        gameLogic.regretPhase(currentPlayer, phaseNum);
                         return;
                     }
                 }
             });
             stage.addActor(card);
-            card.setZIndex(5);             // Bottom of cards get hidden (beneficial while overlap)
+            card.setZIndex(5);
         }
     }
 
     /**
      * Buttons as click listeners.
      * The button "Main menu" transfers from GameScreen to MenuScreen.
-     * The button "Let's go!" reads the current player's phases "click by click".
+     * The button "Start" confirms the currentPlayer's moves
      */
     private void buttons() {
         TextButton menuButton = new TextButton("Main menu", skin, "default");
@@ -353,30 +331,17 @@ public class GameScreen implements Screen {
                 app.setScreen(app.menuScreen);
             }
         });
-        TextButton goButton = new TextButton("Start turn", skin, "default");
+        TextButton goButton = new TextButton("Start", skin, "default");
         goButton.setPosition(Application.WIDTH / 3f + 450, Application.HEIGHT / 50f);
         goButton.setSize(250, 100);
         goButton.getLabel().setFontScale(3.0f);
         goButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (cardsReady) {
 
-                    lastIndex = gameLogic.getPlayers().get(currentPlayer).getHealth();
-
-                    if (lastIndex > numberOfPhases){
-                        lastIndex = 5;
-                    }
-
-                    for (int i = 0; i < lastIndex; i++) {
-                        chosenCards[i][currentPlayer] = placementOfPhases.get(i);
-                    }
-                    cardsReady = false;
-
-                    programAIs();
-                    gameLogic.cardsChosen = true;
+                if (gameLogic.cardsAreChosen()) {
+                    gameLogic.cardsChosen=true;
                     clearCards();
-
                 } else {
                     return;
                 }
@@ -387,43 +352,15 @@ public class GameScreen implements Screen {
     }
 
     /**
-     *  Prepare "dummy"-AIs for a turn (random moves).
-     *  Reads "card indices" from gameLogic.getCardIndices() from individual starting points.
-     */
-    private void programAIs(){
-        for (int playerNum = 1; playerNum < gameLogic.getPlayers().size(); playerNum++) {
-
-            lastIndex = gameLogic.getPlayers().get(playerNum).getHealth();
-
-            if (lastIndex > numberOfPhases){
-                lastIndex = 5;
-            }
-
-            startingPoint = playerNum * gameLogic.getPlayers().get(playerNum - 1).getHealth();
-
-            for (int phase = 0; phase < lastIndex; phase++) {
-                index = gameLogic.getCardIndices().get(startingPoint);
-                ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
-                        deckOfProgramCards.getProgramCardPriority(index));
-                chosenCards[phase][playerNum] = card;
-                startingPoint++;
-            }
-        }
-    }
-
-    /**
      * When currentPlayer has chosen cards before a turn, cards get removed both logically and visually (and phaseNum reset)
      */
     public void clearCards(){
-        phaseNum = 0;
-
         // Logically tidying
         placementOfPhases.clear();
         for (int i = 0; i < 5; i++) {
             placementOfPhases.add(new ProgramCard());
         }
 
-        // Visually tidying
         for (Actor actor : stage.getActors()) {
             if (actor.getName()=="tidy") {
                 actor.addAction(Actions.removeActor());
@@ -432,13 +369,13 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * If currentPlayer has less than 5 health points as a turn is completed, the screen should then visually display which cards are locked.
+     * Preparation in case the currentPlayer gets locked cards.
      * The cards are not clickable, just removable as clearCards() gets called.
      */
     public void prepareCards(){
         for (int i = 4; i >= gameLogic.getPlayers().get(currentPlayer).getHealth(); i--) {
-            String movement = chosenCards[i][currentPlayer].getMovement();
-            int priority = chosenCards[i][currentPlayer].getPriority();
+            String movement = gameLogic.getChosenCards()[i][currentPlayer].getMovement();
+            int priority = gameLogic.getChosenCards()[i][currentPlayer].getPriority();
 
             ProgramCard card = new ProgramCard(movement, priority);
 

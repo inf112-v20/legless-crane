@@ -5,10 +5,12 @@ import roborally.board.Board;
 import roborally.board.Direction;
 import roborally.board.Tile;
 import roborally.application.GameScreen;
+import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 
 public class GameLogic {
@@ -26,8 +28,20 @@ public class GameLogic {
     private ArrayList<Integer> queuedPlayers = new ArrayList<>();
     private ArrayList<Integer> cardIndices = new ArrayList<>();
     private ArrayList<Moves> queuedMoves = new ArrayList<>();
+    private ProgramCard[][] chosenCards;
     private ArrayList<Integer> list;
     public boolean cardsChosen = false;
+
+    private Stack<Stack<Integer>> playersNextPhase = new Stack<>();
+    DeckOfProgramCards deckOfProgramCards;
+
+    private final int numberOfPhases = 5;
+    private int phaseNum = 0;
+    private int index;
+
+    private int lastIndex;
+    private int startingPoint;
+
 
     public GameState getGameState() {
         return gameState;
@@ -59,6 +73,116 @@ public class GameLogic {
         gameState = GameState.DEAL_CARDS;
 
         setCardIndices();
+        chosenCards = new ProgramCard[5][getPlayers().size()];
+        deckOfProgramCards = new DeckOfProgramCards();
+        initializeLists();
+    }
+
+    public ProgramCard[][] getChosenCards() {
+        return chosenCards;
+    }
+
+    /**
+     * When a new game is getting started,
+     * phases and stacks which keep track of "regretting" (see regretPhase()) are initialized.
+     */
+    private void initializeLists(){
+        for (int row = 0; row < getChosenCards().length; row++) {
+            for (int col = 0; col < getChosenCards()[row].length; col++) {
+                getChosenCards()[row][col]= new ProgramCard();
+            }
+        }
+        for (int playerNum = 0; playerNum < players.size(); playerNum++) {
+            playersNextPhase.add(new Stack<Integer>());
+            }
+    }
+
+    /**
+     * For currentPlayer in GameScreen:
+     * Method which deals with logic concerning adding cards as phases (while programming the robot).
+     */
+    public int fillPhase(int playerNum, int index) {
+
+        lastIndex = getPlayers().get(playerNum).getHealth()-1;
+        if (lastIndex > numberOfPhases) {
+            lastIndex = 4;
+        }
+
+        // All phases are already filled
+        if (!getChosenCards()[lastIndex][playerNum].getMovement().equals("default") && playersNextPhase.get(playerNum).isEmpty()) {
+            return -1;
+        }
+
+        if (!playersNextPhase.get(playerNum).isEmpty()) {
+            phaseNum = playersNextPhase.get(playerNum).pop();
+        }
+
+        while (!getChosenCards()[phaseNum][playerNum].getMovement().equals("default") && phaseNum < lastIndex) {
+            phaseNum++;
+        }
+
+        getChosenCards()[phaseNum][playerNum] = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
+                deckOfProgramCards.getProgramCardPriority(index));
+
+        return phaseNum;
+    }
+
+    /**
+     * For currentPlayer in GameScreen:
+     * Method which deals with logic concerning regretting cards which have been chosen as phases.
+     * Fills a stack (particular stack assigned to the currentPlayer) with "next phase number" to get filled.
+     *
+     * @param playerNum the player regretting a card
+     * @param phaseNum the phase which is getting changed (e.g. first phase = 0).
+     */
+    public void regretPhase(int playerNum, int phaseNum){
+        getChosenCards()[phaseNum][playerNum] = new ProgramCard();
+        playersNextPhase.get(playerNum).push(phaseNum);
+        return;
+    }
+
+    /**
+     * Method which checks whether or not all phases for all players are ready.
+     *
+     * @return status regarding fulfillment of the players' phases
+     * When true, currentPlayer can start the turn in GameScreen.
+     */
+    public boolean cardsAreChosen() {
+        programAIs();
+
+        for (int row = 0; row < getChosenCards().length; row++) {
+            for (int col = 0; col < getChosenCards()[row].length; col++) {
+                if (getChosenCards()[row][0].getMovement() == "default") {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     *  Prepare "dummy"-AIs for a turn. Random moves are given.
+     *  Reads "card indices" from gameLogic.getCardIndices() from individual starting points.
+     */
+    private void programAIs(){
+        for (int playerNum = 1; playerNum < getPlayers().size(); playerNum++) {
+
+            lastIndex = getPlayers().get(playerNum).getHealth();
+
+            if (lastIndex > numberOfPhases){
+                lastIndex = 5;
+            }
+
+            startingPoint = playerNum * getPlayers().get(playerNum - 1).getHealth();
+
+            for (int phase = 0; phase < lastIndex; phase++) {
+                index = getCardIndices().get(startingPoint);
+                ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
+                        deckOfProgramCards.getProgramCardPriority(index));
+                chosenCards[phase][playerNum] = card;
+                startingPoint++;
+            }
+        }
     }
 
     /**
@@ -94,7 +218,7 @@ public class GameLogic {
      * in the same way.
      */
     private void queuePhase() {
-        ProgramCard[] cardsThisPhase = gameScreen.getChosenCards()[phase];
+        ProgramCard[] cardsThisPhase = getChosenCards()[phase];
 
         for (int i = 0; i <cardsThisPhase.length ;i++) {
             switch(cardsThisPhase[i].getMovement()) {
@@ -178,7 +302,7 @@ public class GameLogic {
      *
      */
     public void updateGameState() {
-        if (count<60) {
+        if (count<10) {
             count++;
             return;
         }
@@ -187,7 +311,8 @@ public class GameLogic {
 
         switch (gameState) {
             case DEAL_CARDS:
-                if(cardsChosen) gameState = gameState.advance();
+                if (cardsChosen) {
+                    gameState = gameState.advance(); }
                 break;
 
             case REVEAL_CARDS:
@@ -267,15 +392,16 @@ public class GameLogic {
                     if (playerTile.isWrench()) player.updateHealth(playerTile.getHealthChange());
                 }
 
+                // Depending on health: fill phases with default cards in preparation for the next turn
                 for (Player player : players) {
                     if (player.getHealth() < 5) {
                         int lockedRegisters = player.getHealth();
                         for (int i = 0; i < lockedRegisters; i++) {
-                            gameScreen.getChosenCards()[i][player.getPlayerNumber() - 1] = new ProgramCard();
+                            getChosenCards()[i][player.getPlayerNumber() - 1] = new ProgramCard();
                         }
                     } else {
                         for (int i = 0; i < 5; i++) {
-                            gameScreen.getChosenCards()[i][player.getPlayerNumber() - 1] = new ProgramCard();
+                            getChosenCards()[i][player.getPlayerNumber() - 1] = new ProgramCard();
                         }
                     }
                 }
@@ -286,6 +412,7 @@ public class GameLogic {
 
                 gameScreen.prepareCards();
                 gameScreen.deckOfProgramCards();
+                phaseNum = 0;
 
                 gameState = gameState.advance();
                 phase = 0;
