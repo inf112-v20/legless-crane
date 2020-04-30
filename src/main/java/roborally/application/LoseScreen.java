@@ -3,9 +3,11 @@ package roborally.application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -31,14 +33,12 @@ public class LoseScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         stage.clear();
-
         queueAssets();
-        buttons();
     }
 
     @Override
     public void render(float v) {
-        Gdx.gl.glClearColor(25f, 25f, 25f, 1f);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(v);
@@ -72,20 +72,11 @@ public class LoseScreen implements Screen {
         this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
         this.skin.add("default-font",app.font);
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-    }
 
-    private void buttons() {
-        TextButton exitButton = new TextButton("Exit", skin, "default");
-        exitButton.setPosition(850, 300);
-        exitButton.setSize(300, 100);
-        exitButton.getLabel().setFontScale(3.0f);
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
-        stage.addActor(exitButton);
+        Texture splashTex = new Texture(Gdx.files.internal("img/game_over.png"));
+        Image logo = new Image(splashTex);
+        logo.setPosition(stage.getWidth()/9+50,stage.getHeight()/3);
+        stage.addActor(logo);
     }
 }
 
