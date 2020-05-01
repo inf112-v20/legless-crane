@@ -36,7 +36,7 @@ import java.util.Stack;
 
 public class GameScreen implements Screen {
     private TiledMap boardgfx;
-    private TiledMapTileLayer playerLayer;
+    public TiledMapTileLayer playerLayer;
     private OrthogonalTiledMapRenderer renderer;
     private final ArrayList<TiledMapTileLayer.Cell> playerTiles = new ArrayList<>();
 

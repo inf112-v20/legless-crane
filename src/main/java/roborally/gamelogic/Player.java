@@ -3,7 +3,6 @@ package roborally.gamelogic;
 import com.badlogic.gdx.math.Vector2;
 import roborally.board.Direction;
 
-import java.util.ArrayList;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 

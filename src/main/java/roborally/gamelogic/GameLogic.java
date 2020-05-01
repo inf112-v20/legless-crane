@@ -657,9 +657,19 @@ public class GameLogic {
             for (Direction dir : nextTile.getBlockingDirections())
                 if (dir == direction.opposite())
                     return false;
+        } for (Player otherPlayer : players) {
+            if (otherPlayer != player) {
+                if (otherPlayer.getPosition().equals(nextPosition)) {
+                    if (validMove(otherPlayer, direction)) {
+                        movePlayerInDirection(otherPlayer, direction);
+                        movePlayerInDirection(player, direction);
+                    } return false;
+                } continue;
+            }
         }
         return true;
     }
+
 
     /**
      * returns the Vector2 x,y coordinate of a position in the moveDir direction
