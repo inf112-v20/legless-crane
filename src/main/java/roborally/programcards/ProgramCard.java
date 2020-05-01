@@ -16,7 +16,6 @@ public class ProgramCard extends BaseActor {
     public ProgramCard(String movement, int priority) {
         this.movement = movement;
         this.priority = priority;
-        this.deckIndex = deckIndex;
     }
 
     /**

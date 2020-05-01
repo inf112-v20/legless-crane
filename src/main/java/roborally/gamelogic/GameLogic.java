@@ -85,6 +85,9 @@ public class GameLogic {
     /**
      * When a new game is getting started,
      * phases and stacks which keep track of "regretting" (see regretPhase()) are initialized.
+     *
+     * General principle: "default cards" (i.e. new ProgramCard()) without assigned values represent non-programmed phases.
+     *
      */
     private void initializeLists(){
         for (int row = 0; row < getChosenCards().length; row++) {
@@ -152,7 +155,7 @@ public class GameLogic {
 
         for (int row = 0; row < getChosenCards().length; row++) {
             for (int col = 0; col < getChosenCards()[row].length; col++) {
-                if (getChosenCards()[row][0].getMovement() == "default") {
+                if (getChosenCards()[row][0].getMovement().equals("default")) {
                     return false;
                 }
             }

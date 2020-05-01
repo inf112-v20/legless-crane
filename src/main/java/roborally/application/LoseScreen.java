@@ -18,7 +18,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class LoseScreen implements Screen {
     private final Application app;
     private final Stage stage;
-    private Skin skin;
 
     public LoseScreen(final Application app){
         this.app = app;
@@ -44,10 +43,6 @@ public class LoseScreen implements Screen {
         update(v);
 
         stage.draw();
-
-        app.batch.begin();
-        app.font.draw(app.batch, "Game Over",Application.WIDTH/2f,Application.HEIGHT/2f);
-        app.batch.end();
     }
 
     @Override
@@ -68,10 +63,10 @@ public class LoseScreen implements Screen {
     }
 
     private void queueAssets(){
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font",app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+        Skin skin = new Skin();
+        skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        skin.add("default-font",app.font);
+        skin.load(Gdx.files.internal("ui/uiskin.json"));
 
         Texture splashTex = new Texture(Gdx.files.internal("img/game_over.png"));
         Image logo = new Image(splashTex);

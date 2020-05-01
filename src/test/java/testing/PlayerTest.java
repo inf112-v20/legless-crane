@@ -16,10 +16,10 @@ import static org.mockito.Mockito.mock;
  * Testing for correct initialisation of a player. This includes position, health etc.
  */
 public class PlayerTest {
-    private GameLogic gameLogic = mock(GameLogic.class);
-    private Vector2 startingPosition= new Vector2(1,1);
-    private Board board = new Board("boards/testBoard0.tmx");
-    private Player player = new Player(0, startingPosition, gameLogic);
+    private final GameLogic gameLogic = mock(GameLogic.class);
+    private final Vector2 startingPosition= new Vector2(1,1);
+    private final Board board = new Board("boards/testBoard0.tmx");
+    private final Player player = new Player(0, startingPosition, gameLogic);
 
     @Test
     public void initialHealth(){
