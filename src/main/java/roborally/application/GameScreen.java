@@ -58,7 +58,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Application app) {
         this.app = app;
-        this.gameLogic = new GameLogic(this,3, FILE_PATH_1);
+        this.gameLogic = new GameLogic(this,2, FILE_PATH_1);
         this.stage = new Stage(new FitViewport(Application.WIDTH, Application.HEIGHT, app.camera));
     }
 

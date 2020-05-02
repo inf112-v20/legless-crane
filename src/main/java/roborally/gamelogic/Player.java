@@ -46,7 +46,7 @@ public class Player {
         // health is updated to somewhere between 9-0 according to changeInHealth
         health = max( min( health + changeInHealth , MAX_HEALTH) , -1);
 
-        if (health < 0 && gameLogic.phase == 4) {
+        if (health < 0) {
             lives -= 1;
             health = MAX_HEALTH - 2;
             gameLogic.respawnPlayer(this);
