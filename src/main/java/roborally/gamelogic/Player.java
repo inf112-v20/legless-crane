@@ -10,6 +10,7 @@ import static java.lang.Math.min;
  * An object which contains the relevant data of a Player, health, lives etc.
  */
 public class Player {
+    private GameState gameState;
     private int lives;
     private int health;
     private static final int MAX_HEALTH = 9;
@@ -45,9 +46,9 @@ public class Player {
         // health is updated to somewhere between 9-0 according to changeInHealth
         health = max( min( health + changeInHealth , MAX_HEALTH) , -1);
 
-        if (health < 0) {
+        if (health < 0 && gameLogic.phase == 4) {
             lives -= 1;
-            health = MAX_HEALTH;
+            health = MAX_HEALTH - 2;
             gameLogic.respawnPlayer(this);
         }
     }

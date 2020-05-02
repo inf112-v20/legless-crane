@@ -22,7 +22,7 @@ public class GameLogic {
     public int boardWidth;
     public int boardHeight;
     private int count = 0;
-    private int phase; // would it make more sense to start this at a different number and change the if statement?
+    public int phase; // would it make more sense to start this at a different number and change the if statement?
 
     private GameState gameState;
     private ArrayList<Integer> queuedPlayers = new ArrayList<>();
@@ -639,6 +639,7 @@ public class GameLogic {
      * @param direction the direction the player wishes to move
      * @return whether or not the player can move in that direction without being blocked
      */
+
     private boolean validMove(Player player, Direction direction) {
         Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
@@ -648,6 +649,7 @@ public class GameLogic {
 
         Tile currentTile = board.getTile(player.getPosition());
         Tile nextTile = board.getTile(nextPosition);
+        System.out.println(player.getHealth());
 
         if (currentTile.canBlockMovement()) {
             for (Direction dir : currentTile.getBlockingDirections())
