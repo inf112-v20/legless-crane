@@ -8,6 +8,7 @@ import roborally.ui.BaseActor;
 public class ProgramCard extends BaseActor {
     private final String movement;
     private int priority;
+    private int deckIndex;
 
     /**
      * An object which contains the relevant data of a programcard, movement type and priority.
@@ -29,4 +30,8 @@ public class ProgramCard extends BaseActor {
     }
 
     public int getPriority() {return priority;}
+
+    public void setDeckIndex(int deckIndex){ this.deckIndex = deckIndex; }
+
+    public int getDeckIndex(){ return this.deckIndex; }
 }

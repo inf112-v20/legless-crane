@@ -1,80 +1,128 @@
 package testing;
 
-
+import roborally.application.GameScreen;
+import roborally.gamelogic.GameLogic;
 import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ProgramCardTest {
+    private GameScreen gameScreen;
+    private final GameLogic gameLogic = new GameLogic(gameScreen, 3, FILE_PATH_1);
     private final DeckOfProgramCards deckOfProgramCards = new DeckOfProgramCards();
-    private final ArrayList<ProgramCard> placementOfPhases = new ArrayList<>();
+    private static final String FILE_PATH_1 = "boards/testBoard0.tmx";
     private final ProgramCard phase = new ProgramCard();
+    private int count = 0;
 
-    // Control deck size (in regards to deal correctly 9 random cards in GameScreen). 0-83: deckOfProgramCards-1.
-
+    /**
+     * Checks that method returns correct size of array (representing indices in DeckOfProgramCards).
+     */
     @Test
-    public void checkDeckSize() {
-        assertEquals(84, deckOfProgramCards.getDeckSize());
+    public void checkCardIndices1() {
+        assertEquals(84, gameLogic.getCardIndices().size());
     }
 
-    // Check if a card's movement is being consistent with priority (based on array index in DeckOfProgramCards).
-
+    /**
+     * Checks that method returns unique numbers ranging from 0 to 83
+     * Based on code in GameLogic: setCardIndices().
+     */
     @Test
-    public void checkPriorityAccordingToMovement() {
+    public void checkCardIndices2() {
+        for (int i = 0; i < gameLogic.getCardIndices().size(); i++) {
+            for (int j = 0; j < 84; j++) {
+                if (gameLogic.getCardIndices().get(i) == j)
+                    count++;
+            }
+            assertEquals(1, count);
+            count = 0;
+        }
+    }
+
+    /**
+     * Checks accordance between priority and movement for cards.
+     * Based on code in DeckOfProgramCards.
+     */
+    @Test
+    public void checkPriorityAccordingToMovement1() {
         assertEquals(240, deckOfProgramCards.getProgramCardPriority(20));
-        assertEquals("rotateright", deckOfProgramCards.getProgramCardMovement(20));
+        assertEquals("rotate_right_", deckOfProgramCards.getProgramCardMovement(20));
     }
 
-    // Check if a program card without parameters indicates default movement value. "Phase = program card without movement/priority"..
-
+    /**
+     * Checks accordance between priority and movement for cards.
+     * Based on code in DeckOfProgramCards.
+     */
     @Test
-    public void checkDefaultPhase() {
+    public void checkPriorityAccordingToMovement2() {
+        assertEquals(660, deckOfProgramCards.getProgramCardPriority(65));
+        assertEquals("move_1_", deckOfProgramCards.getProgramCardMovement(65));
+    }
+
+    /**
+     * Checks accordance between priority and movement for cards.
+     * Based on code in DeckOfProgramCards.
+     */
+    @Test
+    public void checkPriorityAccordingToMovement3() {
+        assertEquals(810, deckOfProgramCards.getProgramCardPriority(80));
+        assertEquals("move_3_", deckOfProgramCards.getProgramCardMovement(80));
+    }
+
+    /**
+     * Checks that a card without assigned movement/priority returns expected value
+     * Based on code in ProgramCard.
+     */
+    @Test
+    public void checkDefaultCard() {
         assertEquals("default", phase.getMovement());
     }
 
-    // Check if a phase correctly adds a program card dealt randomly from DeckOfProgramCards.
-
+    /**
+     * Checks that a card with assigned movement/priority does not return default
+     * Based on code in ProgramCard.
+     */
     @Test
-    public void checkReadyPhase() {
+    public void checkNonDefaultCard() {
+        ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(0), deckOfProgramCards.getProgramCardPriority(0));
+        assertNotSame("default", card.getMovement());
+    }
 
-        // Deal 5 random cards from DeckOfCards:
+    /**
+     * Checks that a program card correctly stores the index value of "deckOfCards".
+     * Used in GameScreen to transfer indices to GameLogic while programming phases.
+     * Based on code in ProgramCard.
+     */
+    @Test
+    public void checkAccordanceBetweenDeckIndexAndCardIndex() {
+        ProgramCard card1 = new ProgramCard(deckOfProgramCards.getProgramCardMovement(0), deckOfProgramCards.getProgramCardPriority(0));
+        card1.setDeckIndex(0);
 
-        for (int i = 0; i < 5; i++) {
-            int index = (int) (Math.random() * deckOfProgramCards.getDeckSize() - 1);
-            final ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
+        assertEquals(0, card1.getDeckIndex());
+    }
+
+    /**
+     * Control that "program cards given as phases" do not return invalid values, (having random cards dealt in advance).
+     * Based on code in:
+     * - GameLogic: setCardIndices(), getCardIndices()
+     * - GameScreen: deckOfProgramCards()
+     */
+    @Test
+    public void checkIfPhasesGetReadCorrectly1() {
+        ProgramCard[] onePhase = new ProgramCard[5];
+
+        for (int i = 0; i < onePhase.length; i++) {
+            int index = gameLogic.getCardIndices().get(i);
+            onePhase[i] = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
                     deckOfProgramCards.getProgramCardPriority(index));
 
-            // 5 empty program cards as phases (ready to be "programmed")
-
-            placementOfPhases.add(i, phase);
-
-            // Control after addition:
-
-            if (placementOfPhases.get(i).getMovement().equals("default")) {
-                placementOfPhases.remove(i);
-                placementOfPhases.add(i, card);
-            }
-            assertNotNull(placementOfPhases.get(i));
+            onePhase[i].setDeckIndex(index);
         }
-
-        // Check if 5 random movements are being read after programming the robot (the 5 phases which are ready):
-
-        for (int i = 0; i < 5; i++) {
-            String movement = placementOfPhases.get(i).getMovement();
-            assertEquals(true, "1".equals(movement)
-                    || "2".equals(movement)
-                    || "3".equals(movement)
-                    || "u".equals(movement)
-                    || "back".equals(movement)
-                    || "rotateright".equals(movement)
-                    || "rotateleft".equals(movement));
+        for (int i = 0; i < onePhase.length; i++) {
+            assertNotSame("default", onePhase[i].getMovement());
         }
     }
 }

@@ -5,9 +5,12 @@ import roborally.board.Board;
 import roborally.board.Direction;
 import roborally.board.Tile;
 import roborally.application.GameScreen;
+import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
 
 
 public class GameLogic {
@@ -19,14 +22,30 @@ public class GameLogic {
     public int boardWidth;
     public int boardHeight;
     private int count = 0;
-    private int phase; // would it make more sense to start this at a different number and change the if statement?
+    public int phase; // would it make more sense to start this at a different number and change the if statement?
 
     private GameState gameState;
-    private ElementMoves elementMoves;
-    private ArrayList<Moves> queuedMoves = new ArrayList<>();
     private ArrayList<Integer> queuedPlayers = new ArrayList<>();
+    private ArrayList<Integer> cardIndices = new ArrayList<>();
+    private ArrayList<Moves> queuedMoves = new ArrayList<>();
     private ProgramCard[][] chosenCards;
+    private ArrayList<Integer> list;
     public boolean cardsChosen = false;
+
+    private Stack<Stack<Integer>> playersNextPhase = new Stack<>();
+    DeckOfProgramCards deckOfProgramCards;
+
+    private final int numberOfPhases = 5;
+    private int phaseNum = 0;
+    private int index;
+
+    private int lastIndex;
+    private int startingPoint;
+
+
+    public GameState getGameState() {
+        return gameState;
+    }
 
     /**
      * Constructor which establishes a singleton connection between gamescreen and players, ensuring we only get one
@@ -49,9 +68,124 @@ public class GameLogic {
         for(int i = 0; i <numPlayers; i++) {
             players.add(new Player(i+1, board.getSpawnPoints(i),this));
         }
+
         currentPlayer = players.get(0); // so far only used by GameScreen
         gameState = GameState.DEAL_CARDS;
-        elementMoves = ElementMoves.EXPRESS_BELTS;
+
+        setCardIndices();
+        chosenCards = new ProgramCard[5][getPlayers().size()];
+        deckOfProgramCards = new DeckOfProgramCards();
+        initializeLists();
+    }
+
+    public ProgramCard[][] getChosenCards() {
+        return chosenCards;
+    }
+
+    /**
+     * When a new game is getting started,
+     * phases and stacks which keep track of "regretting" (see regretPhase()) are initialized.
+     *
+     * General principle: "default cards" (i.e. new ProgramCard()) without assigned values represent non-programmed phases.
+     *
+     */
+    private void initializeLists(){
+        for (int row = 0; row < getChosenCards().length; row++) {
+            for (int col = 0; col < getChosenCards()[row].length; col++) {
+                getChosenCards()[row][col]= new ProgramCard();
+            }
+        }
+        for (int playerNum = 0; playerNum < players.size(); playerNum++) {
+            playersNextPhase.add(new Stack<Integer>());
+            }
+    }
+
+    /**
+     * For currentPlayer in GameScreen:
+     * Method which deals with logic concerning adding cards as phases (while programming the robot).
+     */
+    public int fillPhase(int playerNum, int index) {
+
+        lastIndex = getPlayers().get(playerNum).getHealth()-1;
+        if (lastIndex > numberOfPhases) {
+            lastIndex = 4;
+        }
+
+        // All phases are already filled
+        if (!getChosenCards()[lastIndex][playerNum].getMovement().equals("default") && playersNextPhase.get(playerNum).isEmpty()) {
+            return -1;
+        }
+
+        if (!playersNextPhase.get(playerNum).isEmpty()) {
+            phaseNum = playersNextPhase.get(playerNum).pop();
+        }
+
+        while (!getChosenCards()[phaseNum][playerNum].getMovement().equals("default") && phaseNum < lastIndex) {
+            phaseNum++;
+        }
+
+        getChosenCards()[phaseNum][playerNum] = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
+                deckOfProgramCards.getProgramCardPriority(index));
+
+        return phaseNum;
+    }
+
+    /**
+     * For currentPlayer in GameScreen:
+     * Method which deals with logic concerning regretting cards which have been chosen as phases.
+     * Fills a stack (particular stack assigned to the currentPlayer) with "next phase number" to get filled.
+     *
+     * @param playerNum the player regretting a card
+     * @param phaseNum the phase which is getting changed (e.g. first phase = 0).
+     */
+    public void regretPhase(int playerNum, int phaseNum){
+        getChosenCards()[phaseNum][playerNum] = new ProgramCard();
+        playersNextPhase.get(playerNum).push(phaseNum);
+        return;
+    }
+
+    /**
+     * Method which checks whether or not all phases for all players are ready.
+     *
+     * @return status regarding fulfillment of the players' phases
+     * When true, currentPlayer can start the turn in GameScreen.
+     */
+    public boolean cardsAreChosen() {
+        programAIs();
+
+        for (int row = 0; row < getChosenCards().length; row++) {
+            for (int col = 0; col < getChosenCards()[row].length; col++) {
+                if (getChosenCards()[row][0].getMovement().equals("default")) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     *  Prepare "dummy"-AIs for a turn. Random moves are given.
+     *  Reads "card indices" from gameLogic.getCardIndices() from individual starting points.
+     */
+    private void programAIs(){
+        for (int playerNum = 1; playerNum < getPlayers().size(); playerNum++) {
+
+            lastIndex = getPlayers().get(playerNum).getHealth();
+
+            if (lastIndex > numberOfPhases){
+                lastIndex = 5;
+            }
+
+            startingPoint = playerNum * getPlayers().get(playerNum - 1).getHealth();
+
+            for (int phase = 0; phase < lastIndex; phase++) {
+                index = getCardIndices().get(startingPoint);
+                ProgramCard card = new ProgramCard(deckOfProgramCards.getProgramCardMovement(index),
+                        deckOfProgramCards.getProgramCardPriority(index));
+                chosenCards[phase][playerNum] = card;
+                startingPoint++;
+            }
+        }
     }
 
     /**
@@ -87,21 +221,21 @@ public class GameLogic {
      * in the same way.
      */
     private void queuePhase() {
-        ProgramCard[] cardsThisPhase = gameScreen.getChosenCards()[phase];
+        ProgramCard[] cardsThisPhase = getChosenCards()[phase];
 
-        for (int i = 0; i <1 ;i++) {
+        for (int i = 0; i <cardsThisPhase.length ;i++) {
             switch(cardsThisPhase[i].getMovement()) {
-                case "1":
+                case "move_1_":
                     queuedMoves.add(Moves.FORWARD);
                     queuedPlayers.add(i);
                     break;
-                case "2":
+                case "move_2_":
                     queuedMoves.add(Moves.FORWARD);
                     queuedMoves.add(Moves.FORWARD);
                     queuedPlayers.add(i);
                     queuedPlayers.add(i);
                     break;
-                case "3":
+                case "move_3_":
                     queuedMoves.add(Moves.FORWARD);
                     queuedMoves.add(Moves.FORWARD);
                     queuedMoves.add(Moves.FORWARD);
@@ -109,21 +243,21 @@ public class GameLogic {
                     queuedPlayers.add(i);
                     queuedPlayers.add(i);
                     break;
-                case "u":
+                case "u_turn_":
                     queuedMoves.add(Moves.RIGHT);
                     queuedMoves.add(Moves.RIGHT);
                     queuedPlayers.add(i);
                     queuedPlayers.add(i);
                     break;
-                case "back":
+                case "back_up_":
                     queuedMoves.add(Moves.BACK);
                     queuedPlayers.add(i);
                     break;
-                case "rotateleft":
+                case "rotate_left_":
                     queuedMoves.add(Moves.LEFT);
                     queuedPlayers.add(i);
                     break;
-                case "rotateright":
+                case "rotate_right_":
                     queuedMoves.add(Moves.RIGHT);
                     queuedPlayers.add(i);
                     break;
@@ -180,7 +314,8 @@ public class GameLogic {
 
         switch (gameState) {
             case DEAL_CARDS:
-                if(cardsChosen) gameState = gameState.advance();
+                if (cardsChosen) {
+                    gameState = gameState.advance(); }
                 break;
 
             case REVEAL_CARDS:
@@ -190,45 +325,35 @@ public class GameLogic {
 
             case MOVE_PLAYER:
                 performMove();
-                killIfOffBoard();
-                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) gameState = gameState.advance();
+                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
+                    gameState = gameState.advance();
+                    //System.out.println("all players have moved");
+                }
                 break;
 
             case MOVE_BOARD:
-                for (Player player : players) {
-                    Vector2 playerPosition = player.getPosition();
-                    Tile playerTile = board.getTile(playerPosition);
-
-                    switch(elementMoves) {
-                        case EXPRESS_BELTS:
-                            if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) beltsMovePlayer(player);
-                            elementMoves = elementMoves.advance();
-                            break;
-
-                        case ALL_BELTS:
-                            if (playerTile.isBelt()) beltsMovePlayer(player);
-                            elementMoves = elementMoves.advance();
-                            break;
-
-                        case PUSHERS:
-                            elementMoves = elementMoves.advance();
-                            break;
-
-                        case COGS:
-                            if (playerTile.isCog()) rotationCogs(player);
-                            elementMoves = elementMoves.advance();
-                            break;
-
-                        case DONE:
-                            elementMoves = elementMoves.advance();
-                            gameState = gameState.advance();
-                            killIfOffBoard();
-                            break;
-
-                        default:
-                            throw new IllegalStateException("Unexpected value: " + elementMoves);
+                for (ElementMoves moves : ElementMoves.values()) {
+                    for(Player player : players) {
+                        Vector2 playerPosition = player.getPosition();
+                        Tile playerTile = board.getTile(playerPosition);
+                        switch (moves) {
+                            case EXPRESS_BELTS:
+                                if (playerTile.isBelt() && playerTile.getMovementSpeed() == 2) beltsMovePlayer(player);
+                                break;
+                            case ALL_BELTS:
+                                if (playerTile.isBelt()) beltsMovePlayer(player);
+                                break;
+                            case PUSHERS:
+                                // pushers not yet implemented
+                                break;
+                            case COGS:
+                                if (playerTile.isCog()) rotationCogs(player);
+                                break;
+                        }
                     }
                 }
+                killIfOffBoard();
+                gameState = gameState.advance();
 
             case FIRE_LASERS:
                 for (Player player : players) {
@@ -270,7 +395,28 @@ public class GameLogic {
                     if (playerTile.isWrench()) player.updateHealth(playerTile.getHealthChange());
                 }
 
+                // Depending on health: fill phases with default cards in preparation for the next turn
+                for (Player player : players) {
+                    if (player.getHealth() < 5) {
+                        int lockedRegisters = player.getHealth();
+                        for (int i = 0; i < lockedRegisters; i++) {
+                            getChosenCards()[i][player.getPlayerNumber() - 1] = new ProgramCard();
+                        }
+                    } else {
+                        for (int i = 0; i < 5; i++) {
+                            getChosenCards()[i][player.getPlayerNumber() - 1] = new ProgramCard();
+                        }
+                    }
+                }
+
                 cardsChosen = false;
+                cardIndices.clear();
+                setCardIndices();
+
+                gameScreen.prepareCards();
+                gameScreen.deckOfProgramCards();
+                phaseNum = 0;
+
                 gameState = gameState.advance();
                 phase = 0;
                 break;
@@ -278,6 +424,27 @@ public class GameLogic {
             default:
                 throw new IllegalStateException("Unexpected value: " + gameState);
         }
+    }
+
+    /**
+     * During one turn; each player gets unique, random card-indices from the same "deck of cards"
+     *
+     * @return array of 84 numbers (shuffled)
+     */
+    public ArrayList<Integer> getCardIndices(){
+        return cardIndices;
+    }
+
+    /**
+     * Initialize array of 84 numbers. Shuffles it.
+     */
+    private void setCardIndices() {
+        list = new ArrayList<>();
+        for (int i = 0; i < 84; i++) {
+            list.add(i);
+            Collections.shuffle(list);
+        }
+        cardIndices.addAll(list);
     }
 
     /**
@@ -453,7 +620,7 @@ public class GameLogic {
             Vector2 position = player.getPosition();
             Tile playerTile = board.getTile(position);
 
-            if (position.x >= boardWidth || position.y >= boardHeight || position.x <= 0 || position.y <= 0 || playerTile.isHole()) {
+            if (position.x >= boardWidth-1 || position.y >= boardHeight-1 || position.x <= 0 || position.y <= 0 || playerTile.isHole()) {
                 System.out.println("player died");
                 player.updateHealth(-10);
             }
@@ -472,6 +639,7 @@ public class GameLogic {
      * @param direction the direction the player wishes to move
      * @return whether or not the player can move in that direction without being blocked
      */
+
     private boolean validMove(Player player, Direction direction) {
         Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
@@ -481,6 +649,7 @@ public class GameLogic {
 
         Tile currentTile = board.getTile(player.getPosition());
         Tile nextTile = board.getTile(nextPosition);
+        System.out.println(player.getHealth());
 
         if (currentTile.canBlockMovement()) {
             for (Direction dir : currentTile.getBlockingDirections())
@@ -490,9 +659,19 @@ public class GameLogic {
             for (Direction dir : nextTile.getBlockingDirections())
                 if (dir == direction.opposite())
                     return false;
+        } for (Player otherPlayer : players) {
+            if (otherPlayer != player) {
+                if (otherPlayer.getPosition().equals(nextPosition)) {
+                    if (validMove(otherPlayer, direction)) {
+                        movePlayerInDirection(otherPlayer, direction);
+                        movePlayerInDirection(player, direction);
+                    } return false;
+                } continue;
+            }
         }
         return true;
     }
+
 
     /**
      * returns the Vector2 x,y coordinate of a position in the moveDir direction

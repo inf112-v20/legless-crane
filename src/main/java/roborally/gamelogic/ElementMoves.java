@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public enum ElementMoves {
-    EXPRESS_BELTS, ALL_BELTS, PUSHERS, COGS, DONE;
+    EXPRESS_BELTS, ALL_BELTS, PUSHERS, COGS;
 
     public ElementMoves advance() {
         ArrayList<ElementMoves> states = new ArrayList<>();
