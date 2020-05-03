@@ -27,21 +27,21 @@ public class Tile {
      */
     private Tile(Builder builder) {
         //booleans
-        this.canBlockMovement=builder.canBlockMovement;
+        this.canBlockMovement = builder.canBlockMovement;
         this.isLaser = builder.isLaser;
         this.healthChange = builder.healthChange;
         this.isBelt = builder.isBelt;
-        this.isCog =builder.canRotate;
+        this.isCog = builder.canRotate;
         this.isWrench = builder.isWrench;
-        this.isSpawner=builder.isSpawner;
-        this.isFlag=builder.isFlag;
+        this.isSpawner = builder.isSpawner;
+        this.isFlag = builder.isFlag;
         this.isHole = builder.isHole;
 
         //ints
-        this.bendDirection=builder.bendDirection;
-        this.rotation=builder.rotation;
-        this.flagNum=builder.flagNum;
-        this.movementSpeed=builder.movementSpeed;
+        this.bendDirection = builder.bendDirection;
+        this.rotation = builder.rotation;
+        this.flagNum = builder.flagNum;
+        this.movementSpeed = builder.movementSpeed;
 
         //directions
         this.blockingDirections=builder.blockingDirections;
@@ -164,7 +164,7 @@ public class Tile {
 
         public Builder setHole() {
             this.isHole = true;
-            this.healthChange = - 10;
+            this.healthChange = -10;
             return this;
 
         }

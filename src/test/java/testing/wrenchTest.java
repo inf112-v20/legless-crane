@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import roborally.board.Board;
-
 public class wrenchTest {
     private static Board board;
 
@@ -18,7 +17,5 @@ public class wrenchTest {
     @Test
     public void positionHasWrenchTest(){
         assertEquals(true, board.getTile(new Vector2(3,0)).isWrench());
-
     }
-
 }
