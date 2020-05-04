@@ -313,7 +313,6 @@ public class GameLogic {
                 performMove();
                 if (queue.size() == 0) {
                     gameState = gameState.advance();
-                    //System.out.println("all players have moved");
                 }
                 break;
 
@@ -635,7 +634,6 @@ public class GameLogic {
 
         Tile currentTile = board.getTile(player.getPosition());
         Tile nextTile = board.getTile(nextPosition);
-        System.out.println(player.getHealth());
 
         if (currentTile.canBlockMovement()) {
             for (Direction dir : currentTile.getBlockingDirections())
