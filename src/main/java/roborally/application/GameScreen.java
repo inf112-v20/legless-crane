@@ -107,7 +107,8 @@ public class GameScreen implements Screen {
         app.font.draw(app.batch, "Lives left: " + gameLogic.currentPlayer.getLives(),Application.WIDTH-450,Application.HEIGHT/40f);
         app.font.draw(app.batch, "Health left: " + gameLogic.currentPlayer.getHealth(),Application.WIDTH-350,Application.HEIGHT/40f);
         app.font.draw(app.batch, "Flags conquered: " + (gameLogic.currentPlayer.getNextFlag()-1),Application.WIDTH-200,Application.HEIGHT/40f);
-        app.font.draw(app.batch, "GameState: " + gameLogic.getGameState(), Application.WIDTH-1200,Application.HEIGHT/40f);
+        app.font.draw(app.batch, "GameState: " + gameLogic.getGameState(), Application.WIDTH-1100,Application.HEIGHT/40f);
+        app.font.draw(app.batch, "Phase: " + (gameLogic.getPhase()+1), Application.WIDTH-1200,Application.HEIGHT/40f);
         app.batch.end();
 
         stage.draw();

@@ -22,8 +22,7 @@ public class GameLogic {
     public int boardWidth;
     public int boardHeight;
     private int count = 0;
-    public int phase; // would it make more sense to start this at a different number and change the if statement?
-
+    private int phase;
     private GameState gameState;
     private ArrayList<Integer> queuedPlayers = new ArrayList<>();
     private ArrayList<Integer> cardIndices = new ArrayList<>();
@@ -45,6 +44,10 @@ public class GameLogic {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public int getPhase() {
+        return phase;
     }
 
     /**
@@ -221,6 +224,10 @@ public class GameLogic {
      * in the same way.
      */
     private void queuePhase() {
+        //TODO merge queudMoves and players in a map
+        // sort this map
+
+
         ProgramCard[] cardsThisPhase = getChosenCards()[phase];
 
         for (int i = 0; i <cardsThisPhase.length ;i++) {
