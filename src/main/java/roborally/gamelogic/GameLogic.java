@@ -8,9 +8,7 @@ import roborally.application.GameScreen;
 import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Stack;
+import java.util.*;
 
 
 public class GameLogic {
@@ -24,9 +22,8 @@ public class GameLogic {
     private int count = 0;
     private int phase;
     private GameState gameState;
-    private ArrayList<Integer> queuedPlayers = new ArrayList<>();
+    private ArrayList<PlayerMove> queue = new ArrayList<>();
     private ArrayList<Integer> cardIndices = new ArrayList<>();
-    private ArrayList<Moves> queuedMoves = new ArrayList<>();
     private ProgramCard[][] chosenCards;
     private ArrayList<Integer> list;
     public boolean cardsChosen = false;
@@ -195,22 +192,17 @@ public class GameLogic {
      * performs the move queued next with the player that should perform it. (Assuming the lists are in sync)
      */
     private void performMove() {
-        switch (queuedMoves.remove(0)) {
-            case FORWARD:
-                forwardMovement(players.get(queuedPlayers.remove(0)));
-                break;
-            case BACK:
-                backwardMovement(players.get(queuedPlayers.remove(0)));
-                break;
-            case LEFT:
-                rotatePlayer(players.get(queuedPlayers.remove(0)), -1);
-                break;
-            case RIGHT:
-                rotatePlayer(players.get(queuedPlayers.remove(0)), 1);
-                break;
-
-            default:
-                throw new IllegalStateException("Unexpected value");
+        PlayerMove nextMove = queue.remove(0);
+        if (nextMove.getMove() == Moves.FORWARD) {
+            forwardMovement(players.get(nextMove.getPlayerNumber()));
+        } else if (nextMove.getMove() == Moves.BACK) {
+            backwardMovement(players.get(nextMove.getPlayerNumber()));
+        } else if (nextMove.getMove() == Moves.LEFT) {
+            rotatePlayer(players.get(nextMove.getPlayerNumber()), -1);
+        } else if (nextMove.getMove() == Moves.RIGHT) {
+            rotatePlayer(players.get(nextMove.getPlayerNumber()), 1);
+        } else {
+            throw new IllegalStateException("Unexpected value");
         }
     }
 
@@ -220,59 +212,46 @@ public class GameLogic {
      * Converts the cards chosen into queued moves so they can be staggered, i.e. move 1 * 3 instead of move 3 tiles
      * instantly for a 3 movement card.
      *
-     *TODO: Sort this list according to priority, make sure we sort both queuedPlayers and queuedMoves at the same time
-     * in the same way.
+     * Once all the moves for the players have been queued up this phase, we sort it using quicksort.
+     *
      */
     private void queuePhase() {
-        //TODO merge queudMoves and players in a map
-        // sort this map
-
-
         ProgramCard[] cardsThisPhase = getChosenCards()[phase];
 
         for (int i = 0; i <cardsThisPhase.length ;i++) {
             switch(cardsThisPhase[i].getMovement()) {
                 case "move_1_":
-                    queuedMoves.add(Moves.FORWARD);
-                    queuedPlayers.add(i);
+                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
                     break;
                 case "move_2_":
-                    queuedMoves.add(Moves.FORWARD);
-                    queuedMoves.add(Moves.FORWARD);
-                    queuedPlayers.add(i);
-                    queuedPlayers.add(i);
+                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
                     break;
                 case "move_3_":
-                    queuedMoves.add(Moves.FORWARD);
-                    queuedMoves.add(Moves.FORWARD);
-                    queuedMoves.add(Moves.FORWARD);
-                    queuedPlayers.add(i);
-                    queuedPlayers.add(i);
-                    queuedPlayers.add(i);
+                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
                     break;
                 case "u_turn_":
-                    queuedMoves.add(Moves.RIGHT);
-                    queuedMoves.add(Moves.RIGHT);
-                    queuedPlayers.add(i);
-                    queuedPlayers.add(i);
+                    queue.add(new PlayerMove(Moves.RIGHT, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.RIGHT, i, cardsThisPhase[i].getPriority()));
                     break;
                 case "back_up_":
-                    queuedMoves.add(Moves.BACK);
-                    queuedPlayers.add(i);
+                    queue.add(new PlayerMove(Moves.BACK, i, cardsThisPhase[i].getPriority()));
                     break;
                 case "rotate_left_":
-                    queuedMoves.add(Moves.LEFT);
-                    queuedPlayers.add(i);
+                    queue.add(new PlayerMove(Moves.LEFT, i, cardsThisPhase[i].getPriority()));
                     break;
                 case "rotate_right_":
-                    queuedMoves.add(Moves.RIGHT);
-                    queuedPlayers.add(i);
+                    queue.add(new PlayerMove(Moves.RIGHT, i, cardsThisPhase[i].getPriority()));
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + cardsThisPhase[i].getMovement());
             }
         }
+        Collections.sort(queue);
     }
+
 
     /**
      * Gets called by GameScreen every frame, checks the state of the game and updates it accordingly
@@ -312,7 +291,7 @@ public class GameLogic {
      *
      */
     public void updateGameState() {
-        if (count<10) {
+        if (count<20) {
             count++;
             return;
         }
@@ -332,7 +311,7 @@ public class GameLogic {
 
             case MOVE_PLAYER:
                 performMove();
-                if (queuedMoves.size() == 0 || queuedPlayers.size() == 0) {
+                if (queue.size() == 0) {
                     gameState = gameState.advance();
                     //System.out.println("all players have moved");
                 }
