@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public enum GameState {
-    DEAL_CARDS, REVEAL_CARDS, MOVE_PLAYER, MOVE_BOARD, FIRE_LASERS, RESOLVE_INTERACTIONS, CLEANUP;
+    DEAL_CARDS, REVEAL_CARDS, MOVE_PLAYER, MOVE_BOARD, FIRE_LASERS, FIRE_PLAYER_LASER, RESOLVE_INTERACTIONS, CLEANUP;
 
     public GameState advance() {
         ArrayList<GameState> states = new ArrayList<>();

@@ -346,10 +346,21 @@ public class GameLogic {
                     Tile playerTile = board.getTile(playerPosition);
 
                     if (playerTile.isLaser()) player.updateHealth(playerTile.getHealthChange());
+
                 }
 
                 gameState = gameState.advance();
                 break;
+
+            case FIRE_PLAYER_LASER:
+                for (Player player : players){
+                    Vector2 playerPosition = player.getPosition();
+                    Direction dir = player.getRotation();
+
+                    if (laserPathCheck(player, dir, playerPosition)){
+
+                    }
+                }
 
             case RESOLVE_INTERACTIONS:
                 for (Player player : players) {
@@ -412,6 +423,43 @@ public class GameLogic {
     }
 
     /**
+     *
+     * @param player
+     * @param pos
+     * @param direction
+     * @return
+     */
+    private boolean laserPathCheck(Player player, Direction direction, Vector2 pos) {
+        Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
+
+        if (nextPosition.x > boardWidth || nextPosition.y > boardHeight || nextPosition.x < 0 || nextPosition.y < 0) {
+            return false;
+        }
+
+        Tile currentTile = board.getTile(player.getPosition());
+        Tile nextTile = board.getTile(nextPosition);
+
+        if (currentTile.canBlockMovement()) {
+            for (Direction dir : currentTile.getBlockingDirections())
+                if (dir.equals(direction))
+                    return false;
+        } else if (nextTile.canBlockMovement()) {
+            for (Direction dir : nextTile.getBlockingDirections())
+                if (dir == direction.opposite())
+                    return false;
+        }
+        for (Player otherPlayer : players) {
+            if (otherPlayer != player) {
+                if (otherPlayer.getPosition().equals(nextPosition)) {
+                    otherPlayer.updateHealth(-1);
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * During one turn; each player gets unique, random card-indices from the same "deck of cards"
      *
      * @return array of 84 numbers (shuffled)
@@ -448,6 +496,7 @@ public class GameLogic {
             player.setPosition(nextPos);
         }
     }
+
 
     /**
      * Player uses this method when dying, moving the player back to their backup point on both gameScreen and in
@@ -643,7 +692,8 @@ public class GameLogic {
             for (Direction dir : nextTile.getBlockingDirections())
                 if (dir == direction.opposite())
                     return false;
-        } for (Player otherPlayer : players) {
+        }
+        for (Player otherPlayer : players) {
             if (otherPlayer != player) {
                 if (otherPlayer.getPosition().equals(nextPosition)) {
                     if (validMove(otherPlayer, direction)) {
@@ -655,6 +705,8 @@ public class GameLogic {
         }
         return true;
     }
+
+
 
 
     /**
