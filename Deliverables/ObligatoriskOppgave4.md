@@ -37,7 +37,7 @@
 
 -   Parprogrammering ser vi absolutt fordelene med, og skulle ønske vi hadde fått til bedre. Spesielt i starten av prosjektet burde vi brukt tid på dette så alle var på samme side. Hadde vi visst at det ble så utfordrende å avtale tidspunkt som passet for flere utenom gruppemøter hadde vi nok også pushet mer på dette. Lett å si “vi tar en parprogrammeringsøkt til uken” og så ikke finne tid til det litt ut i uken. Generelt sett dårlig planlegging som har skapt problemer her.
 
-#TODO
+# TODO
 -   skjermdump fra prosjekttavle!
 
 **Gruppedynamikk og kummunikasjon, i starten VS nå:**
@@ -277,10 +277,10 @@ Arbeidsoppgaver:
 **Kjente bugs:**
 -   Bugs skal være nevnt på readme.md filen på prosjektets forside her under “known bugs”:  https://github.com/inf112-v20/legless-crane
 
-##Deloppgave 3 - Produktleveranse og kodekvalitet
+## Deloppgave 3 - Produktleveranse og kodekvalitet
 Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
 
-#TODO
+# TODO
 -   klassediagram
 -    påpeke hvilke økter som har vært parprogrammering om det ikke er representert i commits
     -   Tirsdag 05.05 - parprogrammering på ConflictAndLaser branch
