@@ -29,7 +29,7 @@ public class GameLogic {
     public boolean cardsChosen = false;
 
     private Stack<Stack<Integer>> playersNextPhase = new Stack<>();
-    DeckOfProgramCards deckOfProgramCards;
+    private DeckOfProgramCards deckOfProgramCards;
 
     private final int numberOfPhases = 5;
     private int phaseNum = 0;

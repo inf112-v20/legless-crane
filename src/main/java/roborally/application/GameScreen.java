@@ -46,7 +46,8 @@ public class GameScreen implements Screen {
 
     private final int numberOfPhases = 5;
     private int currentPlayer = 0;
-    private float phaseX, phaseY;
+    private float phaseX;
+    private float phaseY;
     private int phaseNum = 0;
     private int index;
 
