@@ -4,13 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 // Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
@@ -63,11 +58,6 @@ public class LoseScreen implements Screen {
     }
 
     private void queueAssets(){
-        Skin skin = new Skin();
-        skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        skin.add("default-font",app.font);
-        skin.load(Gdx.files.internal("ui/uiskin.json"));
-
         Texture splashTex = new Texture(Gdx.files.internal("img/game_over.png"));
         Image logo = new Image(splashTex);
         logo.setPosition(stage.getWidth()/9+50,stage.getHeight()/3);

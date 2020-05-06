@@ -353,6 +353,17 @@ public class GameScreen implements Screen {
     }
 
     /**
+     * Method to provide graphics regarding "fire lasers from players"
+     * @param player The player getting shot by a laser
+     */
+    public void shootPlayer(Player player){
+        Vector2 target = player.getPosition();
+
+        // TODO: add fire.png in the target tile for a few seconds
+
+    }
+
+    /**
      * When currentPlayer has chosen cards before a turn, cards get removed both logically and visually (and phaseNum reset)
      */
     public void clearCards(){
