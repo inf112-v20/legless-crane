@@ -11,7 +11,6 @@
 
 -   Uken før 3. innlevering var planen å starte å sette tydelige roller og rotere de ukentlig. Dette ble påbegynt,  tydlig beskrevet i ObligatoriskOppgave3.md, men dette falt gjennom pga manglende oppfølging av teamet generelt. Resultat er at vi i stor grad har jobbet selvstendig opp mot project board på gitHub og alle har valgt issues selv etterhvert som vi har jobbet med prosjektet.
 
-
 **Oppdatering av roller:** Nei
 -   Det har virket nokså greit å jobbe selvstendig nå som alle vet hva som gjenstår i prosjektet, så fram til denne sprinten er ferdig ser vi ikke noe behov for å endre på rollene. Det ville hatt liten effekt.
 
@@ -70,8 +69,8 @@
 -   En spiller per rute (avhenger av respawn)
 -   Generelt testing
 
-#### Brukerhistorer
-##### Brukerhistore #4.1: Game-loop
+### Brukerhistorer
+#### Brukerhistore #4.1: Game-loop
 -   "Som spiller trenger jeg å kunne spille «runde for runde», så sant ingen spillere enten har vunnet eller tapt"
 
 Akseptansekriterier:
@@ -84,8 +83,7 @@ Arbeidsoppgaver:
 -   Ved endt løkke: justere programkort, verdier og vent på en clickListener i GameScreen (en spiller har programmert roboten sin på nytt) før en ny runde startes 
 -   Representere hver fase i spillet med sin logikkblokk
 
-
-##### Brukerhistorie #4.2: AI
+#### Brukerhistorie #4.2: AI
 -   "Som spiller ønsker jeg å kunne spille mot datamaskinen om jeg ikke har noen venner å spille med :("
 
 Akseptansekriterier:
@@ -104,7 +102,7 @@ Arbeidsoppgaver:
     -   Smart burde egentlig ta høyde for hvor et samlebånd f.eks. vil flytte dem etter fasen.
 
 
-##### Brukerhistorie #4.3: Lasere på brettet
+#### Brukerhistorie #4.3: Lasere på brettet
 -   "Som spiller trenger jeg at roboten kan skyte laser i retninger den er stilt, slik at andre roboten kan skades"
 
 Akseptansekriterier:
@@ -116,7 +114,7 @@ Arbeidsoppgaver:
 -   Implementere en metode som for enhver robot sjekker rute for rute i retningen den ser, og som da sjekker om en laser kan gå der (innenfor brettet og ikke en vegg) samt om det er en spiller der som kan miste et helsepoeng. 
 
 
-##### Brukerhistorie #4.4: En spiller per tile
+#### Brukerhistorie #4.4: En spiller per tile
 -   "Som spiller ønsker jeg at det kun står en spiller per rute på brettet dersom en spiller beveger seg inn i en rute hvor en annen spiller befinner seg."
 
 Akseptansekriterier:
@@ -128,7 +126,7 @@ Arbeidsoppgaver:
 -   GameLogic: Oppdatere validMove med dytting av spillere som funksjonalitet.
 
 
-##### Brukerhistorie #4.5: Flagg som skiftenøkkel
+#### Brukerhistorie #4.5: Flagg som skiftenøkkel
 -   “Som spiller trenger jeg at flagg jeg lander på, uansett rekkefølge, oppfører seg som en skiftenøkkel som lagrer nytt backup punkt og gir tilbake et helsepoeng”
 
 Akseptansekriterier:
@@ -140,8 +138,7 @@ Akseptansekriterier:
 Arbeidsoppgaver:
 -   Oppdater CLEANUP slik at flagg gir ny backup og gir tilbake et helsepoeng
 
-
-##### Brukerhistorie #4.6: Omprioritere kort
+#### Brukerhistorie #4.6: Omprioritere kort
 -   "Som spiller trenger jeg valgmuligheten til å kunne endre (angre) på programkortene før en runde starter"
 
 Akseptansekriterier:
@@ -156,7 +153,7 @@ Arbeidsoppgaver:
 -   GameScreen: kort som trykkes på skal bli dratt visuelt enten til en ledig fase eller tilbake til utgangspunktposisjon.
 
 
-##### Brukerhistorie #4.7: En kortstokk per runde 
+#### Brukerhistorie #4.7: En kortstokk per runde 
 -   "Som spiller trenger jeg å få utdelt unike programkort (dvs. unik prioritet), slik at bevegelsene til robotene kan bli utført korrekt (rangert etter prioritet)."
 
 Akseptansekriterier:
@@ -170,7 +167,7 @@ Arbeidsoppgaver:
 -   Logisk: opprette en liste som har alle listeindeksene til kortstokken. Stokk om på denne listen. La hver spiller få utdelt listeindekser fra ulike utgangspunkt av denne listen (9 listeindekser mellom hver spiller). Ikke forny listen (stokk om) før en hel runde er fullført (slik at alle spillere får utdelt kort fra identisk kortstokk/liste).
 
 
-##### Brukerhistorie #4.8: Sortere bevegelser i en fase basert på prioritet
+#### Brukerhistorie #4.8: Sortere bevegelser i en fase basert på prioritet
 -   "Som spiller trenger jeg at hver robot utfører bevegelser i henhold til prioriteten på kortene. For balanse i spillet og at ingen bevegelser “skjer samtidig”
 
 Akseptansekriterier:
@@ -181,7 +178,7 @@ Arbeidsoppgaver:
 -   Sortere bevegelsene som blir lest ut fra en liste basert på prioritet. Sørge for å sortere riktig både bevegelsene og rekkefølgen av spillere. 
 
 
-##### Brukerhistorie #4.9: Utdelte kort samsvarer med helsepoeng
+#### Brukerhistorie #4.9: Utdelte kort samsvarer med helsepoeng
 -   "Som spiller trenger jeg å få utdelt kort i starten av en runde tilsvarende de helsepoengene roboten har etter forrige runde"
 
 Akseptansekriterier:
@@ -193,7 +190,7 @@ Arbeidsoppgaver:
 -   Det samme må implementeres for AI’er.
 
 
-##### Brukerhistorie #4.10: Låste kort 
+#### Brukerhistorie #4.10: Låste kort 
 -   "Som spiller trenger jeg at kort låses fra forrige runde dersom roboten har mindre enn 5 helsepoeng i det runden avsluttes, slik at jeg fremdeles kan utføre 5 faser til tross for få helsepoeng (utdelte kort)"
 
 Akseptansekriterier:
@@ -207,23 +204,22 @@ Arbeidsoppgaver:
 -   GameScreen: etter at en runde avsluttes i GameLogic, blir en metode kalt i GameScreen. Denne skal vise fastlåste kort (kort fra forrige omgang fra riktige faser, synkende rekkefølge) som ikke kan klikkes på, bare fjernes.
 -   Ved en ny runde skal de fastlåste kortene telle som gydlige kort for den aktuelle runden, og ikke kunne byttes ut. 
 
-
-##### Brukerhistorie #?: Multiplayer (in progress)
+#### Brukerhistorie #?: Multiplayer (in progress)
 -   "Som spiller ønsker jeg å kunne spille mot andre mennesker, for dette må jeg kunne koble til med en gitt ipadresse, eller kunne velge fra en liste av tilgjengelige spill på mitt nettverk."
 
 Akseptansekriterier:
-- Spillere får koblet sammen over LAN med ipadresser
-- Hver spiller får bare opp sine kort
-- Utenom HUD bør skjermen vise akkurat det samme til samme tid
+-   Spillere får koblet sammen over LAN med ipadresser
+-   Hver spiller får bare opp sine kort
+-   Utenom HUD bør skjermen vise akkurat det samme til samme tid
 
 Arbeidsoppgaver
-- Implementere nettverk over LAN med client-server struktur
-- Sørge for peer-to-peer funksjonalitet?
-- Ta i bruk Hamachi eller lignende tredjepartsløsning for å koble til et virtuelt LAN
-- Sørge for at hver spiller kun får relevant info for deres del av spillet (ikke andres kort osv..)
+-   Implementere nettverk over LAN med client-server struktur
+-   Sørge for peer-to-peer funksjonalitet?
+-   Ta i bruk Hamachi eller lignende tredjepartsløsning for å koble til et virtuelt LAN
+-   Sørge for at hver spiller kun får relevant info for deres del av spillet (ikke andres kort osv..)
 
 
-##### Brukerhistorie #?: spiller skyter laser (in progress)
+#### Brukerhistorie #?: spiller skyter laser (in progress)
 -   "som spiller trenger jeg at brikken min kan skyte laser en gang i slutten av en fase i retningen den ser, for å kunne gi skade til medspillere"
 
 Akseptansekriterier:
@@ -237,8 +233,7 @@ Arbeidsoppgaver:
 -   GameLogic, ny case i utdateGameState() som behandler spillers laser
 -   Sjekk plassene foran spiller om det finnes en annen spiller før brettet slutter eller laser blir stoppet av en vegg etc.
 
-
-##### Brukerhistorie #?: respawn (in progress)
+#### Brukerhistorie #?: respawn (in progress)
 -   "Som spiller ønsker jeg å kunne respawne ved backup punktet mitt i henhold til reglene."
 
 Akseptansekriterier:
@@ -255,7 +250,7 @@ Arbeidsoppgaver:
 -   Håndtere konflikter i respawn i samme rekkefølge som spillerne døde. (kan lagre spillertall til de som dør gradvis i løpet av en runde i arraylist
 
 
-##### Brukerhistorie #?: Powerdown (in progress)
+#### Brukerhistorie #?: Powerdown (in progress)
 -   "Som spiller ønsker jeg å kunne velge selv å gå i powerdown, med andre ord vil jeg kunne reparere brikken min mot å ikke kunne bevege meg en runde."
 
 Akseptansekriterier:

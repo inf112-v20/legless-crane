@@ -114,7 +114,7 @@ Kjente bugs?
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, samt Retrospektiv på Wiki.
 
-#### UML:
+#### UML
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/uml2.png?raw=true)
 
 ### Manuelle Tester Menuscreen:
@@ -132,7 +132,7 @@ Test Case: Trykk på "Lets Play"
 
 -   PASS
  
-### Manuelle Tester GameScreen:
+### Manuelle Tester GameScreen
  
 Test Case: Gå fra GameScreen til MenuScreen med "Main menu"
 -   Expected: Går inn i MenuScreen
@@ -222,5 +222,4 @@ Test Case: brikke starter på x:6, 7:2 vendt mot sør, 1 ahead, mot brettfelt me
 -   Expected: Brikke skal ikke bevege seg inn på feltet (Vil endres seinere til kun å ikke gå gjennom kanten på feltet)
 
 -   Actual: Brikke går ikke inn på feltet
-
 -   PASS 

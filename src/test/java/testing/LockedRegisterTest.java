@@ -20,7 +20,7 @@ public class LockedRegisterTest {
     private static final String FILE_PATH_1 = "boards/testBoard0.tmx";
     private final Vector2 startingPosition= new Vector2(1,1);
     private final Player player = new Player(0, startingPosition, gameLogic);
-    final ProgramCard[] oneTurn = new ProgramCard[5];
+    private final ProgramCard[] oneTurn = new ProgramCard[5];
     private int count = 0;
     private int health;
     private int lastIndex;

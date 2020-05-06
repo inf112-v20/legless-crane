@@ -54,8 +54,8 @@ Når det kommer til organiseringen av selve prosjektet, ser vi et behov for å m
 Viser til github-repositoriumet som tilhører gruppen (legless-crane) i forbindelsen med den
 delen av denne leveransen som skal være kode. Vi har kommet frem til følgende brukerhistorier og medfølgende arbeidsoppgaver
 
-#### Brukerhistorier
-##### Brukerhistorie #1.1: Grafisk representering av brett
+### Brukerhistorier
+#### Brukerhistorie #1.1: Grafisk representering av brett
 -   “Som spiller trenger jeg en visuell representasjon av brettet slik at jeg kan spille roborally uten å måtte huske hvordan brettet ser ut.”
 
 Akseptansekriterier:
@@ -70,7 +70,7 @@ Arbeidsoppgaver:
 -   Opprette et robotobjekt (inkludert posisjon)
 -   Opprette rutenett som kan bestå av flere posisjoner
 
-##### Brukerhistorie #1.2: Robot på brettet
+#### Brukerhistorie #1.2: Robot på brettet
 -   “Som spiller trenger jeg å se roboten min på brettet, slik at jeg kan strategere.”
 
 Akseptansekriterier:
@@ -83,7 +83,7 @@ Arbeidsoppgaver:
 -   Tildele robot-brikke til spiller av spillet (foreløpig bare en deltaker)
 -   Gi grafisk utseende til robot
 
-##### Brukerhistorie #1.3: Interaktiv robot
+#### Brukerhistorie #1.3: Interaktiv robot
 -   “Som spiller trenger jeg at roboten min kan bevege seg på brettet slik at min robot kan interagere med brettet og dets elementer.”
 
 Akseptansekriterier:
@@ -96,7 +96,7 @@ Arbeidsoppgaver:
 -   Sette fast forretningslogikk for hvordan en robot påvirkes av elementer på brettet
 -   Styring av robot med piltaster (inntil programmeringskort er på plass)
 
-##### Brukerhistorie #1.4: Brukervennlighet
+#### Brukerhistorie #1.4: Brukervennlighet
 -   “Som eier av spillet trenger jeg at det funker på alle operativsystemer slik at så mange som mulig kan bruke spillet.”
 
 Akseptansekriterier:
