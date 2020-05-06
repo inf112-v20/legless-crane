@@ -356,11 +356,12 @@ public class GameLogic {
                 for (Player player : players){
                     Vector2 playerPosition = player.getPosition();
                     Direction dir = player.getRotation();
+                    System.out.println(player.getHealth());
 
-                    if (laserPathCheck(player, dir, playerPosition)){
-
-                    }
+                    laserPathCheck(player, dir, playerPosition);
                 }
+                gameState = gameState.advance();
+                break;
 
             case RESOLVE_INTERACTIONS:
                 for (Player player : players) {
@@ -443,6 +444,7 @@ public class GameLogic {
             for (Direction dir : currentTile.getBlockingDirections())
                 if (dir.equals(direction))
                     return false;
+
         } else if (nextTile.canBlockMovement()) {
             for (Direction dir : nextTile.getBlockingDirections())
                 if (dir == direction.opposite())
@@ -452,10 +454,11 @@ public class GameLogic {
             if (otherPlayer != player) {
                 if (otherPlayer.getPosition().equals(nextPosition)) {
                     otherPlayer.updateHealth(-1);
-                    return true;
+                    return false;
                 }
             }
         }
+        laserPathCheck(player, direction, nextPosition);
         return true;
     }
 
