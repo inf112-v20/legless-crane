@@ -7,7 +7,7 @@ Møtereferat:
 Roller har i stor grad vært udefinert og “fluid” men vi erfarer at dette er ineffektivt for oss. Planen videre blir derfor å sette tydligere roller fra og med i dag (26.03.20) og vi kommer til å rullere på disse hver fredag fremover mot siste innlevering.
 Vi har bestemt å ha en teamlead, en testansvarlig og en referent som står ansvarlig for møtereferat og github dokumentajson. Siste team medlem vil stå til disposisjon for å støtte de faste rollene ved behov.
 
-Første rotasjon 26.03-03.04.2020 blis som følgende:
+Første rotasjon 26.03-03.04.2020 blir som følgende:
 -   Teamlead: Andreas
 -   Testansvarlig: Hedda
 -   Referent/ Dokumentasjonsansvarlig: Kjersti
