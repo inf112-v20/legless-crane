@@ -124,6 +124,7 @@ public class Tile {
         public Builder setFlag(int flagNum) {
             this.isFlag = true;
             this.flagNum = flagNum;
+            this.healthChange = 1;
             return this;
         }
 

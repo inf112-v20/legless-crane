@@ -388,7 +388,7 @@ public class GameLogic {
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
-                    if (playerTile.isWrench()) player.updateHealth(playerTile.getHealthChange());
+                    if (playerTile.isWrench() || playerTile.isFlag()) player.updateHealth(playerTile.getHealthChange());
                 }
 
                 // Depending on health: fill phases with default cards in preparation for the next turn
