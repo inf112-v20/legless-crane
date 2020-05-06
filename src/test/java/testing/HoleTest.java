@@ -19,7 +19,7 @@ public class HoleTest {
 
 
     @BeforeAll
-    static void setup(){
+    public static void setup(){
         board = new Board("boards/testBoard0.tmx");
         gameLogic = mock(GameLogic.class);
         player = new Player(0, new Vector2(1,3), gameLogic);

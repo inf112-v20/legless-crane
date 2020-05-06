@@ -22,32 +22,32 @@ public class TestGDXRunner implements BeforeAllCallback {
         new HeadlessApplication(new ApplicationListener() {
             @Override
             public void create() {
-
+                //empty to run headless
             }
 
             @Override
             public void resize(int i, int i1) {
-
+                //empty to run headless
             }
 
             @Override
             public void render() {
-
+                //empty to run headless
             }
 
             @Override
             public void pause() {
-
+                //empty to run headless
             }
 
             @Override
             public void resume() {
-
+                //empty to run headless
             }
 
             @Override
             public void dispose() {
-
+                //empty to run headless
             }
         });
         Gdx.gl20 = Mockito.mock(GL20.class);

@@ -47,6 +47,7 @@ Arbeidsoppgaver:
 -   Kortstokken må bestå av den spesifikke fordelingen av ulike, unike programkort
 -   Dele ut 9 (endret etterhvert) tilfeldige programkort fra kortstokken synlig for spilleren
 -   La spilleren velge ut 5 av de 9 kortene som faser. Fasene skal lagre bevegelser (String).
+
 -   Koble visuelle «Programkort» med spillogikk fra «GameLogic»
     (overgang fra å lese bevegelse hos programkortene til at roboten beveger seg og interagerer med miljøet på spillebrettet.
     

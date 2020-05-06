@@ -30,7 +30,6 @@ import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 // Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
 
@@ -43,7 +42,7 @@ public class GameScreen implements Screen {
     private final Application app;
     private final GameLogic gameLogic;
     private ArrayList<ProgramCard> placementOfPhases;
-    DeckOfProgramCards deckOfProgramCards;
+    private DeckOfProgramCards deckOfProgramCards;
 
     private final int numberOfPhases = 5;
     private int currentPlayer = 0;
@@ -67,7 +66,7 @@ public class GameScreen implements Screen {
      * ( ( player1 card, player2 card, ... , ... , ...) ,
      * ( player1 card, player2 card, ... , ... , ...)
      * , ... , ... , ... )
-     * @return moves chosen by all players, separated into phases
+     * moves chosen by all players, separated into phases
      */
 
     private void update(float f){
@@ -296,8 +295,6 @@ public class GameScreen implements Screen {
                             card.addAction(Actions.moveTo(phaseX + 250 * phaseNum, phaseY, 0.2f));
                             placementOfPhases.remove(phaseNum);
                             placementOfPhases.add(phaseNum, card);
-                        } else {
-                            return;
                         }
                     }
                     // If the card is already in a phase
@@ -307,7 +304,6 @@ public class GameScreen implements Screen {
                         placementOfPhases.remove(card);
                         placementOfPhases.add(phaseNum, new ProgramCard());
                         gameLogic.regretPhase(currentPlayer, phaseNum);
-                        return;
                     }
                 }
             });
@@ -343,8 +339,6 @@ public class GameScreen implements Screen {
                 if (gameLogic.cardsAreChosen()) {
                     gameLogic.cardsChosen=true;
                     clearCards();
-                } else {
-                    return;
                 }
             }
         });

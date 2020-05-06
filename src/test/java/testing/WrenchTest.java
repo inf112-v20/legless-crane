@@ -6,11 +6,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import roborally.board.Board;
-public class wrenchTest {
+
+public class WrenchTest {
     private static Board board;
 
     @BeforeAll
-    static void setup() {
+    public static void setup() {
         board = new Board("boards/testBoard0.tmx");
     }
 

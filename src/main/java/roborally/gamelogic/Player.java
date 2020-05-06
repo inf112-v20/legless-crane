@@ -10,7 +10,6 @@ import static java.lang.Math.min;
  * An object which contains the relevant data of a Player, health, lives etc.
  */
 public class Player {
-    private GameState gameState;
     private int lives;
     private int health;
     private static final int MAX_HEALTH = 9;

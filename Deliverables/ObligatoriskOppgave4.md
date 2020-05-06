@@ -13,8 +13,7 @@
 
 
 **Oppdatering av roller:** Nei
-
--    Det har virket nokså greit å jobbe selvstendig nå som alle vet hva som gjenstår i prosjektet, så fram til denne sprinten er ferdig ser vi ikke noe behov for å endre på rollene. Det ville hatt liten effekt.
+-   Det har virket nokså greit å jobbe selvstendig nå som alle vet hva som gjenstår i prosjektet, så fram til denne sprinten er ferdig ser vi ikke noe behov for å endre på rollene. Det ville hatt liten effekt.
 
 **Erfaringer om team og prosjektmetodikk, og valg i forholdt til dette:**
 -   Prioriteringer som har blitt gjort med tanke på issues har stort sett vært veldig gode, kanskje med unntak av multiplayer som burde vært sett på for en sprint eller to siden og lagt opp til.
@@ -207,6 +206,7 @@ Arbeidsoppgaver:
 -   Kortene skal lagres fra 5. fase og nedover, utfra helsepoeng som er igjen.
 -   GameScreen: etter at en runde avsluttes i GameLogic, blir en metode kalt i GameScreen. Denne skal vise fastlåste kort (kort fra forrige omgang fra riktige faser, synkende rekkefølge) som ikke kan klikkes på, bare fjernes.
 -   Ved en ny runde skal de fastlåste kortene telle som gydlige kort for den aktuelle runden, og ikke kunne byttes ut. 
+
 
 ##### Brukerhistorie #?: Multiplayer (in progress)
 -   "Som spiller ønsker jeg å kunne spille mot andre mennesker, for dette må jeg kunne koble til med en gitt ipadresse, eller kunne velge fra en liste av tilgjengelige spill på mitt nettverk."

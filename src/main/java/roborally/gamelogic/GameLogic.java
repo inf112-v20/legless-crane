@@ -141,7 +141,6 @@ public class GameLogic {
     public void regretPhase(int playerNum, int phaseNum){
         getChosenCards()[phaseNum][playerNum] = new ProgramCard();
         playersNextPhase.get(playerNum).push(phaseNum);
-        return;
     }
 
     /**
@@ -334,6 +333,8 @@ public class GameLogic {
                             case COGS:
                                 if (playerTile.isCog()) rotationCogs(player);
                                 break;
+                            default:
+                                throw new IllegalStateException("Unexpected value: " + moves);
                         }
                     }
                 }
@@ -650,7 +651,7 @@ public class GameLogic {
                         movePlayerInDirection(otherPlayer, direction);
                         movePlayerInDirection(player, direction);
                     } return false;
-                } continue;
+                }
             }
         }
         return true;
