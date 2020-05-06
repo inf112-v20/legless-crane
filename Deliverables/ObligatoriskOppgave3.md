@@ -20,7 +20,7 @@ Forbedringspunkt fra retrospektivet (fullt retrospektiv i Wiki):
 -   Kontinuerlig arbeid med prosjektet for å unngå skippertak og bedre flyt.
 -   Tettere oppfølging av hverandre, men teamlead for uken tar hovedansvar.
 
-#### Prioritering av oppgaver fremover
+### Prioritering av oppgaver fremover
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/pb.png?raw=true)
 Vi har etter samtale med gruppeleder sett oss nødt til å fokusere fullstendig på å MVP og unngå å bruke tid på funksjoner som faller utenfor dette. I tillegg til dette har vi begynt med to ukentlige tidsfrister for issues, slik at vi holder en kontinuerlig flyt av oppgaver gjennom en sprint. I stedet for å gjøre mye mot slutten og lite i starten.
 
@@ -43,9 +43,13 @@ Akseptansekriterier:
 
 Arbeidsoppgaver:
 -   Opprette objekter for programkort og kortstokk
+
 -   La programkortene lagre en bevegelse (og etter hvert en prioritet)
+
 -   Kortstokken må bestå av den spesifikke fordelingen av ulike, unike programkort
+
 -   Dele ut 9 (endret etterhvert) tilfeldige programkort fra kortstokken synlig for spilleren
+
 -   La spilleren velge ut 5 av de 9 kortene som faser. Fasene skal lagre bevegelser (String).
 
 -   Koble visuelle «Programkort» med spillogikk fra «GameLogic»

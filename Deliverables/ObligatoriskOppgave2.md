@@ -28,7 +28,7 @@ Forbedringspunkter:
 -   Jobbe en del med prosjekttavlen, fordele issues, rydde i issues vi har liggende på tavlen og annet arbeid som trengs.
 
 ## Deloppgave 2
-#### Brukerhistorier:
+#### Brukerhistorier
 ##### Brukerhistorie #2.1: Spillet må kunne bygge
 -   “Som kunde trenger jeg at applikasjonen jeg har bestilt lar seg bygge, det bør ikke være nødvendig å kjøre fra en IDE”
 
@@ -109,7 +109,7 @@ I ettertid har det ikke vært prioritert å gjennomføre flere krav, men derimot
 Kjente bugs? 
 -   Skjermutviding. Slik som det er nå vil ikke spillet kjøre så sant skjermen justeres
 -   "Boards" med mer enn et element på en rute leses foreløpig ikke riktig i "Board.java" (bare det siste elementet)
--    Ved å rotere brikken mot venstre kan frem-og tilbakeknappene miste funksjon. Det går fint dersom man roterer mot høyre (igjen). 
+-   Ved å rotere brikken mot venstre kan frem-og tilbakeknappene miste funksjon. Det går fint dersom man roterer mot høyre (igjen). 
 
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, samt Retrospektiv på Wiki.
@@ -117,7 +117,7 @@ Viser til readme.md for teknisk teknisk produktoppsett, samt Retrospektiv på Wi
 #### UML
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/uml2.png?raw=true)
 
-### Manuelle Tester Menuscreen:
+### Manuelle Tester Menuscreen
 Test Case: Trykk på "Quit"
 -   Expected: spillet avslutter
 

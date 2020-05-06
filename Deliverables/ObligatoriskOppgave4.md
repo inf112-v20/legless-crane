@@ -32,10 +32,9 @@
 -   Mer fornuftig valg av prosjektmetodikk som nevnt over, faste roller om det var opp til oss å velge. Korte sprinter og mer fortløpende oppfølging av prosjektet for å sikre fast og jevn framgang.
 
 -   Vi hadde nok gjennomgått prosjektet sammen i starten, satt opp issues og planlegge bedre for strukturen av prosjektet. Det var mye som var ukjent i starten og som vi egentlig kunne resonnert oss fram til eller planlagt for. Og dermed unngått å måtte skrive om så mye kode.
-
 -   Parprogrammering ser vi absolutt fordelene med, og skulle ønske vi hadde fått til bedre. Spesielt i starten av prosjektet burde vi brukt tid på dette så alle var på samme side. Hadde vi visst at det ble så utfordrende å avtale tidspunkt som passet for flere utenom gruppemøter hadde vi nok også pushet mer på dette. Lett å si “vi tar en parprogrammeringsøkt til uken” og så ikke finne tid til det litt ut i uken. Generelt sett dårlig planlegging som har skapt problemer her.
 
-# TODO
+# TODO 1
 -   skjermdump fra prosjekttavle!
 
 **Gruppedynamikk og kummunikasjon, i starten VS nå:**
@@ -46,6 +45,7 @@
     -   Hverdagen blesnudd på hodet og det har vært vanskelig å finne en ny normal.
     -   Arbeidsplassen har endrett seg, og ikke for det bedre. Det er vanskelig å være produktiv på et sted du vanligvis bruker til fritid og/eller søvn. Vi har merket fraværet av en fysisk lesesal hvor vi kan jobbe blant medstudenter og et designert sted som er ment for arbeid.  
     -   Fysisk avstand hadde også en negativ effekt på kommunikasjonen vår da den ble mye mer sporadisk etter nedstengningen. Men her har nok også den generelle paotiske tilstanden også spilt inn.
+    
 -   Alle endringene endte i en mye lavere arbeidsmoral og produktivitet generelt, ikke bare på dette prosjektet men i alle fag.
 
 ## Deloppgave 2 - Krav
@@ -95,12 +95,12 @@ Akseptansekriterier:
 
 Arbeidsoppgaver:
 -   Dum AI kan velge tilfeldig, bør gå fint å implementere
+
 -   For middels og smart kan man lagre alle gyldige posisjoner i en weighted graph.
     -   Vegger kan representeres ved at det ikke er en sammenkobling mellom to tiles/vertices
     -   Hull kan fjerne alle kanter som leder til de så AI ikke forsøker å gå over de
     -   Enkelte elementer kan vektlegges mer enn tomme plasser på brettet, så AI vil unngå de på middels
     -   Smart burde egentlig ta høyde for hvor et samlebånd f.eks. vil flytte dem etter fasen.
-
 
 #### Brukerhistorie #4.3: Lasere på brettet
 -   "Som spiller trenger jeg at roboten kan skyte laser i retninger den er stilt, slik at andre roboten kan skades"
@@ -113,7 +113,6 @@ Akseptansekriterier:
 Arbeidsoppgaver:
 -   Implementere en metode som for enhver robot sjekker rute for rute i retningen den ser, og som da sjekker om en laser kan gå der (innenfor brettet og ikke en vegg) samt om det er en spiller der som kan miste et helsepoeng. 
 
-
 #### Brukerhistorie #4.4: En spiller per tile
 -   "Som spiller ønsker jeg at det kun står en spiller per rute på brettet dersom en spiller beveger seg inn i en rute hvor en annen spiller befinner seg."
 
@@ -124,7 +123,6 @@ Akseptansekriterier:
 
 Arbeidsoppgaver:
 -   GameLogic: Oppdatere validMove med dytting av spillere som funksjonalitet.
-
 
 #### Brukerhistorie #4.5: Flagg som skiftenøkkel
 -   “Som spiller trenger jeg at flagg jeg lander på, uansett rekkefølge, oppfører seg som en skiftenøkkel som lagrer nytt backup punkt og gir tilbake et helsepoeng”
@@ -152,7 +150,6 @@ Arbeidsoppgaver:
 -   GameLogic: Etter at et gitt kort blir trykket på i GameScreen, så skal en metode i GameLogic holde kontroll på antall ledige faser, hvilken fase man er på, øke faser riktig og holde kontroll på faser som blir angret på (vha. en stack).
 -   GameScreen: kort som trykkes på skal bli dratt visuelt enten til en ledig fase eller tilbake til utgangspunktposisjon.
 
-
 #### Brukerhistorie #4.7: En kortstokk per runde 
 -   "Som spiller trenger jeg å få utdelt unike programkort (dvs. unik prioritet), slik at bevegelsene til robotene kan bli utført korrekt (rangert etter prioritet)."
 
@@ -166,7 +163,6 @@ Arbeidsoppgaver:
 -   Grafisk: lage nye programkort som viser unik prioritet
 -   Logisk: opprette en liste som har alle listeindeksene til kortstokken. Stokk om på denne listen. La hver spiller få utdelt listeindekser fra ulike utgangspunkt av denne listen (9 listeindekser mellom hver spiller). Ikke forny listen (stokk om) før en hel runde er fullført (slik at alle spillere får utdelt kort fra identisk kortstokk/liste).
 
-
 #### Brukerhistorie #4.8: Sortere bevegelser i en fase basert på prioritet
 -   "Som spiller trenger jeg at hver robot utfører bevegelser i henhold til prioriteten på kortene. For balanse i spillet og at ingen bevegelser “skjer samtidig”
 
@@ -176,7 +172,6 @@ Akseptansekriterier:
 
 Arbeidsoppgaver:
 -   Sortere bevegelsene som blir lest ut fra en liste basert på prioritet. Sørge for å sortere riktig både bevegelsene og rekkefølgen av spillere. 
-
 
 #### Brukerhistorie #4.9: Utdelte kort samsvarer med helsepoeng
 -   "Som spiller trenger jeg å få utdelt kort i starten av en runde tilsvarende de helsepoengene roboten har etter forrige runde"
@@ -188,7 +183,6 @@ Akseptansekriterier:
 Arbeidsoppgaver:
 -   I metoden der en spiller får utdelt kort (listeindekser), så må antall kort som blir utdelt tilsvare antall helsepoeng spilleren har.
 -   Det samme må implementeres for AI’er.
-
 
 #### Brukerhistorie #4.10: Låste kort 
 -   "Som spiller trenger jeg at kort låses fra forrige runde dersom roboten har mindre enn 5 helsepoeng i det runden avsluttes, slik at jeg fremdeles kan utføre 5 faser til tross for få helsepoeng (utdelte kort)"
@@ -217,7 +211,6 @@ Arbeidsoppgaver
 -   Sørge for peer-to-peer funksjonalitet?
 -   Ta i bruk Hamachi eller lignende tredjepartsløsning for å koble til et virtuelt LAN
 -   Sørge for at hver spiller kun får relevant info for deres del av spillet (ikke andres kort osv..)
-
 
 #### Brukerhistorie #?: spiller skyter laser (in progress)
 -   "som spiller trenger jeg at brikken min kan skyte laser en gang i slutten av en fase i retningen den ser, for å kunne gi skade til medspillere"
@@ -249,7 +242,6 @@ Arbeidsoppgaver:
 -   La spiller velge om de ønsker å gå i powerdown eller ikke. (kan egentlig bare spørre om dette for alle spillere etter respawning har blitt gjort?)
 -   Håndtere konflikter i respawn i samme rekkefølge som spillerne døde. (kan lagre spillertall til de som dør gradvis i løpet av en runde i arraylist
 
-
 #### Brukerhistorie #?: Powerdown (in progress)
 -   "Som spiller ønsker jeg å kunne velge selv å gå i powerdown, med andre ord vil jeg kunne reparere brikken min mot å ikke kunne bevege meg en runde."
 
@@ -268,15 +260,16 @@ Arbeidsoppgaver:
 **Har vi endret prioritering på MVP?** Nei
 -   Men, burde prioritert utfordrende oppgaver som Multiplayer tidligere i MVP for å få en bedre forståelse for hvordan koden må legges opp for å gi oss minst problemer senere. Skulle det bli implementert nå vil det medføre en del omskriving og mye arbeid fra det vi kan se.
 
-
 **Kjente bugs:**
--   Bugs skal være nevnt på readme.md filen på prosjektets forside her under “known bugs”:  https://github.com/inf112-v20/legless-crane
+-   Bugs skal være nevnt på /README.md filen på prosjektets forside her under “known bugs”:  https://github.com/inf112-v20/legless-crane
 
 ## Deloppgave 3 - Produktleveranse og kodekvalitet
 Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
 
-# TODO
+# TODO 2
 -   klassediagram
--    påpeke hvilke økter som har vært parprogrammering om det ikke er representert i commits
-    -   Tirsdag 05.05 - parprogrammering på ConflictAndLaser branch
+
+-   påpeke hvilke økter som har vært parprogrammering om det ikke er representert i commits
+    - Tirsdag 05.05 - parprogrammering på ConflictAndLaser branch
+    
 -   **TAG til innlevering**
