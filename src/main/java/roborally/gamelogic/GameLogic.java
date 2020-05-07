@@ -352,6 +352,7 @@ public class GameLogic {
                 gameState = gameState.advance();
                 break;
 
+                /**
             case FIRE_PLAYER_LASER:
                 for (Player player : players){
                     Vector2 playerPosition = player.getPosition();
@@ -362,6 +363,7 @@ public class GameLogic {
                 }
                 gameState = gameState.advance();
                 break;
+                 */
 
             case RESOLVE_INTERACTIONS:
                 for (Player player : players) {
@@ -425,11 +427,11 @@ public class GameLogic {
 
     /**
      *
-     * @param player
-     * @param pos
-     * @param direction
+     * @param player current player
+     * @param pos the players position
+     * @param direction the Direction player is facing
      * @return
-     */
+     *
     private boolean laserPathCheck(Player player, Direction direction, Vector2 pos) {
         Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
@@ -461,6 +463,7 @@ public class GameLogic {
         laserPathCheck(player, direction, nextPosition);
         return true;
     }
+    */
 
     /**
      * During one turn; each player gets unique, random card-indices from the same "deck of cards"
@@ -651,7 +654,7 @@ public class GameLogic {
      *
      * Should be called whenever players move or can be moved. so MOVEBOARD and MVOEPLAYER in updateGameState
      */
-    private void killIfOffBoard() {
+    public void killIfOffBoard() {
         for (Player player : players) {
             // Check if player is in hole or went of board as a result of moving or being pushed by players or board
             Vector2 position = player.getPosition();
@@ -677,7 +680,7 @@ public class GameLogic {
      * @return whether or not the player can move in that direction without being blocked
      */
 
-    private boolean validMove(Player player, Direction direction) {
+    public boolean validMove(Player player, Direction direction) {
         Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
         if (nextPosition.x > boardWidth || nextPosition.y > boardHeight || nextPosition.x < 0 || nextPosition.y < 0) {
