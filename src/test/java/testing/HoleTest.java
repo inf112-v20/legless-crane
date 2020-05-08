@@ -3,7 +3,6 @@ package testing;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -11,7 +10,6 @@ import roborally.board.Board;
 import roborally.gamelogic.GameLogic;
 import roborally.gamelogic.Player;
 
-//@ExtendWith(TestGDXRunner.class)
 public class HoleTest {
     private static Board board;
     private static Player player;

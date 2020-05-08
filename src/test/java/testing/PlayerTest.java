@@ -67,12 +67,6 @@ public class PlayerTest {
     }
 
     @Test
-    public void checkDamagePlayerTakesFromHoleIsTenTest(){
-        int damage = board.getTile(new Vector2(1,3)).getHealthChange();
-        assertEquals(-10, damage);
-    }
-
-    @Test
     public void checkForCorrectRespawnPositionTest(){
         int damage = board.getTile(new Vector2(1, 3)).getHealthChange();
         assertEquals(-10, damage);

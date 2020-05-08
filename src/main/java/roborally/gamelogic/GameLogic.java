@@ -347,8 +347,19 @@ public class GameLogic {
                     Tile playerTile = board.getTile(playerPosition);
 
                     if (playerTile.isLaser()) player.updateHealth(playerTile.getHealthChange());
-                }
 
+                }
+                gameState = gameState.advance();
+                break;
+
+            case FIRE_PLAYER_LASER:
+                for (Player player : players){
+                    Vector2 playerPosition = player.getPosition();
+                    Direction dir = player.getRotation();
+                    System.out.println(player.getHealth());
+
+                    laserPathCheck(player, dir, playerPosition);
+                }
                 gameState = gameState.advance();
                 break;
 
@@ -413,6 +424,41 @@ public class GameLogic {
     }
 
     /**
+     * Method which checks if the current player is heading towards another player.
+     * If another player: cause damage.
+     *
+     * @param player the player that is looking
+     * @param pos the position it was standing on
+     * @param direction the direction the current player is heading
+     * @return if the player can't look any further
+     */
+    private void laserPathCheck(Player player, Direction direction, Vector2 pos) {
+        Vector2 nextPosition = getDirectionalPosition(pos, direction);
+
+        if (nextPosition.x >= boardWidth || nextPosition.y >= boardHeight || nextPosition.x <= 0 || nextPosition.y <= 0) {
+            return;
+        }
+
+        Tile nextTile = board.getTile(nextPosition);
+
+        if (nextTile.canBlockMovement()) {
+            for (Direction dir : nextTile.getBlockingDirections())
+                if (dir == direction.opposite())
+                    return;
+        }
+        for (Player otherPlayer : players) {
+            if (otherPlayer != player) {
+                if (otherPlayer.getPosition().equals(nextPosition)) {
+                    otherPlayer.updateHealth(-1);
+                    // TODO: GameScreen
+                    return;
+                }
+            }
+        }
+        laserPathCheck(player, direction, nextPosition);
+    }
+
+    /**
      * During one turn; each player gets unique, random card-indices from the same "deck of cards"
      *
      * @return array of 84 numbers (shuffled)
@@ -449,6 +495,7 @@ public class GameLogic {
             player.setPosition(nextPos);
         }
     }
+
 
     /**
      * Player uses this method when dying, moving the player back to their backup point on both gameScreen and in
@@ -626,7 +673,7 @@ public class GameLogic {
      * @return whether or not the player can move in that direction without being blocked
      */
 
-    private boolean validMove(Player player, Direction direction) {
+    public boolean validMove(Player player, Direction direction) {
         Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
         if (nextPosition.x > boardWidth || nextPosition.y > boardHeight || nextPosition.x < 0 || nextPosition.y < 0) {
@@ -644,7 +691,8 @@ public class GameLogic {
             for (Direction dir : nextTile.getBlockingDirections())
                 if (dir == direction.opposite())
                     return false;
-        } for (Player otherPlayer : players) {
+        }
+        for (Player otherPlayer : players) {
             if (otherPlayer != player) {
                 if (otherPlayer.getPosition().equals(nextPosition)) {
                     if (validMove(otherPlayer, direction)) {
@@ -656,6 +704,8 @@ public class GameLogic {
         }
         return true;
     }
+
+
 
 
     /**
