@@ -40,7 +40,7 @@ When resizing the game window clickListeners move coordinates, making the button
 
 When other robot(s) die, LooseScreen appears.
 
-When a robot has been hit by a laser, they are represented by a flame until they move.
+When a robot has been hit by a laser, they are represented by a flame until they move to another tile.
 
 When a robot uses a program card that moves player more than one step, the robot can step over holes without dieing.
 

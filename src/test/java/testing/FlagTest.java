@@ -17,7 +17,7 @@ public class FlagTest {
 
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         player = new Player(0, new Vector2(10, 9), gameLogic);
     }
 
