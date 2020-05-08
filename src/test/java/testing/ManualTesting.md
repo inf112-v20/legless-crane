@@ -91,3 +91,25 @@
 
 **Result**
 -   Pass
+
+### If a robot stops at a yellow belt at the end of a phase, the robot will move one step in the direction indicated by belt graphic
+#### (Last tested 08.05.20)
+**Process**
+-   At the end of a phase a robot steps on a yellow belt
+
+**Aim**
+-   The robot moves one step in the direction indicated by arrow in belt graphic
+
+**Result**
+-   Pass
+
+### If a robot stops at a blue belt at the end of a phase, the robot will move two steps in the direction indicated by belt graphic
+#### (Last tested 08.05.20)
+**Process**
+-   At the end of a phase a robot steps on a blue belt
+
+**Aim**
+-   The robot moves two steps in the direction indicated by arrow in belt graphic
+
+**Result**
+-   Pass
