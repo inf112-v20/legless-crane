@@ -40,5 +40,7 @@ When resizing the game window clickListeners move coordinates, making the button
 
 When other robot(s) die, LooseScreen appears.
 
-Currently throws "WARNING: An illegal reflective access operation has occurred", 
+When a robot occupies another robot's backup point as they respawn, both robots will occupy the same tile for a phase.
+
+Currently, throws "WARNING: An illegal reflective access operation has occurred", 
 when the java version used is >8. This has no effect on function or performance, and is just a warning.
