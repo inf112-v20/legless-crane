@@ -672,7 +672,7 @@ public class GameLogic {
      * @return whether or not the player can move in that direction without being blocked
      */
 
-    private boolean validMove(Player player, Direction direction) {
+    public boolean validMove(Player player, Direction direction) {
         Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
         if (nextPosition.x > boardWidth || nextPosition.y > boardHeight || nextPosition.x < 0 || nextPosition.y < 0) {

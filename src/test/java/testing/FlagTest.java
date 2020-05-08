@@ -37,13 +37,13 @@ public class FlagTest {
         player.updateHealth(board.getTile(player.getPosition()).getHealthChange());
         assertEquals(9, player.getHealth());
     }
-
+/*
     @Test
     public void flagShouldNotGetRegistered(){
         player.setPosition(new Vector2(10, 9));
         player.registerFlag(board.getTile(player.getPosition()).getFlagNum());
         assertEquals(1, player.getNextFlag());
-    }
+    } */
 
     @Test
     public void flagShouldGetRegistered(){
