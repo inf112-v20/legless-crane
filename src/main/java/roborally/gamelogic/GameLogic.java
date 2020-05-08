@@ -106,8 +106,8 @@ public class GameLogic {
      */
     public int fillPhase(int playerNum, int index) {
 
-        lastIndex = getPlayers().get(playerNum).getHealth()-1;
-        if (lastIndex > numberOfPhases) {
+        lastIndex = players.get(playerNum).getHealth()-1;
+        if (lastIndex >= numberOfPhases) {
             lastIndex = 4;
         }
 
@@ -169,7 +169,7 @@ public class GameLogic {
     private void programAIs(){
         for (int playerNum = 1; playerNum < getPlayers().size(); playerNum++) {
 
-            lastIndex = getPlayers().get(playerNum).getHealth();
+            lastIndex = players.get(playerNum).getHealth();
 
             if (lastIndex > numberOfPhases){
                 lastIndex = 5;
