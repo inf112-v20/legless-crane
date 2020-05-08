@@ -356,7 +356,6 @@ public class GameLogic {
                 for (Player player : players){
                     Vector2 playerPosition = player.getPosition();
                     Direction dir = player.getRotation();
-                    System.out.println(player.getHealth());
 
                     laserPathCheck(player, dir, playerPosition);
                 }
@@ -436,7 +435,40 @@ public class GameLogic {
         Vector2 nextPosition = getDirectionalPosition(pos, direction);
 
         if (nextPosition.x >= boardWidth || nextPosition.y >= boardHeight || nextPosition.x <= 0 || nextPosition.y <= 0) {
-            return;
+            return; // recursive stopper
+        }
+
+        if (notBlockedByWall(player, direction)) {
+            for (Player otherPlayer : players) {
+                if (otherPlayer != player) {
+                    if (otherPlayer.getPosition().equals(nextPosition)) {
+                        otherPlayer.updateHealth(-1);
+                        gameScreen.shootPlayer(otherPlayer);
+                        return;
+                    }
+                }
+            }
+        }
+        laserPathCheck(player, direction, nextPosition);
+    }
+
+    /**
+     * Checks if the tile the player is currently on or the tile the player wishes to move in the direction of, blocks
+     * movement between the two.
+     *
+     * Checks each tile's blocking directions (if any), movement is blocked if one of these directions on the tile
+     * the player moves from is the same as the direction the player wishes to move. Or if the tile the player wishes
+     * to move to blocks movement from the direction the player is coming from.
+     *
+     * @param player the player which wishes to move
+     * @param direction the direction the player wishes to move
+     * @return whether or not the player can move in that direction without being blocked
+     */
+    public boolean notBlockedByWall(Player player, Direction direction) {
+        Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
+
+        if (nextPosition.x > boardWidth || nextPosition.y > boardHeight || nextPosition.x < 0 || nextPosition.y < 0) {
+            return false;
         }
 
         Tile currentTile = board.getTile(player.getPosition());
@@ -445,22 +477,33 @@ public class GameLogic {
         if (currentTile.canBlockMovement()) {
             for (Direction dir : currentTile.getBlockingDirections())
                 if (dir.equals(direction))
-                    return;
+                    return false;
         } else if (nextTile.canBlockMovement()) {
             for (Direction dir : nextTile.getBlockingDirections())
                 if (dir == direction.opposite())
-                    return;
+                    return false;
         }
+        return true;
+    }
+
+    /**
+     * Checks if there is a player in the direction given from the given player's position.
+     * Pushes the player in the given direction if there is one there.
+     *
+     * @param player our starting out point
+     * @param direction the direction we're checking
+     * @return if the tile is free or the player in it can be pushed.
+     */
+    public boolean notBlockedByPlayer(Player player, Direction direction) {
+        Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
         for (Player otherPlayer : players) {
             if (otherPlayer != player) {
                 if (otherPlayer.getPosition().equals(nextPosition)) {
-                    otherPlayer.updateHealth(-1);
-                    gameScreen.shootPlayer(otherPlayer);
-                    return;
+                    return movePlayerInDirection(otherPlayer, direction);
                 }
             }
         }
-        laserPathCheck(player, direction, nextPosition);
+        return true;
     }
 
     /**
@@ -493,12 +536,14 @@ public class GameLogic {
      * @param player the player who's position we should update
      * @param dir the direction which the player should move (used for checking against walls
      */
-    private void movePlayerInDirection(Player player, Direction dir) {
+    private boolean movePlayerInDirection(Player player, Direction dir) {
         Vector2 nextPos = getDirectionalPosition(player.getPosition(), dir);
-        if (validMove(player, dir)) {
+        if (notBlockedByWall(player, dir) && notBlockedByPlayer(player,dir)) {
             gameScreen.setPlayerPosition(player, nextPos);
             player.setPosition(nextPos);
+            return true;
         }
+        return false;
     }
 
 
@@ -665,50 +710,9 @@ public class GameLogic {
         }
     }
 
-    /**
-     * Checks if the tile the player is currently on or the tile the player wishes to move in the direction of blocks
-     * movement between the two.
-     *
-     * Checks each tile's blocking directions (if any), movement is blocked if one of these directions on the tile
-     * the player moves from is the same as the direction the player wishes to move. Or if the tile the player wishes
-     * to move to blocks movement from the direction the player is coming from.
-     *
-     * @param player the player which wishes to move
-     * @param direction the direction the player wishes to move
-     * @return whether or not the player can move in that direction without being blocked
-     */
 
-    public boolean validMove(Player player, Direction direction) {
-        Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
-        if (nextPosition.x > boardWidth || nextPosition.y > boardHeight || nextPosition.x < 0 || nextPosition.y < 0) {
-            return false;
-        }
 
-        Tile currentTile = board.getTile(player.getPosition());
-        Tile nextTile = board.getTile(nextPosition);
-
-        if (currentTile.canBlockMovement()) {
-            for (Direction dir : currentTile.getBlockingDirections())
-                if (dir.equals(direction))
-                    return false;
-        } else if (nextTile.canBlockMovement()) {
-            for (Direction dir : nextTile.getBlockingDirections())
-                if (dir == direction.opposite())
-                    return false;
-        }
-        for (Player otherPlayer : players) {
-            if (otherPlayer != player) {
-                if (otherPlayer.getPosition().equals(nextPosition)) {
-                    if (validMove(otherPlayer, direction)) {
-                        movePlayerInDirection(otherPlayer, direction);
-                        movePlayerInDirection(player, direction);
-                    } return false;
-                }
-            }
-        }
-        return true;
-    }
 
 
 
