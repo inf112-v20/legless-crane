@@ -38,11 +38,7 @@ In case none of the options above work, run main method in "Application.java" fr
 ## Known bugs
 When resizing the game window clickListeners move coordinates, making the buttons useless.
 
-When other robot(s) die, LooseScreen appears.
-
 When a robot has been hit by a laser, they are represented by a flame until they move to another tile.
-
-When a robot uses a program card that moves player more than one step, the robot can step over holes without dieing.
 
 When a robot occupies another robot's backup point as they respawn, both robots will occupy the same tile for a phase.
 
