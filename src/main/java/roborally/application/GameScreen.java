@@ -139,7 +139,6 @@ public class GameScreen implements Screen {
 
     public void playerWins() {
         app.setScreen(app.winScreen);
-        // Pass which player wins to customize message on screeN?
     }
     public void gameOver() {
         app.setScreen(app.loseScreen);

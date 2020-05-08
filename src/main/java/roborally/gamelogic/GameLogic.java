@@ -546,6 +546,21 @@ public class GameLogic {
         return false;
     }
 
+    /**
+     * helper method
+     * @return if all players except the main player are dead or not
+     */
+    public boolean noOtherPlayersLeft() {
+        for (Player p : players) {
+            if (p != players.get(0)) {
+                if (!p.isDead()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Player uses this method when dying, moving the player back to their backup point on both gameScreen and in
@@ -555,11 +570,20 @@ public class GameLogic {
      */
     public void respawnPlayer(Player player) {
         if(player.getLives()<=0) {
-            gameScreen.gameOver();
+            if(player.getPlayerNumber()==0)
+                gameScreen.gameOver();
+            else
+                player.setDead();
+
+            if(noOtherPlayersLeft())
+                gameScreen.playerWins();
+
         } else {
             gameScreen.setPlayerPosition(player, player.getBackupPoint());
             player.setPosition(player.getBackupPoint());
         }
+
+
     }
 
     /**

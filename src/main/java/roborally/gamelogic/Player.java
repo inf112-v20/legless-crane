@@ -19,6 +19,7 @@ public class Player {
     private final int playerNumber;
     private final GameLogic gameLogic;
     private int nextFlag;
+    private boolean dead;
 
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
         this.lives = 3;
@@ -29,6 +30,7 @@ public class Player {
         this.rotation = Direction.NORTH;
         this.gameLogic = gameLogic;
         this.nextFlag = 1;
+        this.dead = false;
     }
 
     public void setBackupPoint(Vector2 backupPoint) {
@@ -100,5 +102,13 @@ public class Player {
 
     public void setRotation(Direction rotation) {
         this.rotation = rotation;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead() {
+        this.dead = true;
     }
 }
