@@ -1,7 +1,7 @@
 package testing;
 
 import com.badlogic.gdx.math.Vector2;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import roborally.board.Board;
 import roborally.gamelogic.GameLogic;
@@ -11,21 +11,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 public class FlagTest {
-    private static Board board;
+    private static Board board = new Board("boards/Risky_Exchange.tmx");
+    private static GameLogic gameLogic= mock(GameLogic.class);
     private static Player player;
-    private static GameLogic gameLogic;
 
 
-    @BeforeAll
-    public static void setup() {
-        board = new Board("boards/Risky_Exchange.tmx");
-        gameLogic = mock(GameLogic.class);
+    @BeforeEach
+    public void setup() {
         player = new Player(0, new Vector2(10, 9), gameLogic);
     }
 
     @Test
     public void flagShouldBecomeBackup(){
-        player.setPosition(new Vector2(10, 9));
         player.setBackupPoint(player.getPosition());
         assertEquals(new Vector2(10,9), player.getBackupPoint());
     }
@@ -33,17 +30,15 @@ public class FlagTest {
     @Test
     public void flagShouldUpdateHealth(){
         player.updateHealth(-1);
-        player.setPosition(new Vector2(10, 9));
         player.updateHealth(board.getTile(player.getPosition()).getHealthChange());
         assertEquals(9, player.getHealth());
     }
-/*
+
     @Test
     public void flagShouldNotGetRegistered(){
-        player.setPosition(new Vector2(10, 9));
         player.registerFlag(board.getTile(player.getPosition()).getFlagNum());
         assertEquals(1, player.getNextFlag());
-    } */
+    }
 
     @Test
     public void flagShouldGetRegistered(){

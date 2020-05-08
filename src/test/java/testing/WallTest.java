@@ -30,12 +30,12 @@ public class WallTest {
 
     @Test
     public void blockMovementFromEnteringThroughWallTest(){
-        assertEquals(false, gameLogic.validMove(player, Direction.WEST));
+        assertEquals(false, gameLogic.notBlockedByWall(player, Direction.WEST));
     }
 
     @Test
     public void blockMovementFromExitingThroughWallTest(){
         player.setPosition(new Vector2(1, 0));
-        assertEquals(false, gameLogic.validMove(player, Direction.EAST));
+        assertEquals(false, gameLogic.notBlockedByWall(player, Direction.EAST));
     }
 }
