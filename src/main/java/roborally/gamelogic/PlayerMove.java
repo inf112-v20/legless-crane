@@ -20,7 +20,7 @@ public class PlayerMove implements Comparable {
         this.movePriority=priority;
     }
 
-    public Moves getMove() {
+    public Moves getType() {
         return move;
     }
 

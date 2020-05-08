@@ -195,17 +195,18 @@ public class GameLogic {
             return; // if no moves are queued, do nothing.
         }
         PlayerMove nextMove = queue.remove(0);
-        if (nextMove.getMove() == Moves.FORWARD) {
-            forwardMovement(players.get(nextMove.getPlayerNumber()));
-        } else if (nextMove.getMove() == Moves.BACK) {
-            backwardMovement(players.get(nextMove.getPlayerNumber()));
-        } else if (nextMove.getMove() == Moves.LEFT) {
-            rotatePlayer(players.get(nextMove.getPlayerNumber()), -1);
-        } else if (nextMove.getMove() == Moves.RIGHT) {
-            rotatePlayer(players.get(nextMove.getPlayerNumber()), 1);
+        if (nextMove.getType() == Moves.FORWARD) {
+            forwardMovement(players.get(nextMove.getPlayerNumber()-1));
+        } else if (nextMove.getType() == Moves.BACK) {
+            backwardMovement(players.get(nextMove.getPlayerNumber()-1));
+        } else if (nextMove.getType() == Moves.LEFT) {
+            rotatePlayer(players.get(nextMove.getPlayerNumber()-1), -1);
+        } else if (nextMove.getType() == Moves.RIGHT) {
+            rotatePlayer(players.get(nextMove.getPlayerNumber()-1), 1);
         } else {
             throw new IllegalStateException("Unexpected value");
         }
+        killIfOffBoard();
     }
 
     /**
@@ -224,29 +225,29 @@ public class GameLogic {
             if(players.get(i).isDead()) continue;
             switch(cardsThisPhase[i].getMovement()) {
                 case "move_1_":
-                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i+1, cardsThisPhase[i].getPriority()));
                     break;
                 case "move_2_":
-                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
-                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i+1, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i+1, cardsThisPhase[i].getPriority()));
                     break;
                 case "move_3_":
-                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
-                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
-                    queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i+1, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i+1, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.FORWARD, i+1, cardsThisPhase[i].getPriority()));
                     break;
                 case "u_turn_":
-                    queue.add(new PlayerMove(Moves.RIGHT, i, cardsThisPhase[i].getPriority()));
-                    queue.add(new PlayerMove(Moves.RIGHT, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.RIGHT, i+1, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.RIGHT, i+1, cardsThisPhase[i].getPriority()));
                     break;
                 case "back_up_":
-                    queue.add(new PlayerMove(Moves.BACK, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.BACK, i+1, cardsThisPhase[i].getPriority()));
                     break;
                 case "rotate_left_":
-                    queue.add(new PlayerMove(Moves.LEFT, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.LEFT, i+1, cardsThisPhase[i].getPriority()));
                     break;
                 case "rotate_right_":
-                    queue.add(new PlayerMove(Moves.RIGHT, i, cardsThisPhase[i].getPriority()));
+                    queue.add(new PlayerMove(Moves.RIGHT, i+1, cardsThisPhase[i].getPriority()));
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + cardsThisPhase[i].getMovement());
@@ -308,7 +309,6 @@ public class GameLogic {
                 break;
 
             case MOVE_PLAYER:
-                killIfOffBoard();
                 performMove();
                 if (queue.size() == 0) {
                     gameState = gameState.advance();
@@ -316,6 +316,7 @@ public class GameLogic {
                 break;
 
             case MOVE_BOARD:
+                killIfOffBoard();
                 for (ElementMoves moves : ElementMoves.values()) {
                     for(Player player : players) {
                         if (player.isDead()) continue;
@@ -340,10 +341,11 @@ public class GameLogic {
                         }
                     }
                 }
-                killIfOffBoard();
+
                 gameState = gameState.advance();
 
             case FIRE_LASERS:
+                killIfOffBoard();
                 for (Player player : players) {
                     if (player.isDead()) continue;
 
@@ -357,6 +359,7 @@ public class GameLogic {
                 break;
 
             case FIRE_PLAYER_LASER:
+                killIfOffBoard();
                 for (Player player : players){
                     if (player.isDead()) continue;
 
@@ -369,6 +372,7 @@ public class GameLogic {
                 break;
 
             case RESOLVE_INTERACTIONS:
+                killIfOffBoard();
                 for (Player player : players) {
                     if (player.isDead()) continue;
 
@@ -452,6 +456,7 @@ public class GameLogic {
      * @param direction the direction the current player is heading
      * @return if the player can't look any further
      */
+
     private void laserPathCheck(Player player, Direction direction, Vector2 pos) {
         Vector2 nextPosition = getDirectionalPosition(pos, direction);
 
@@ -753,7 +758,7 @@ public class GameLogic {
             Tile playerTile = board.getTile(position);
 
             if (position.x >= boardWidth-1 || position.y >= boardHeight-1 || position.x <= 0 || position.y <= 0 || playerTile.isHole()) {
-                player.updateHealth(-10);
+                player.updateHealth(-20);
                 if (player.getPlayerNumber() == 1) {
                     System.out.println("You died :(");
                 } else {
