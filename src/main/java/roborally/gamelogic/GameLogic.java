@@ -439,9 +439,14 @@ public class GameLogic {
             return;
         }
 
+        Tile currentTile = board.getTile(player.getPosition());
         Tile nextTile = board.getTile(nextPosition);
 
-        if (nextTile.canBlockMovement()) {
+        if (currentTile.canBlockMovement()) {
+            for (Direction dir : currentTile.getBlockingDirections())
+                if (dir.equals(direction))
+                    return;
+        } else if (nextTile.canBlockMovement()) {
             for (Direction dir : nextTile.getBlockingDirections())
                 if (dir == direction.opposite())
                     return;
