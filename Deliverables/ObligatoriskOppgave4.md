@@ -34,8 +34,8 @@
 -   Vi hadde nok gjennomgått prosjektet sammen i starten, satt opp issues og planlegge bedre for strukturen av prosjektet. Det var mye som var ukjent i starten og som vi egentlig kunne resonnert oss fram til eller planlagt for. Og dermed unngått å måtte skrive om så mye kode.
 -   Parprogrammering ser vi absolutt fordelene med, og skulle ønske vi hadde fått til bedre. Spesielt i starten av prosjektet burde vi brukt tid på dette så alle var på samme side. Hadde vi visst at det ble så utfordrende å avtale tidspunkt som passet for flere utenom gruppemøter hadde vi nok også pushet mer på dette. Lett å si “vi tar en parprogrammeringsøkt til uken” og så ikke finne tid til det litt ut i uken. Generelt sett dårlig planlegging som har skapt problemer her.
 
-## TODO 1
--   skjermdump fra prosjekttavle!
+## Oppdatert prosjekttavle (8. mai):
+![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/projectBoard.png?raw=true)
 
 **Gruppedynamikk og kummunikasjon, i starten VS nå:**
 -   Vi hadde et greit utgangspunkt som en gruppe. Det var grei gruppedynamikk og kommunikasjon, men vi ser nå at den dynamikken var mer egnet for sosiale settinger ikke nødvendigvis som et team på et prosjekt. Nå mot slutten har vi tidvis hatt litt for sporadisk kommunikasjon men den kommunikasjonen som har vært har vært mye mer rett frem og effektiv i forhold til arbeidet på prosjektet. Det må nevnes at det er vanskelig å se hva som har endret seg fordi vi har blitt vant til å jobbe med hverandre og hva som har endret deg kun fordi vi har vært i denne korona påvirkede situasjonen.
@@ -53,7 +53,8 @@
 -   “Game-loop”
 -   Flere spillere på brettet (AI)
 -   Interaksjon på brettet: lasere på brettet er aktivert
--   Interaksjon på brettet: roboter kan pushe hverandre/ en robot per Tile
+-   Interaksjon på brettet: roboter kan pushe hverandre/ en robot per rute (bug: respawn for flere spillere på samme rute)
+-   Interaksjon på brettet: skyte laser fra spiller (bug: roboten som blir skutt er grafisk kammuflert en fase)
 -   Interaksjon på brettet: flagg som skiftenøkkel
 -   Omprioritere kort
 -   En kortstokk per runde (spillere får utdelt ulike/unike programkort før en runde)
@@ -61,13 +62,9 @@
 -   Utdelte kort samsvarer med helsepoeng
 -   Låste kort
 
-**Påbegynt? (legg til det som er gjort ferdi over, vurder å drop listen vi ikke blir ferdig med)**
--   Interaksjon på brettet: skyte laser fra spiller
--   Powerdown?
--   Respawn (skal skje på korrekt tidspunkt og håndtering av spillere som respawner på samme rute). 
+**Påbegynt:**
+-   Respawn (riktig helsetap og skjer på korrekt tidspunkt, men det gjenstår håndtering av flere spillere på samme rute)
 -   Multiplayer
--   En spiller per rute (avhenger av respawn)
--   Generelt testing
 
 ### Brukerhistorer
 #### Brukerhistore #4.1: Game-loop
@@ -113,7 +110,7 @@ Akseptansekriterier:
 Arbeidsoppgaver:
 -   Implementere en metode som for enhver robot sjekker rute for rute i retningen den ser, og som da sjekker om en laser kan gå der (innenfor brettet og ikke en vegg) samt om det er en spiller der som kan miste et helsepoeng. 
 
-#### Brukerhistorie #4.4: En spiller per tile
+#### Brukerhistorie #4.4: En spiller per rute
 -   "Som spiller ønsker jeg at det kun står en spiller per rute på brettet dersom en spiller beveger seg inn i en rute hvor en annen spiller befinner seg."
 
 Akseptansekriterier:
@@ -198,21 +195,7 @@ Arbeidsoppgaver:
 -   GameScreen: etter at en runde avsluttes i GameLogic, blir en metode kalt i GameScreen. Denne skal vise fastlåste kort (kort fra forrige omgang fra riktige faser, synkende rekkefølge) som ikke kan klikkes på, bare fjernes.
 -   Ved en ny runde skal de fastlåste kortene telle som gydlige kort for den aktuelle runden, og ikke kunne byttes ut. 
 
-#### Brukerhistorie #?: Multiplayer (in progress)
--   "Som spiller ønsker jeg å kunne spille mot andre mennesker, for dette må jeg kunne koble til med en gitt ipadresse, eller kunne velge fra en liste av tilgjengelige spill på mitt nettverk."
-
-Akseptansekriterier:
--   Spillere får koblet sammen over LAN med ipadresser
--   Hver spiller får bare opp sine kort
--   Utenom HUD bør skjermen vise akkurat det samme til samme tid
-
-Arbeidsoppgaver
--   Implementere nettverk over LAN med client-server struktur
--   Sørge for peer-to-peer funksjonalitet?
--   Ta i bruk Hamachi eller lignende tredjepartsløsning for å koble til et virtuelt LAN
--   Sørge for at hver spiller kun får relevant info for deres del av spillet (ikke andres kort osv..)
-
-#### Brukerhistorie #?: spiller skyter laser (in progress)
+#### Brukerhistorie #4.11: spiller skyter laser
 -   "som spiller trenger jeg at brikken min kan skyte laser en gang i slutten av en fase i retningen den ser, for å kunne gi skade til medspillere"
 
 Akseptansekriterier:
@@ -242,7 +225,21 @@ Arbeidsoppgaver:
 -   La spiller velge om de ønsker å gå i powerdown eller ikke. (kan egentlig bare spørre om dette for alle spillere etter respawning har blitt gjort?)
 -   Håndtere konflikter i respawn i samme rekkefølge som spillerne døde. (kan lagre spillertall til de som dør gradvis i løpet av en runde i arraylist
 
-#### Brukerhistorie #?: Powerdown (in progress)
+#### Brukerhistorie #?: Multiplayer (in progress)
+-   "Som spiller ønsker jeg å kunne spille mot andre mennesker, for dette må jeg kunne koble til med en gitt ipadresse, eller kunne velge fra en liste av tilgjengelige spill på mitt nettverk."
+
+Akseptansekriterier:
+-   Spillere får koblet sammen over LAN med ipadresser
+-   Hver spiller får bare opp sine kort
+-   Utenom HUD bør skjermen vise akkurat det samme til samme tid
+
+Arbeidsoppgaver
+-   Implementere nettverk over LAN med client-server struktur
+-   Sørge for peer-to-peer funksjonalitet?
+-   Ta i bruk Hamachi eller lignende tredjepartsløsning for å koble til et virtuelt LAN
+-   Sørge for at hver spiller kun får relevant info for deres del av spillet (ikke andres kort osv..)
+
+#### Brukerhistorie #?: Powerdown (denne var planlagt, men ikke påbegynt)
 -   "Som spiller ønsker jeg å kunne velge selv å gå i powerdown, med andre ord vil jeg kunne reparere brikken min mot å ikke kunne bevege meg en runde."
 
 Akseptansekriterier:
@@ -269,9 +266,6 @@ Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der ska
 ### Notat på bruke av Junit5 i prosjektet
 -   Junit5 gir error ved forsøk på å bruke AssertTrue()/AssertFalse() - det er mest sansynlig noe i pom.xml som ikke stemmer. Vi har valgt å unngå disse assert metodene i testene våre, da vi ikke oppdaget feilen i pom.xml før innlevering
 
-## TODO 2
--   klassediagram
+## Klassediagram
+![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/umlOblig4.png?raw=true)
 
--   Økter hvor det ble brukt parprogrammering og det ikke er representert i commit meldingen:
-    - Tirsdag 05.05 - Andreas, Hedda og Kjersti
--   **TAG til innlevering**
