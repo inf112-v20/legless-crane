@@ -228,6 +228,10 @@ public class GameScreen implements Screen {
         playerLayer.setCell((int) newPosition.x, (int) newPosition.y, playerTiles.get(player.getPlayerNumber()-1));
     }
 
+    public void hidePlayer(Player player) {
+        playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, null);
+    }
+
     /**
      * Assets (visual representation of the current buttons).
      */

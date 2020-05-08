@@ -19,6 +19,7 @@ public class Player {
     private final int playerNumber;
     private final GameLogic gameLogic;
     private int nextFlag;
+    private boolean permaDead;
     private boolean dead;
 
     public Player(int playerNumber, Vector2 spawnPoint, GameLogic gameLogic) {
@@ -30,6 +31,7 @@ public class Player {
         this.rotation = Direction.NORTH;
         this.gameLogic = gameLogic;
         this.nextFlag = 1;
+        this.permaDead = false;
         this.dead = false;
     }
 
@@ -50,7 +52,16 @@ public class Player {
         if (health < 0) {
             lives -= 1;
             health = MAX_HEALTH - 2;
-            gameLogic.respawnPlayer(this);
+            dead = true;
+            gameLogic.killPlayer(this);
+
+            if (lives <= 0) {
+                if (playerNumber == 1) {
+                    gameLogic.gameOver();
+                } else {
+                    permaDead = true;
+                }
+            }
         }
     }
 
@@ -104,11 +115,16 @@ public class Player {
         this.rotation = rotation;
     }
 
+    public boolean isPermaDead() {
+        return permaDead;
+    }
+
     public boolean isDead() {
+        // if the player should be taken out of the game or ignored a round.
         return dead;
     }
 
-    public void setDead() {
-        this.dead = true;
+    public void respawn() {
+        dead = false;
     }
 }

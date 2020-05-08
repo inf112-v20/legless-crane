@@ -191,6 +191,9 @@ public class GameLogic {
      * performs the move queued next with the player that should perform it. (Assuming the lists are in sync)
      */
     private void performMove() {
+        if (queue.size()==0) {
+            return; // if no moves are queued, do nothing.
+        }
         PlayerMove nextMove = queue.remove(0);
         if (nextMove.getMove() == Moves.FORWARD) {
             forwardMovement(players.get(nextMove.getPlayerNumber()));
@@ -218,6 +221,7 @@ public class GameLogic {
         ProgramCard[] cardsThisPhase = getChosenCards()[phase];
 
         for (int i = 0; i <cardsThisPhase.length ;i++) {
+            if(players.get(i).isDead()) continue;
             switch(cardsThisPhase[i].getMovement()) {
                 case "move_1_":
                     queue.add(new PlayerMove(Moves.FORWARD, i, cardsThisPhase[i].getPriority()));
@@ -275,18 +279,14 @@ public class GameLogic {
      *
      * C. MOVE_BOARD handles interactions between the player and elements on the board where the player is moved,
      * if on a belt the player is moved etc. Once all elements have been checked in order, the gameState advances.
-     * TODO: Implement pushers (Not in MVP?)
      *
      * D. FIRE_LASERS updates the player's health if any are standing on a static laser.
-     * TODO: expand this to include lasers fired by players
-     * TODO: Add logic making sure the laser does not go through players or walls and damage things not in it's LoS
      *
      * E. RESOLVE_INTERACTIONS handles additional interactions between player and board such as registering
      * flags and updating backup/archive locations. In other words, flags and repair sites on the board.
      *
      * 2. CLEANUP happens after all 5 phases have been performed, any player on a wrench/repair tile will be repaired.
      * TODO: Expand this to give the player option cards if on a crossed wrench/hammer space. (Not in MVP?)
-     * TODO: If any players have locked registers, those cards should not reenter the deck.
      *
      */
     public void updateGameState() {
@@ -295,7 +295,6 @@ public class GameLogic {
             return;
         }
         count = 0;
-        //TODO: Fine-tune this timer so the game flows well.
 
         switch (gameState) {
             case DEAL_CARDS:
@@ -309,6 +308,7 @@ public class GameLogic {
                 break;
 
             case MOVE_PLAYER:
+                killIfOffBoard();
                 performMove();
                 if (queue.size() == 0) {
                     gameState = gameState.advance();
@@ -318,6 +318,8 @@ public class GameLogic {
             case MOVE_BOARD:
                 for (ElementMoves moves : ElementMoves.values()) {
                     for(Player player : players) {
+                        if (player.isDead()) continue;
+
                         Vector2 playerPosition = player.getPosition();
                         Tile playerTile = board.getTile(playerPosition);
                         switch (moves) {
@@ -343,6 +345,8 @@ public class GameLogic {
 
             case FIRE_LASERS:
                 for (Player player : players) {
+                    if (player.isDead()) continue;
+
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
@@ -354,6 +358,8 @@ public class GameLogic {
 
             case FIRE_PLAYER_LASER:
                 for (Player player : players){
+                    if (player.isDead()) continue;
+
                     Vector2 playerPosition = player.getPosition();
                     Direction dir = player.getRotation();
 
@@ -364,6 +370,8 @@ public class GameLogic {
 
             case RESOLVE_INTERACTIONS:
                 for (Player player : players) {
+                    if (player.isDead()) continue;
+
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
@@ -385,6 +393,8 @@ public class GameLogic {
                 }
 
                 for (Player player : players) {
+                    if (player.isDead()) continue;
+
                     Vector2 playerPosition = player.getPosition();
                     Tile playerTile = board.getTile(playerPosition);
 
@@ -393,6 +403,7 @@ public class GameLogic {
 
                 // Depending on health: fill phases with default cards in preparation for the next turn
                 for (Player player : players) {
+
                     if (player.getHealth() < 5) {
                         int lockedRegisters = player.getHealth();
                         for (int i = 0; i < lockedRegisters; i++) {
@@ -404,6 +415,16 @@ public class GameLogic {
                         }
                     }
                 }
+
+                if(noOtherPlayersLeft())
+                    gameScreen.playerWins();
+
+                for (Player player : players) {
+                    if (player.isDead() && !player.isPermaDead()) {
+                        respawnPlayer(player);
+                    }
+                }
+
 
                 cardsChosen = false;
                 cardIndices.clear();
@@ -553,12 +574,16 @@ public class GameLogic {
     public boolean noOtherPlayersLeft() {
         for (Player p : players) {
             if (p != players.get(0)) {
-                if (!p.isDead()) {
+                if (!p.isPermaDead()) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    public void gameOver() {
+        gameScreen.gameOver();
     }
 
 
@@ -569,21 +594,9 @@ public class GameLogic {
      * @param player the player which should respawn.
      */
     public void respawnPlayer(Player player) {
-        if(player.getLives()<=0) {
-            if(player.getPlayerNumber()==0)
-                gameScreen.gameOver();
-            else
-                player.setDead();
-
-            if(noOtherPlayersLeft())
-                gameScreen.playerWins();
-
-        } else {
-            gameScreen.setPlayerPosition(player, player.getBackupPoint());
-            player.setPosition(player.getBackupPoint());
-        }
-
-
+        gameScreen.setPlayerPosition(player, player.getBackupPoint());
+        player.setPosition(player.getBackupPoint());
+        player.respawn();
     }
 
     /**
@@ -723,23 +736,22 @@ public class GameLogic {
      */
     private void killIfOffBoard() {
         for (Player player : players) {
+            if (player.isDead()) continue;
+
             // Check if player is in hole or went of board as a result of moving or being pushed by players or board
             Vector2 position = player.getPosition();
             Tile playerTile = board.getTile(position);
 
             if (position.x >= boardWidth-1 || position.y >= boardHeight-1 || position.x <= 0 || position.y <= 0 || playerTile.isHole()) {
-                System.out.println("player died");
                 player.updateHealth(-10);
+                if (player.getPlayerNumber() == 1) {
+                    System.out.println("You died :(");
+                } else {
+                    System.out.println("Player " + player.getPlayerNumber() + " died");
+                }
             }
         }
     }
-
-
-
-
-
-
-
 
     /**
      * returns the Vector2 x,y coordinate of a position in the moveDir direction
@@ -762,5 +774,10 @@ public class GameLogic {
                 System.out.println("Incorrect direction given in getDirectionalPosition(), returning currentPos");
                 return position;
         }
+    }
+
+    public void killPlayer(Player player) {
+        queue.removeIf(move -> move.getPlayerNumber()==player.getPlayerNumber()); // remove moves from this phase
+        gameScreen.hidePlayer(player); // hide the player
     }
 }
