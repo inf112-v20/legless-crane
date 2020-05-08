@@ -450,7 +450,7 @@ public class GameLogic {
             if (otherPlayer != player) {
                 if (otherPlayer.getPosition().equals(nextPosition)) {
                     otherPlayer.updateHealth(-1);
-                    // TODO: GameScreen
+                    gameScreen.shootPlayer(otherPlayer);
                     return;
                 }
             }
