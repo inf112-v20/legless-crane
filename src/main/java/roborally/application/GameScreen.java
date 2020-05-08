@@ -353,9 +353,8 @@ public class GameScreen implements Screen {
      */
     public void shootPlayer(Player player){
         Vector2 target = player.getPosition();
-
-        // TODO: add fire.png in the target tile for a few seconds
-
+        playerLayer.setCell((int)target.x, (int)target.y, new Cell().setTile(new StaticTiledMapTile
+                (new TextureRegion(new Texture("img/fire.png")))));
     }
 
     /**
