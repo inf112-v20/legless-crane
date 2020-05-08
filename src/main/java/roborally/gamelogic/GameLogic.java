@@ -456,17 +456,27 @@ public class GameLogic {
         Vector2 nextPosition = getDirectionalPosition(pos, direction);
 
         if (nextPosition.x >= boardWidth || nextPosition.y >= boardHeight || nextPosition.x <= 0 || nextPosition.y <= 0) {
-            return; // recursive stopper
+            return;
         }
 
-        if (notBlockedByWall(player, direction)) {
-            for (Player otherPlayer : players) {
-                if (otherPlayer != player) {
-                    if (otherPlayer.getPosition().equals(nextPosition)) {
-                        otherPlayer.updateHealth(-1);
-                        gameScreen.shootPlayer(otherPlayer);
-                        return;
-                    }
+        Tile currentTile = board.getTile(player.getPosition());
+        Tile nextTile = board.getTile(nextPosition);
+
+        if (currentTile.canBlockMovement()) {
+            for (Direction dir : currentTile.getBlockingDirections())
+                if (dir.equals(direction))
+                    return;
+        } else if (nextTile.canBlockMovement()) {
+            for (Direction dir : nextTile.getBlockingDirections())
+                if (dir == direction.opposite())
+                    return;
+        }
+        for (Player otherPlayer : players) {
+            if (otherPlayer != player) {
+                if (otherPlayer.getPosition().equals(nextPosition)) {
+                    otherPlayer.updateHealth(-1);
+                    gameScreen.shootPlayer(otherPlayer);
+                    return;
                 }
             }
         }
