@@ -73,7 +73,7 @@ public class GameLogic {
         gameState = GameState.DEAL_CARDS;
 
         setCardIndices();
-        chosenCards = new ProgramCard[5][getPlayers().size()];
+        chosenCards = new ProgramCard[5][players.size()];
         deckOfProgramCards = new DeckOfProgramCards();
         initializeLists();
     }
@@ -167,7 +167,7 @@ public class GameLogic {
      *  Reads "card indices" from gameLogic.getCardIndices() from individual starting points.
      */
     private void programAIs(){
-        for (int playerNum = 1; playerNum < getPlayers().size(); playerNum++) {
+        for (int playerNum = 1; playerNum < players.size(); playerNum++) {
 
             lastIndex = players.get(playerNum).getHealth();
 
@@ -175,7 +175,7 @@ public class GameLogic {
                 lastIndex = 5;
             }
 
-            startingPoint = playerNum * getPlayers().get(playerNum - 1).getHealth();
+            startingPoint = playerNum * players.get(playerNum - 1).getHealth();
 
             for (int phase = 0; phase < lastIndex; phase++) {
                 index = getCardIndices().get(startingPoint);
