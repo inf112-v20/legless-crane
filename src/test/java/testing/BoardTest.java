@@ -7,7 +7,6 @@ import roborally.board.Board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-//@ExtendWith(TestGDXRunner.class) keep? works?
 public class BoardTest {
     private static Board board;
 
