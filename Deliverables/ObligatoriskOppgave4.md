@@ -272,6 +272,6 @@ Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der ska
 ## TODO 2
 -   klassediagram
 
--   påpeke hvilke økter som har vært parprogrammering om det ikke er representert i commits
-    - Tirsdag 05.05 - parprogrammering på ConflictAndLaser branch
+-   Økter hvor det ble brukt parprogrammering og det ikke er representert i commit meldingen:
+    - Tirsdag 05.05 - Andreas, Hedda og Kjersti
 -   **TAG til innlevering**
