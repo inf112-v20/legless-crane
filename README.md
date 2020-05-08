@@ -17,7 +17,7 @@ mvn clean install
 #### Run with commandline
 ```html
 cd C:\..\legless-crane\target
-java -jar roborally-0.4.jar
+java -jar roborally-1.0.jar
 ```
 
 ### Alternative
@@ -30,7 +30,7 @@ Download [latest release](https://github.com/inf112-v20/legless-crane/releases) 
 
 #### Run
 1.  Locate target directory in `..\legless-crane\target`
-2.  Run `roborally-0.4.jar`
+2.  Run `roborally-1.0.jar`
 
 ### Emergency measures
 In case none of the options above work, run main method in "Application.java" from IntelliJ (or other IDEs).
@@ -38,11 +38,7 @@ In case none of the options above work, run main method in "Application.java" fr
 ## Known bugs
 When resizing the game window clickListeners move coordinates, making the buttons useless.
 
-When other robot(s) die, LooseScreen appears.
-
 When a robot has been hit by a laser, they are represented by a flame until they move to another tile.
-
-When a robot uses a program card that moves player more than one step, the robot can step over holes without dieing.
 
 When a robot occupies another robot's backup point as they respawn, both robots will occupy the same tile for a phase.
 
