@@ -30,7 +30,6 @@ import roborally.programcards.DeckOfProgramCards;
 import roborally.programcards.ProgramCard;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 // Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
 
@@ -43,11 +42,12 @@ public class GameScreen implements Screen {
     private final Application app;
     private final GameLogic gameLogic;
     private ArrayList<ProgramCard> placementOfPhases;
-    DeckOfProgramCards deckOfProgramCards;
+    private DeckOfProgramCards deckOfProgramCards;
 
     private final int numberOfPhases = 5;
     private int currentPlayer = 0;
-    private float phaseX, phaseY;
+    private float phaseX;
+    private float phaseY;
     private int phaseNum = 0;
     private int index;
 
@@ -67,7 +67,7 @@ public class GameScreen implements Screen {
      * ( ( player1 card, player2 card, ... , ... , ...) ,
      * ( player1 card, player2 card, ... , ... , ...)
      * , ... , ... , ... )
-     * @return moves chosen by all players, separated into phases
+     * moves chosen by all players, separated into phases
      */
 
     private void update(float f){
@@ -296,8 +296,6 @@ public class GameScreen implements Screen {
                             card.addAction(Actions.moveTo(phaseX + 250 * phaseNum, phaseY, 0.2f));
                             placementOfPhases.remove(phaseNum);
                             placementOfPhases.add(phaseNum, card);
-                        } else {
-                            return;
                         }
                     }
                     // If the card is already in a phase
@@ -307,7 +305,6 @@ public class GameScreen implements Screen {
                         placementOfPhases.remove(card);
                         placementOfPhases.add(phaseNum, new ProgramCard());
                         gameLogic.regretPhase(currentPlayer, phaseNum);
-                        return;
                     }
                 }
             });
@@ -343,13 +340,22 @@ public class GameScreen implements Screen {
                 if (gameLogic.cardsAreChosen()) {
                     gameLogic.cardsChosen=true;
                     clearCards();
-                } else {
-                    return;
                 }
             }
         });
         stage.addActor(menuButton);
         stage.addActor(goButton);
+    }
+
+    /**
+     * Method to provide graphics regarding "fire lasers from players"
+     * @param player The player getting shot by a laser
+     */
+    public void shootPlayer(Player player){
+        Vector2 target = player.getPosition();
+
+        // TODO: add fire.png in the target tile for a few seconds
+
     }
 
     /**

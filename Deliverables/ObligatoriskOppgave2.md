@@ -28,64 +28,76 @@ Forbedringspunkter:
 -   Jobbe en del med prosjekttavlen, fordele issues, rydde i issues vi har liggende på tavlen og annet arbeid som trengs.
 
 ## Deloppgave 2
-Brukerhistorier:
-### Brukerhistorie #1: spillet må kunne bygge
-“Som kunde trenger jeg at applikasjonen jeg har bestilt lar seg bygge, det bør ikke være nødvendig å kjøre fra en IDE”
-#### Akseptansekriterier
+#### Brukerhistorier
+##### Brukerhistorie #2.1: Spillet må kunne bygge
+-   “Som kunde trenger jeg at applikasjonen jeg har bestilt lar seg bygge, det bør ikke være nødvendig å kjøre fra en IDE”
+
+Akseptansekriterier:
 -   Skal kunne vite hvordan man bygger applikasjonen
 -   Pom.xml innholdere elementene som kreves for en rikitg og komplett Build
 -   Dette skal være oversiktlig forklart i github(readme.md)
-#### Arbeidsoppgaver
+
+Arbeidsoppgaver:
 -   Oppdater Pom.xml
 -   Dokumentere prosjektet bedre i readme.md fra forsiden
 
-### Brukerhistorie #2: spillet må kunne kjøre
-“Som kunde trenger jeg å kunne kjøre applikasjonen jeg har spilt”
-#### Akseptansekriterier:
+##### Brukerhistorie #2.2: Spillet må kunne kjøre
+-   “Som kunde trenger jeg å kunne kjøre applikasjonen jeg har spilt”
+
+Akseptansekriterier:
 -   Krasjer ikke ved oppstart
 -   Krasjer ikke mens det kjører
-#### Arbeidsoppgaver:
+
+Arbeidsoppgaver:
 -   Utføre manuelle og automatiske tester av spillet, sørge for at det kjører relativt problemfritt.
 
-### Brukerhistorie #3: spillet bør ha tester
-“Som utvikler trenger jeg å kunne teste at oppførselen er som forventet ”
-#### Akseptansekriterier:
+##### Brukerhistorie #2.3: Spillet bør ha tester
+-   “Som utvikler trenger jeg å kunne teste at oppførselen er som forventet ”
+
+Akseptansekriterier:
 -   Spillet ikke har runtime-error
 -   Forutsigbar oppførsel fra kode
-#### Arbeidsoppgaver:
+
+Arbeidsoppgaver:
 -   Opprette manuelle og/eller automatiske tester som sjekker at spillets kode oppfører seg som forventet.
 
-### Brukerhistorie #4: man bør kunne bevege brikke via GUI
-“Som spiller trenger jeg å kunne velge bevegelsen som roboten skal gjøre på skjermen via knapper fremfor keyboard, for å senere kunne programmere roboten via programkort.”
-#### Akseptansekriterier:
+##### Brukerhistorie #2.4: Man bør kunne bevege brikke via GUI
+-   “Som spiller trenger jeg å kunne velge bevegelsen som roboten skal gjøre på skjermen via knapper fremfor keyboard, for å senere kunne programmere roboten via programkort.”
+
+Akseptansekriterier:
 -   Spillebrettet (tmx-fil) og robot må kunne vises/være interaktive i “GameScreen”.
 -   Spiller må kunne bevege seg via knapper fremfor keyboard
-#### Arbeidsoppgaver:
+
+Arbeidsoppgaver:
 -   Overføre spillebrett og robot fra “Renderer”-klassen til “GameScreen”-klassen.
 -   Sette seg inn i hvordan man går fra “KeyListener”-input til “Button”-input
 -   Implementere/eksperimentere med overgang
 
-### Brukerhistorie #5: knapper/kort bør ikke overlappe kartet
-“Som spiller må jeg kunne se hele kartet, det bør ikke blokkeres av knapper fra grensesnittet”
-#### Akseptansekriterier:
+##### Brukerhistorie #2.5: Knapper/kort bør ikke overlappe kartet
+-   “Som spiller må jeg kunne se hele kartet, det bør ikke blokkeres av knapper fra grensesnittet”
+
+Akseptansekriterier:
 -   GUI elementer som knapper bør ikke overlappe
 -   Bør se relativt ryddig ut ved siden av spillerkartet
-#### Arbeidsoppgaver:
+
+Arbeidsoppgaver:
 -   Dele GameScreen inn i to felt, et for brett og et for styringssenter
 -   Undersøke muligheter for å få utvidet det som renderes for spiller, for å få plass til knapper utenfor kartet.
 
-### Brukerhistorie #6: spillet bør ha runder og faser (neste sprint)
-“Som spiller ønsker jeg å kunne se en meny før jeg begynner selve spillet, slik at jeg har mulighet til å navigere mellom ulike stadier av et spill (meny, start, avslutt).”
-#### Akseptansekriterier:
+##### Brukerhistorie #2.6: Spillet bør ha runder og faser (neste sprint)
+-   “Som spiller ønsker jeg å kunne se en meny før jeg begynner selve spillet, slik at jeg har mulighet til å navigere mellom ulike stadier av et spill (meny, start, avslutt).”
+
+Akseptansekriterier:
 -   Implementere forskjellige skjermer som meny og spillskjerm
 -   Implementere overgang mellom skjermer via knapper
 -   Trekke “Renderer”-klassen vekk fra spillogikk.
-#### Arbeidsoppgaver:
+
+Arbeidsoppgaver:
 -   Sette seg inn i konsepter om skjermer/hvordan håndtere overganger.
 -   La “Renderer”-klassen ha et overordnet ansvar for å kjøre de ulike skjermene
 -   Implementere/eksperimentere med kode
 
-### Resterende: 
+### Resterende
 Vi har prioritert oppgaver som er relatert til å slå sammen spillogikk og brukergrensesnitt. Å få en prototype av spillet til å fungere etter de kravene vi har satt for denne og forrige sprint. 
 
 Hva ser vi i ettertid? At vi muligens må omstille oss når det kommer til måten vi skal bygge opp spillet. Nytte oss mer av konseptene som allerede er tilgjengelige i LibGDX. 
@@ -97,88 +109,117 @@ I ettertid har det ikke vært prioritert å gjennomføre flere krav, men derimot
 Kjente bugs? 
 -   Skjermutviding. Slik som det er nå vil ikke spillet kjøre så sant skjermen justeres
 -   "Boards" med mer enn et element på en rute leses foreløpig ikke riktig i "Board.java" (bare det siste elementet)
--    Ved å rotere brikken mot venstre kan frem-og tilbakeknappene miste funksjon. Det går fint dersom man roterer mot høyre (igjen). 
+-   Ved å rotere brikken mot venstre kan frem-og tilbakeknappene miste funksjon. Det går fint dersom man roterer mot høyre (igjen). 
 
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, samt Retrospektiv på Wiki.
 
-#### UML:
+#### UML
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/uml2.png?raw=true)
 
-### Manuelle Tester Menuscreen:
- Test Case: Trykk på "Quit"
- -   Expected: spillet avslutter
- -   Actual: spillet avslutter
- -   PASS
+### Manuelle Tester Menuscreen
+Test Case: Trykk på "Quit"
+-   Expected: spillet avslutter
+
+-   Actual: spillet avslutter
+
+-   PASS
  
- Test Case: Trykk på "Lets Play"
- -   Expected: Går inn i GameScreen
- -   Actual: Går inn i GameScreen
- -   PASS
+Test Case: Trykk på "Lets Play"
+-   Expected: Går inn i GameScreen
+
+-   Actual: Går inn i GameScreen
+
+-   PASS
  
-### Manuelle Tester GameScreen:
+### Manuelle Tester GameScreen
  
 Test Case: Gå fra GameScreen til MenuScreen med "Main menu"
 -   Expected: Går inn i MenuScreen
+
 -   Actual: Går inn i MenuScreen
+
 -   PASS
  
 Test Case: roter 360 grader med rotate left, trykk 4 ganger
 -   Expected: roterer 360
+
 -   Actual: roterer 360
+
 -   PASS
 
 Test Case: roter 360 grader med rotate right, trykk 4 ganger
 -   Expected: roterer 360
+
 -   Actual: roterer 360
+
 -   PASS
 
 Test Case: Brikke vendt mot sør beveger seg 1 back så 1 ahead
 -   Expected: Brikke går 1 bak, så en frem
+
 -   Actual: Brikke går 1 bak, så en frem
+
 -   PASS
 
 Test Case: Brikke vendt mot vest (1 rotate right) beveger seg 1 back så 1 ahead
 -   Expected: Brikke går 1 bak, så en frem
+
 -   Actual: Brikke går 1 bak, så en frem
+
 -   PASS
 
 Test Case: Brikke vendt mot nord (2 rotate right) beveger seg 1 ahead så 1 back
 -   Expected: Brikke går 1 frem, så en tilbake
+
 -   Actual: Brikke går 1 frem, så en tilbake
+
 -   PASS
 
 Test Case: Brikke vendt mot nord (3 rotate right) beveger seg 1 ahead så 1 back
 -   Expected: Brikke går 1 frem, så en tilbake
+
 -   Actual: Brikke går 1 frem, så en tilbake
+
 -   PASS
 
 Test Case: brikke (starter på x:6, y:2) vendt mot sør, beveg brikke 13 back til nordlig kant på brettet og forsøk å gå utenfor
 -   Expected: Brikke går 12 steg bak men stopper der pga nordlig bretkant (spiller går ikke utenfor)
+
 -   Actual: Brikke går 12 steg bak men stopper der pga nordlig bretkant (spiller går ikke utenfor)
+
 -   PASS
 
 Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter venstre, 1 frem, roter høyre, 2 frem, forsøker å gå utenfor den sørlige brettkanten
 -   Expected: Brikke går til sørlig kant men ikke lengre (spiller går ikke utenfor)
+
 -   Actual: Brikke går til sørlig kant men ikke lengre (spiller går ikke utenfor)
+
 -   PASS
 
 Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter venstre, 1 frem, roter høyre, 1 frem, roter venstre, 5 frem, forsøker å gå utenfor den østlige brettkanten
 -   Expected: Brikke går til østlig kant men ikke lengre (spiller går ikke utenfor)
+
 -   Actual: Brikke går til østlig kant men ikke lengre (spiller går ikke utenfor)
+
 -   PASS
 
 Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter høyre, 2 frem, roter 3 høyre, 1 frem, roter høyre, 5 frem, forsøker å gå utenfor den vestlige brettkanten
 -   Expected: Brikke går til vestlige kant men ikke lengre (spiller går ikke utenfor)
+
 -   Actual: Brikke går til vestlige kant men ikke lengre (spiller går ikke utenfor)
+
 -   PASS
 
 Test Case: brikke starter på x:6, 7:2 vendt mot sør, roter høyre, 2 frem, roter venstre, 1 frem, roter høyre, 5 frem, forsøker å gå utenfor den vestlige brettkanten
 -   Expected: Brikke går til vestlige kant men ikke lengre (spiller går ikke utenfor)
+
 -   Actual: Spiller får ikke gå frem etter venstre rotate
+
 -   FAIL
 
 Test Case: brikke starter på x:6, 7:2 vendt mot sør, 1 ahead, mot brettfelt med vegg
 -   Expected: Brikke skal ikke bevege seg inn på feltet (Vil endres seinere til kun å ikke gå gjennom kanten på feltet)
+
 -   Actual: Brikke går ikke inn på feltet
 -   PASS 

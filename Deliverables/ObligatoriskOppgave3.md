@@ -7,7 +7,7 @@ Møtereferat:
 Roller har i stor grad vært udefinert og “fluid” men vi erfarer at dette er ineffektivt for oss. Planen videre blir derfor å sette tydligere roller fra og med i dag (26.03.20) og vi kommer til å rullere på disse hver fredag fremover mot siste innlevering.
 Vi har bestemt å ha en teamlead, en testansvarlig og en referent som står ansvarlig for møtereferat og github dokumentajson. Siste team medlem vil stå til disposisjon for å støtte de faste rollene ved behov.
 
-Første rotasjon 26.03-03.04.2020 blis som følgende:
+Første rotasjon 26.03-03.04.2020 blir som følgende:
 -   Teamlead: Andreas
 -   Testansvarlig: Hedda
 -   Referent/ Dokumentasjonsansvarlig: Kjersti
@@ -20,7 +20,7 @@ Forbedringspunkt fra retrospektivet (fullt retrospektiv i Wiki):
 -   Kontinuerlig arbeid med prosjektet for å unngå skippertak og bedre flyt.
 -   Tettere oppfølging av hverandre, men teamlead for uken tar hovedansvar.
 
-#### Prioritering av oppgaver fremover
+### Prioritering av oppgaver fremover
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/pb.png?raw=true)
 Vi har etter samtale med gruppeleder sett oss nødt til å fokusere fullstendig på å MVP og unngå å bruke tid på funksjoner som faller utenfor dette. I tillegg til dette har vi begynt med to ukentlige tidsfrister for issues, slik at vi holder en kontinuerlig flyt av oppgaver gjennom en sprint. I stedet for å gjøre mye mot slutten og lite i starten.
 
@@ -32,7 +32,7 @@ Krav vi har prioritert:
 -   I denne perioden, som nå er over, har vi etter samtale med gruppeleder prioritert alt som var utestående med tanke på interaksjon mellom spiller og brett. Det meste av interaksjonsmuligheter er nå på plass bortsett fra detaljer for timing av hendelser og håndtering av konflikter. Dette vil bli prioritere fremover når vi ser på å få flere spillere på brettet.
 
 ### Brukerhistorer
-#### Brukerhistore #1: Programmere en robot (påbegynnelse av faser)
+#### Brukerhistore #3.1: Programmere en robot (påbegynnelse av faser)
 -   "Som spiller trenger jeg å kunne programmere en robot via programkort, for å kunne bevege den underveis i spillet og la den interagere med resten av miljøet på spillebrettet."
  
 Akseptansekriterier:
@@ -43,14 +43,19 @@ Akseptansekriterier:
 
 Arbeidsoppgaver:
 -   Opprette objekter for programkort og kortstokk
+
 -   La programkortene lagre en bevegelse (og etter hvert en prioritet)
+
 -   Kortstokken må bestå av den spesifikke fordelingen av ulike, unike programkort
+
 -   Dele ut 9 (endret etterhvert) tilfeldige programkort fra kortstokken synlig for spilleren
+
 -   La spilleren velge ut 5 av de 9 kortene som faser. Fasene skal lagre bevegelser (String).
+
 -   Koble visuelle «Programkort» med spillogikk fra «GameLogic»
     (overgang fra å lese bevegelse hos programkortene til at roboten beveger seg og interagerer med miljøet på spillebrettet.
     
-#### Brukerhistorie #2: Legge til tester for funksjonalitet hos programkort (i første omgang knyttet til bevegelse)
+#### Brukerhistorie #3.2: Legge til tester for funksjonalitet hos programkort (i første omgang knyttet til bevegelse)
 -   "Som kunde trenger jeg å kunne teste at funksjonaliteten til programkortene fungerer, for å kunne spille spillet utfra forventede regler"
 
 Akseptansekriterier:
@@ -65,7 +70,7 @@ Arbeidsoppgaver:
 -   faser som ikke er programmerte består av en array av “default” programkort. 
 -   overgang fra ledige faser -> programmere robot/velge 5 faser -> fasene leser forventet bevegelse (Kommer tester for kobling mellom bevegelse bestemt i GameScreen og GameLogic) 
 
-#### Brukerhistorie #3: Formål: samle flagg i riktig rekkefølge
+#### Brukerhistorie #3.3: Formål: samle flagg i riktig rekkefølge
 -   "Som spiller trenger jeg at flagg jeg besøker blir registrert i riktig rekkefølge, for å kunne oppnå seier i spillet"
 
 Akseptansekriterier:
@@ -81,7 +86,7 @@ Arbeidsoppgaver:
 -   Metode i «GameLogic» og “Player” som leser/lagrer flagg dersom riktig besøkt
 -   Definere et vilkår for seier: en spiller har vunnet dersom alle flaggene er besøkt i riktig rekkefølge.
 
-#### Brukerhistorie #4: Visuell HUD
+#### Brukerhistorie #3.4: Visuell HUD
 -   "Som spiller trenger jeg å følge med på hvor mange flagg, liv og helsepoeng jeg har, for å aktivt ha kontroll på progresjonen underveis i spillet."
 
 Akseptansekriterier:
@@ -93,7 +98,7 @@ Arbeidsoppgaver:
 -   Variablene må kunne påvirkes ved interaksjon på spillebrettet
 -   Vise i «GameScreen» oppdatert hvor mange liv, helsepoeng og flagg roboten har underveis (hente oppdaterte verdier fra den aktuelle spilleren der og da)
 
-#### Brukerhistorie #5: Prioritering til programkort
+#### Brukerhistorie #3.5: Prioritering til programkort
 -   "Som utvikler trenger jeg at programkortene har en unik prioriteringsgrad slik at potensielle konflikter mellom spillere enkelt kan løses"
 
 Akseptansekriterier:
@@ -104,7 +109,7 @@ Arbeidsoppgaver:
 -   Legg inn prioriteringsverdi i det kortene genereres
 -   Gjøre verdien tilgjengelig via en get() metode
 
-#### Brukerhistorie #6: Test av Player objekt
+#### Brukerhistorie #3.6: Test av Player objekt
 -   "Som utvikler trenger jeg å teste spillers oppførsel slik at vi er trygge på at spiller oppfører seg som forventet ved interaksjoner"
 
 Akseptansekriterier:
@@ -118,7 +123,7 @@ Arbeidsoppgave:
 -   Automatiske tester som sjekker skade på spiller
 -   Automatiske tester som sjekker at spiller mister liv
 
-#### Brukerhistorie #7: Flere elementer på brettet
+#### Brukerhistorie #3.7: Flere elementer på brettet
 -   "Som spiller ønsker jeg mer dybde i spillet jeg spiller, gjennom at det er flere interaksjoner mellom min brikke og brettets elementer."
 
 Akseptansekriterie:
@@ -134,7 +139,7 @@ Arbeidsoppgaver:
 -   Legge til funksjonalitet for hull som dreper spillere som går over det
 -   Legge til funksjonalitet så spiller dør om han/hun går utenfor brettet
 
-#### Brukerhistorie #8: Bugs i game logic
+#### Brukerhistorie #3.8: Bugs i game logic
 -   "Som spiller er det essensielt at spillet oppfører seg som forventet etter reglene som er satt, og ikke gjør uventede ting som et resultat av feil."
 
 Akseptansekriterie:
@@ -143,7 +148,7 @@ Akseptansekriterie:
 Arbeidsoppgaver:
 -   issue #86, #91, #73 og andre bugs som dukker opp underveis
 
-#### Brukerhistorie #9: Dokumentasjon i JavaDoc
+#### Brukerhistorie #3.9: Dokumentasjon i JavaDoc
 -   "Som utvikler trenger jeg oversiktlig dokumentasjon for å lettere forstå hvilken kode som gjør hva i prosjektet."
 
 Akseptansekriterie:

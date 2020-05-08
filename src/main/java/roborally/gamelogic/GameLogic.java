@@ -29,7 +29,7 @@ public class GameLogic {
     public boolean cardsChosen = false;
 
     private Stack<Stack<Integer>> playersNextPhase = new Stack<>();
-    DeckOfProgramCards deckOfProgramCards;
+    private DeckOfProgramCards deckOfProgramCards;
 
     private final int numberOfPhases = 5;
     private int phaseNum = 0;
@@ -141,7 +141,6 @@ public class GameLogic {
     public void regretPhase(int playerNum, int phaseNum){
         getChosenCards()[phaseNum][playerNum] = new ProgramCard();
         playersNextPhase.get(playerNum).push(phaseNum);
-        return;
     }
 
     /**
@@ -334,6 +333,8 @@ public class GameLogic {
                             case COGS:
                                 if (playerTile.isCog()) rotationCogs(player);
                                 break;
+                            default:
+                                throw new IllegalStateException("Unexpected value: " + moves);
                         }
                     }
                 }
@@ -698,7 +699,7 @@ public class GameLogic {
                         movePlayerInDirection(otherPlayer, direction);
                         movePlayerInDirection(player, direction);
                     } return false;
-                } continue;
+                }
             }
         }
         return true;

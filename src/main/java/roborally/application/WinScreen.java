@@ -3,12 +3,9 @@ package roborally.application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 // Complementary documentation: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/Screen.html
@@ -16,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class WinScreen implements Screen {
     private final Application app;
     private final Stage stage;
-    private Skin skin;
 
     public WinScreen(final Application app){
         this.app = app;
@@ -31,9 +27,7 @@ public class WinScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         stage.clear();
-
         queueAssets();
-        buttons();
     }
 
     @Override
@@ -42,12 +36,7 @@ public class WinScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(v);
-
         stage.draw();
-
-        app.batch.begin();
-        app.font.draw(app.batch, "Game won!",970,1900);
-        app.batch.end();
     }
 
     @Override
@@ -67,25 +56,11 @@ public class WinScreen implements Screen {
         stage.dispose();
     }
 
-    private void queueAssets(){
-        this.skin = new Skin();
-        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        this.skin.add("default-font",app.font);
-        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
-    }
-
-    private void buttons() {
-        TextButton exitButton = new TextButton("Exit", skin, "default");
-        exitButton.setPosition(850, 300);
-        exitButton.setSize(300, 100);
-        exitButton.getLabel().setFontScale(3.0f);
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
-        stage.addActor(exitButton);
+    private void queueAssets() {
+        Texture splashTex = new Texture(Gdx.files.internal("img/victory.png"));
+        Image logo = new Image(splashTex);
+        logo.setPosition(stage.getWidth() / 9 + 50, stage.getHeight() / 3);
+        stage.addActor(logo);
     }
 }
 
