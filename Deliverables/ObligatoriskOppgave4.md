@@ -240,7 +240,7 @@ Arbeidsoppgaver
 -   Ta i bruk Hamachi eller lignende tredjepartsløsning for å koble til et virtuelt LAN
 -   Sørge for at hver spiller kun får relevant info for deres del av spillet (ikke andres kort osv..)
 
-#### Brukerhistorie #?: Powerdown (in progress)
+#### Brukerhistorie #?: Powerdown (denne var planlagt, men ikke påbegynt)
 -   "Som spiller ønsker jeg å kunne velge selv å gå i powerdown, med andre ord vil jeg kunne reparere brikken min mot å ikke kunne bevege meg en runde."
 
 Akseptansekriterier:
