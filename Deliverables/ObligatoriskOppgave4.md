@@ -250,7 +250,6 @@ Arbeidsoppgaver:
 -   Implementere prompt i CLEANUP til spillere med helse under maks så de kan velge å gå i powerdown eller ikke
 -   AI kan velge tilfeldig om de er skadet (sjanse proporsjonalt til hvor skadet de er?)
 
-**MVP**
 **Hvilke hovedkrav vi anser som MVP:**
 -   Vi har i stor grad satt de samme hovedkravene for MVP som de gitt fra kunde.
 
