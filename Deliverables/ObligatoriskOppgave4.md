@@ -35,7 +35,7 @@
 -   Parprogrammering ser vi absolutt fordelene med, og skulle ønske vi hadde fått til bedre. Spesielt i starten av prosjektet burde vi brukt tid på dette så alle var på samme side. Hadde vi visst at det ble så utfordrende å avtale tidspunkt som passet for flere utenom gruppemøter hadde vi nok også pushet mer på dette. Lett å si “vi tar en parprogrammeringsøkt til uken” og så ikke finne tid til det litt ut i uken. Generelt sett dårlig planlegging som har skapt problemer her.
 
 ## Oppdatert prosjekttavle (8. mai):
-![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/pb.png?raw=true)
+![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/projectBoard.png?raw=true)
 
 **Gruppedynamikk og kummunikasjon, i starten VS nå:**
 -   Vi hadde et greit utgangspunkt som en gruppe. Det var grei gruppedynamikk og kommunikasjon, men vi ser nå at den dynamikken var mer egnet for sosiale settinger ikke nødvendigvis som et team på et prosjekt. Nå mot slutten har vi tidvis hatt litt for sporadisk kommunikasjon men den kommunikasjonen som har vært har vært mye mer rett frem og effektiv i forhold til arbeidet på prosjektet. Det må nevnes at det er vanskelig å se hva som har endret seg fordi vi har blitt vant til å jobbe med hverandre og hva som har endret deg kun fordi vi har vært i denne korona påvirkede situasjonen.
