@@ -114,7 +114,7 @@ Kjente bugs?
 ## Deloppgave 3
 Viser til readme.md for teknisk teknisk produktoppsett, samt Retrospektiv på Wiki.
 
-#### UML
+### UML
 ![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/uml2.png?raw=true)
 
 ### Manuelle Tester Menuscreen

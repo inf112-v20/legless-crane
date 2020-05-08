@@ -22,7 +22,6 @@ public class LockedRegisterTest {
     private final Player player = new Player(0, startingPosition, gameLogic);
     private final ProgramCard[] oneTurn = new ProgramCard[5];
     private int count = 0;
-    private int health;
     private int lastIndex;
 
     /**
@@ -39,7 +38,6 @@ public class LockedRegisterTest {
 
     @Test
     public void accordance1() {
-        health = player.getHealth();
 
         for (int i = 0; i < oneTurn.length; i++) {
             oneTurn[i] = new ProgramCard(deckOfProgramCards.getProgramCardMovement(0),deckOfProgramCards.getProgramCardPriority(0));
@@ -76,7 +74,6 @@ public class LockedRegisterTest {
     @Test
     public void accordance2() {
         player.updateHealth(-5);
-        health = player.getHealth();
 
         for (int i = 0; i < oneTurn.length; i++) {
             oneTurn[i] = new ProgramCard(deckOfProgramCards.getProgramCardMovement(0),deckOfProgramCards.getProgramCardPriority(0));
@@ -113,7 +110,6 @@ public class LockedRegisterTest {
     @Test
     public void accordance3() {
         player.updateHealth(-8);
-        health = player.getHealth();
 
         for (int i = 0; i < oneTurn.length; i++) {
             oneTurn[i] = new ProgramCard(deckOfProgramCards.getProgramCardMovement(0),deckOfProgramCards.getProgramCardPriority(0));
@@ -149,7 +145,6 @@ public class LockedRegisterTest {
     @Test
     public void accordance4() {
         player.updateHealth(-8);
-        health = player.getHealth();
 
         for (int i = 0; i < oneTurn.length; i++) {
             oneTurn[i] = new ProgramCard(deckOfProgramCards.getProgramCardMovement(0),deckOfProgramCards.getProgramCardPriority(0));
@@ -183,7 +178,6 @@ public class LockedRegisterTest {
     @Test
     public void accordance5() {
         player.updateHealth(-8);
-        health = player.getHealth();
 
         for (int i = 0; i < oneTurn.length; i++) {
             oneTurn[i] = new ProgramCard(deckOfProgramCards.getProgramCardMovement(0),deckOfProgramCards.getProgramCardPriority(0));

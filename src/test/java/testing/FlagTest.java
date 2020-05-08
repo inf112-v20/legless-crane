@@ -1,7 +1,6 @@
 package testing;
 
 import com.badlogic.gdx.math.Vector2;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import roborally.board.Board;
