@@ -195,7 +195,7 @@ Arbeidsoppgaver:
 -   GameScreen: etter at en runde avsluttes i GameLogic, blir en metode kalt i GameScreen. Denne skal vise fastlåste kort (kort fra forrige omgang fra riktige faser, synkende rekkefølge) som ikke kan klikkes på, bare fjernes.
 -   Ved en ny runde skal de fastlåste kortene telle som gydlige kort for den aktuelle runden, og ikke kunne byttes ut. 
 
-#### Brukerhistorie #4.11: spiller skyter laser
+#### Brukerhistorie #4.11: Spiller skyter laser
 -   "som spiller trenger jeg at brikken min kan skyte laser en gang i slutten av en fase i retningen den ser, for å kunne gi skade til medspillere"
 
 Akseptansekriterier:
@@ -209,7 +209,7 @@ Arbeidsoppgaver:
 -   GameLogic, ny case i utdateGameState() som behandler spillers laser
 -   Sjekk plassene foran spiller om det finnes en annen spiller før brettet slutter eller laser blir stoppet av en vegg etc.
 
-#### Brukerhistorie #?: respawn (in progress)
+#### Brukerhistorie #?: Respawn (in progress)
 -   "Som spiller ønsker jeg å kunne respawne ved backup punktet mitt i henhold til reglene."
 
 Akseptansekriterier:
