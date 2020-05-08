@@ -5,17 +5,17 @@
 This guide assumes that you have Maven, Java and Git installed
 ### Commandline
 #### Get Sourcecode
-```
+```html
 git clone https://github.com/inf112-v20/legless-crane/
 ```
 
 #### Build with commandline
-```
+```html
 cd C:\..\legless-crane
 mvn clean install
 ```
 #### Run with commandline
-```
+```html
 cd C:\..\legless-crane\target
 java -jar roborally-0.4.jar
 ```

@@ -34,7 +34,7 @@
 -   Vi hadde nok gjennomgått prosjektet sammen i starten, satt opp issues og planlegge bedre for strukturen av prosjektet. Det var mye som var ukjent i starten og som vi egentlig kunne resonnert oss fram til eller planlagt for. Og dermed unngått å måtte skrive om så mye kode.
 -   Parprogrammering ser vi absolutt fordelene med, og skulle ønske vi hadde fått til bedre. Spesielt i starten av prosjektet burde vi brukt tid på dette så alle var på samme side. Hadde vi visst at det ble så utfordrende å avtale tidspunkt som passet for flere utenom gruppemøter hadde vi nok også pushet mer på dette. Lett å si “vi tar en parprogrammeringsøkt til uken” og så ikke finne tid til det litt ut i uken. Generelt sett dårlig planlegging som har skapt problemer her.
 
-# TODO 1
+## TODO 1
 -   skjermdump fra prosjekttavle!
 
 **Gruppedynamikk og kummunikasjon, i starten VS nå:**
@@ -261,15 +261,14 @@ Arbeidsoppgaver:
 -   Men, burde prioritert utfordrende oppgaver som Multiplayer tidligere i MVP for å få en bedre forståelse for hvordan koden må legges opp for å gi oss minst problemer senere. Skulle det bli implementert nå vil det medføre en del omskriving og mye arbeid fra det vi kan se.
 
 **Kjente bugs:**
--   Bugs skal være nevnt på /README.md filen på prosjektets forside her under “known bugs”:  https://github.com/inf112-v20/legless-crane
+-   Bugs skal være nevnt på README.md filen på prosjektets forside her under “known bugs”:  <https://github.com/inf112-v20/legless-crane>
 
 ## Deloppgave 3 - Produktleveranse og kodekvalitet
 Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
 
-# TODO 2
+## TODO 2
 -   klassediagram
 
 -   påpeke hvilke økter som har vært parprogrammering om det ikke er representert i commits
     - Tirsdag 05.05 - parprogrammering på ConflictAndLaser branch
-    
 -   **TAG til innlevering**

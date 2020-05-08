@@ -17,7 +17,7 @@ public class FlagTest {
 
 
     @BeforeAll
-    static void setup() {
+    public static void setup() {
         board = new Board("boards/Risky_Exchange.tmx");
         gameLogic = mock(GameLogic.class);
         player = new Player(0, new Vector2(10, 9), gameLogic);

@@ -16,7 +16,7 @@ public class StaticLaserTest {
         private static GameLogic gameLogic;
 
         @BeforeAll
-        static void setup() {
+        public static void setup() {
             board = new Board("boards/Risky_Exchange.tmx");
             gameLogic = mock(GameLogic.class);
             player = new Player(0, new Vector2(0, 0), gameLogic);
