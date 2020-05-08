@@ -209,7 +209,7 @@ Arbeidsoppgaver:
 -   GameLogic, ny case i utdateGameState() som behandler spillers laser
 -   Sjekk plassene foran spiller om det finnes en annen spiller før brettet slutter eller laser blir stoppet av en vegg etc.
 
-#### Brukerhistorie #?: Respawn (in progress)
+#### Brukerhistorie #4.12: Respawn (in progress)
 -   "Som spiller ønsker jeg å kunne respawne ved backup punktet mitt i henhold til reglene."
 
 Akseptansekriterier:
@@ -225,7 +225,7 @@ Arbeidsoppgaver:
 -   La spiller velge om de ønsker å gå i powerdown eller ikke. (kan egentlig bare spørre om dette for alle spillere etter respawning har blitt gjort?)
 -   Håndtere konflikter i respawn i samme rekkefølge som spillerne døde. (kan lagre spillertall til de som dør gradvis i løpet av en runde i arraylist
 
-#### Brukerhistorie #?: Multiplayer (in progress)
+#### Brukerhistorie #4.13: Multiplayer (in progress)
 -   "Som spiller ønsker jeg å kunne spille mot andre mennesker, for dette må jeg kunne koble til med en gitt ipadresse, eller kunne velge fra en liste av tilgjengelige spill på mitt nettverk."
 
 Akseptansekriterier:
@@ -239,7 +239,7 @@ Arbeidsoppgaver
 -   Ta i bruk Hamachi eller lignende tredjepartsløsning for å koble til et virtuelt LAN
 -   Sørge for at hver spiller kun får relevant info for deres del av spillet (ikke andres kort osv..)
 
-#### Brukerhistorie #?: Powerdown (denne var planlagt, men ikke påbegynt)
+#### Brukerhistorie #4.14: Powerdown (denne var planlagt, men ikke påbegynt)
 -   "Som spiller ønsker jeg å kunne velge selv å gå i powerdown, med andre ord vil jeg kunne reparere brikken min mot å ikke kunne bevege meg en runde."
 
 Akseptansekriterier:
