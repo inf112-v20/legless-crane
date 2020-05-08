@@ -266,6 +266,9 @@ Arbeidsoppgaver:
 ## Deloppgave 3 - Produktleveranse og kodekvalitet
 Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der skal man også finne badges for Travis CI og Codacy.
 
+### Notat på bruke av Junit5 i prosjektet
+-   Junit5 gir error ved forsøk på å bruke AssertTrue()/AssertFalse() - det er mest sansynlig noe i pom.xml som ikke stemmer. Vi har valgt å unngå disse assert metodene i testene våre, da vi ikke oppdaget feilen i pom.xml før innlevering
+
 ## TODO 2
 -   klassediagram
 
