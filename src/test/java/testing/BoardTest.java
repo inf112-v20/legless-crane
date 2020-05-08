@@ -1,13 +1,20 @@
 package testing;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import roborally.board.Board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+//@ExtendWith(TestGDXRunner.class) keep? works?
 public class BoardTest {
-    private final Board board = new Board("boards/testBoard0.tmx");
+    private static Board board;
 
+    @BeforeAll
+    public static void setup(){
+        board = new Board("boards/testBoard0.tmx");
+    }
     @Test
     public void boardHeightTest(){
         assertEquals(5, board.getBoardHeight());
@@ -17,6 +24,5 @@ public class BoardTest {
     public void boardWidthTest(){
         assertEquals(5, board.getBoardWidth());
     }
-
 
 }

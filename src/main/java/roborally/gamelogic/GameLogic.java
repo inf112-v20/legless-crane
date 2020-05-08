@@ -348,6 +348,7 @@ public class GameLogic {
                     if (playerTile.isLaser()) player.updateHealth(playerTile.getHealthChange());
 
                 }
+
                 gameState = gameState.advance();
                 break;
 
@@ -423,38 +424,42 @@ public class GameLogic {
     }
 
     /**
-     * Method to explore if another player is standing ahead of the current player
-     * (fire lasers)
      *
-     * @param player the player looking for other players
-     * @param pos the position the player has
-     * @param direction the direction the player is heading
-     * @return return as the player can't check for players any further
+     * @param player
+     * @param pos
+     * @param direction
+     * @return
      */
-    private void laserPathCheck(Player player, Direction direction, Vector2 pos) {
-        Vector2 nextPosition = getDirectionalPosition(pos, direction);
+    private boolean laserPathCheck(Player player, Direction direction, Vector2 pos) {
+        Vector2 nextPosition = getDirectionalPosition(player.getPosition(), direction);
 
-        if (nextPosition.x >= boardWidth || nextPosition.y >= boardHeight || nextPosition.x <= 0 || nextPosition.y <= 0) {
-            return;
+        if (nextPosition.x > boardWidth || nextPosition.y > boardHeight || nextPosition.x < 0 || nextPosition.y < 0) {
+            return false;
         }
 
+        Tile currentTile = board.getTile(player.getPosition());
         Tile nextTile = board.getTile(nextPosition);
 
-        if (nextTile.canBlockMovement()) {
+        if (currentTile.canBlockMovement()) {
+            for (Direction dir : currentTile.getBlockingDirections())
+                if (dir.equals(direction))
+                    return false;
+
+        } else if (nextTile.canBlockMovement()) {
             for (Direction dir : nextTile.getBlockingDirections())
                 if (dir == direction.opposite())
-                    return;
+                    return false;
         }
         for (Player otherPlayer : players) {
             if (otherPlayer != player) {
                 if (otherPlayer.getPosition().equals(nextPosition)) {
                     otherPlayer.updateHealth(-1);
-                    // TODO: GameScreen
-                    return;
+                    return false;
                 }
             }
         }
         laserPathCheck(player, direction, nextPosition);
+        return true;
     }
 
     /**
