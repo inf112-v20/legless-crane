@@ -10,7 +10,7 @@ public class BoardTest {
     private static Board board;
 
     @BeforeAll
-    public static void setup(){
+    public static void setUp(){
         board = new Board("boards/testBoard0.tmx");
     }
     @Test

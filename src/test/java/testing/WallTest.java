@@ -22,7 +22,7 @@ public class WallTest {
     private static GameLogic gameLogic;
 
     @BeforeAll
-    public static void setup() {
+    public static void setUp() {
         board = new Board("boards/testBoard0.tmx"); //Has EastWall (TileID = 23 in posY = 1 posY = 0
         gameLogic = mock(GameLogic.class);
         player = new Player(0, new Vector2(2, 0), gameLogic);
