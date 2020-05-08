@@ -253,8 +253,8 @@ Arbeidsoppgaver:
 **Hvilke hovedkrav vi anser som MVP:**
 -   Vi har i stor grad satt de samme hovedkravene for MVP som de gitt fra kunde.
 
-**Har vi endret prioritering på MVP?** Nei
--   Men, burde prioritert utfordrende oppgaver som Multiplayer tidligere i MVP for å få en bedre forståelse for hvordan koden må legges opp for å gi oss minst problemer senere. Skulle det bli implementert nå vil det medføre en del omskriving og mye arbeid fra det vi kan se.
+**Har vi endret prioritering på MVP?** 
+-   Nei. Men, burde prioritert utfordrende oppgaver som Multiplayer tidligere i MVP for å få en bedre forståelse for hvordan koden må legges opp for å gi oss minst problemer senere. Skulle det bli implementert nå vil det medføre en del omskriving og mye arbeid fra det vi kan se.
 
 **Kjente bugs:**
 -   Bugs skal være nevnt på README.md filen på prosjektets forside her under “known bugs”:  <https://github.com/inf112-v20/legless-crane>
