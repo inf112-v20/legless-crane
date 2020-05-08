@@ -36,7 +36,7 @@ Download [latest release](https://github.com/inf112-v20/legless-crane/releases) 
 In case none of the options above work, run main method in "Application.java" from IntelliJ (or other IDEs).
 
 ## How to test the project
-Run the tests using maven, either while building or separately. Once the automated tests are ran, do manual tests as specified in 
+Run the automated tests using maven, either while building or separately. Manual tests can be completed as specified in 
 [`src/test/java/testing/ManualTesting.md`](https://github.com/inf112-v20/legless-crane/blob/master/src/test/java/testing/ManualTesting.md)
 
 ## Known bugs
