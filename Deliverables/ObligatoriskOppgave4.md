@@ -65,7 +65,6 @@
 **Påbegynt:**
 -   Respawn (riktig helsetap og skjer på korrekt tidspunkt, men det gjenstår håndtering av flere spillere på samme rute)
 -   Multiplayer
--   Generelt mer testing 
 
 ### Brukerhistorer
 #### Brukerhistore #4.1: Game-loop
