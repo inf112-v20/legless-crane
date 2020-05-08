@@ -62,7 +62,7 @@
 -   Utdelte kort samsvarer med helsepoeng
 -   Låste kort
 
-**Påbegynt:
+**Påbegynt:**
 -   Respawn (riktig helsetap og skjer på korrekt tidspunkt, men det gjenstår håndtering av flere spillere på samme rute)
 -   Multiplayer
 -   Generelt mer testing 
@@ -267,9 +267,6 @@ Hvordan prosjektet bygger, testes og kjøres er dokumnetert i README.md. Der ska
 ### Notat på bruke av Junit5 i prosjektet
 -   Junit5 gir error ved forsøk på å bruke AssertTrue()/AssertFalse() - det er mest sansynlig noe i pom.xml som ikke stemmer. Vi har valgt å unngå disse assert metodene i testene våre, da vi ikke oppdaget feilen i pom.xml før innlevering
 
-## TODO 2
--   klassediagram
+## Klassediagram
+![Image](https://raw.githubusercontent.com/inf112-v20/legless-crane/master/Deliverables/umlOblig4.png?raw=true)
 
--   Økter hvor det ble brukt parprogrammering og det ikke er representert i commit meldingen:
-    - Tirsdag 05.05 - Andreas, Hedda og Kjersti
--   **TAG til innlevering**
